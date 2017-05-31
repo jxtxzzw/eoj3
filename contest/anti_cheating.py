@@ -31,7 +31,6 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
             g.write(code2)
         if approach == 'sim':
             similarity = _similarity_test_sim_approach(path1, path2, lang1, lang2)
-            res = 'similarity confidence %.6f' % similarity
             if similarity > 0.4:
                 res = 'similarity confidence %.6f' % similarity
     except Exception as e:
