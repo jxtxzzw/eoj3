@@ -16,6 +16,8 @@ def _similarity_test_sim_approach(path1, path2, lang1='text', lang2='text'):
     else:
         report = subprocess.check_output(['/usr/bin/sim_text', '-p', path1, path2], timeout=5)
     raw_data = list(map(int, re.findall(r'consists for (\d+) %', report)))
+    if not raw_data:
+        return 0
     return sum(raw_data) / len(raw_data)
 
 
@@ -32,8 +34,8 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
             res = 'similarity confidence %.6f' % similarity
             # if similarity > 0.5:
             #     res = 'similarity confidence %.6f' % similarity
-    except:
-        pass
+    except Exception as e:
+        res = 'error encountered %s' % repr(e)
 
     if os.path.exists(path1):
         os.remove(path1)
