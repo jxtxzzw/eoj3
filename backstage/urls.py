@@ -5,6 +5,7 @@ from .problem.views import ProblemCreate, ProblemUpdate, ProblemList, TestData, 
 from .contest.views import ContestList, ContestCreate, ContestProfileUpdate, ContestManage, ContestParticipantDownload, ContestInvitationDownload
 from .contest.views import ContestProblemDelete, ContestProblemCreate, ContestParticipantList, ContestParticipantCommentUpdate, ContestParticipantStarToggle
 from .contest.views import ContestInvitationList, ContestInvitationCreate, ContestInvitationDelete, ContestInvitationAssign, ContestParticipantCreate
+from .contest.views import ContestSimilarityTest
 from .server.views import ServerCreate, ServerUpdate, ServerList, ServerDelete, ServerRefresh
 from .account.views import AccountList, AccountPrivilegeSwitch, AccountPasswordChange
 from .site.views import SiteSettingsUpdate, MigrateList, OldSubmissionQuery, OldSubmissionRejudge
@@ -45,6 +46,7 @@ urlpatterns = [
     url(r'^contest/(?P<pk>\d+)/participants/(?P<participant_pk>\d+)/star/$', ContestParticipantStarToggle.as_view(), name='contest_participant_star_toggle'),
     url(r'^contest/(?P<pk>\d+)/participants/create/$', ContestParticipantCreate.as_view(), name='contest_participant_create'),
     url(r'^contest/(?P<pk>\d+)/participants/download/$', ContestParticipantDownload.as_view(), name='contest_participant_download'),
+    url(r'^contest/(?P<pk>\d+)/similarity/new/$', ContestSimilarityTest.as_view(), name='contest_similarity_test'),
 
     url(r'^server/$', ServerList.as_view(), name='server'),
     url(r'^server/create/$', ServerCreate.as_view(), name='server_create'),

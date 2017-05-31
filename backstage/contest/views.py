@@ -2,8 +2,10 @@ import shortuuid
 import json
 import names
 import random
+import datetime
+import os
 
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse, reverse
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, reverse, redirect
 from django.views import static, View
 from django.views.generic import TemplateView
 from django.contrib import messages
@@ -17,6 +19,7 @@ from account.models import User, MAGIC_CHOICE
 from contest.models import Contest, ContestProblem, ContestInvitation, ContestParticipant
 from problem.models import Problem
 from contest.tasks import update_contest, add_participant_with_invitation
+from contest.anti_cheating import SimilarityTestThread
 from utils import xlsx_generator
 from utils.identicon import Identicon
 from ..base_views import BaseCreateView, BaseUpdateView, BaseBackstageMixin
@@ -257,3 +260,10 @@ class ContestInvitationDownload(BaseBackstageMixin, View):
     def get(self, request, pk):
         file_name = xlsx_generator.generate_invitation(pk)
         return static.serve(request, file_name, document_root=GENERATE_DIR)
+
+
+class ContestSimilarityTest(BaseBackstageMixin, View):
+    def get(self, request, pk):
+        file_name = 'Contest-%s-Similarity-Test-%s.html' % (str(pk), str(datetime.datetime.now()).replace(' ', '-'))
+        SimilarityTestThread(Contest.objects.get(pk=pk), os.path.join(GENERATE_DIR, file_name)).start()
+        return redirect('/generate/' + file_name)

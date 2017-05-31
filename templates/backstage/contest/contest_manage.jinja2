@@ -21,6 +21,12 @@
   </div>
 
   <div class="content-section">
+    <h3>Anti-cheating</h3>
+    {# TODO: not safe #}
+    <p><a href="{{ url('backstage:contest_similarity_test', contest.pk) }}">New similarity test</a></p>
+  </div>
+
+  <div class="content-section">
     <h3>Contest Problems</h3>
     {% if contest_problem_list %}
     <div class="table-responsive">
@@ -90,5 +96,6 @@
   {% endcall %}
 
   {{ post_link("#delete") }}
+  {{ post_link("#similarity-test") }}
 
 {% endblock %}
