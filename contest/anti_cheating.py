@@ -10,11 +10,11 @@ def _similarity_test_sim_approach(path1, path2, lang1='text', lang2='text'):
     LANG_C_GROUP = ['c', 'cpp']
     LANG_JAVA_GROUP = ['java']
     if lang1 in LANG_C_GROUP and lang2 in LANG_C_GROUP:
-        report = subprocess.check_output(['/usr/bin/sim_c', '-p', path1, path2], timeout=5)
+        report = subprocess.check_output(['/usr/bin/sim_c', '-p', path1, path2], timeout=5).decode().strip()
     elif lang1 in LANG_JAVA_GROUP and lang2 in LANG_JAVA_GROUP:
-        report = subprocess.check_output(['/usr/bin/sim_java', '-p', path1, path2], timeout=5)
+        report = subprocess.check_output(['/usr/bin/sim_java', '-p', path1, path2], timeout=5).decode().strip()
     else:
-        report = subprocess.check_output(['/usr/bin/sim_text', '-p', path1, path2], timeout=5)
+        report = subprocess.check_output(['/usr/bin/sim_text', '-p', path1, path2], timeout=5).decode().strip()
     raw_data = list(map(int, re.findall(r'consists for (\d+) %', report)))
     if not raw_data:
         return 0
