@@ -29,8 +29,9 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
             g.write(code2)
         if approach == 'sim':
             similarity = _similarity_test_sim_approach(path1, path2, lang1, lang2)
-            if similarity > 0.5:
-                res = 'similarity confidence %.6f' % similarity
+            res = 'similarity confidence %.6f' % similarity
+            # if similarity > 0.5:
+            #     res = 'similarity confidence %.6f' % similarity
     except:
         pass
 
@@ -53,7 +54,7 @@ class SimilarityTestThread(threading.Thread):
             print('Similarity test begins at %s' % str(datetime.datetime.now()), file=output)
             print('==========================\n', file=output)
 
-            print('=== Total submissions: %d ===' % len(self.submissions), file=output)
+            print('=== Total submissions: %d ===\n' % len(self.submissions), file=output)
 
             for idx1, sub1 in enumerate(self.submissions):
                 for idx2, sub2 in enumerate(self.submissions):
@@ -67,7 +68,7 @@ class SimilarityTestThread(threading.Thread):
                     if result:
                         print('%d %d at Problem %d: %s' % (sub1.id, sub2.id, sub1.problem_id, result), file=output)
                 if idx1 % 100 == 0:
-                    print('=== Mark point %d ===' % idx1, file=output)
+                    print('=== Mark point %d at %s ===' % (idx1, str(datetime.datetime.now())), file=output)
 
             print('\n==========================', file=output)
             print('Similarity test ends at %s' % str(datetime.datetime.now()), file=output)
