@@ -31,7 +31,7 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
             g.write(code2)
         if approach == 'sim':
             similarity = _similarity_test_sim_approach(path1, path2, lang1, lang2)
-            if similarity > 0.4:
+            if similarity > 40:
                 res = 'similarity confidence %.6f' % similarity
     except Exception as e:
         res = 'error encountered %s' % repr(e)
@@ -51,7 +51,7 @@ class SimilarityTestThread(threading.Thread):
         self.output = output
 
     def run(self):
-        with open(self.output, 'w') as output:
+        with open(self.output, 'w', buffering=1) as output:
             print('Similarity test begins at %s' % str(datetime.datetime.now()), file=output)
             print('==========================\n', file=output)
 
