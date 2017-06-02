@@ -1,10 +1,10 @@
 import shortuuid
-import json
 import names
 import random
 import datetime
 import os
 
+from django.http import JsonResponse
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, reverse, redirect
 from django.views import static, View
 from django.views.generic import TemplateView
@@ -208,7 +208,7 @@ class ContestParticipantStarToggle(BaseBackstageMixin, View):
             participant = Contest.objects.get(pk=pk).contestparticipant_set.select_for_update().get(pk=participant_pk)
             participant.star = True if not participant.star else False
             participant.save(update_fields=["star"])
-        return HttpResponse(json.dumps({'result': 'success'}))
+        return JsonResponse({'result': 'success'})
 
 
 class ContestParticipantCreate(BaseBackstageMixin, View):
@@ -263,7 +263,7 @@ class ContestInvitationDownload(BaseBackstageMixin, View):
 
 
 class ContestSimilarityTest(BaseBackstageMixin, View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         file_name = 'Contest-%s-Similarity-Test-%s.log' % (str(pk), str(datetime.datetime.now()).replace(' ', '-'))
         SimilarityTestThread(Contest.objects.get(pk=pk), os.path.join(GENERATE_DIR, file_name)).start()
-        return redirect('/generate/' + file_name)
+        return JsonResponse({'url': '/generate/' + file_name})

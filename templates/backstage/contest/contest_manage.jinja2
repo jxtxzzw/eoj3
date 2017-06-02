@@ -22,8 +22,7 @@
 
   <div class="content-section">
     <h3>Anti-cheating</h3>
-    {# TODO: not safe #}
-    <p><a target="_blank" href="{{ url('backstage:contest_similarity_test', contest.pk) }}">New similarity test</a></p>
+    <p><a id="similarity-test" href="javascript:void(0);" data-link="{{ url('backstage:contest_similarity_test', contest.pk) }}">New similarity test</a></p>
   </div>
 
   <div class="content-section">
@@ -95,7 +94,6 @@
     <textarea class="form-control" name="problems" id="problems" rows="7" placeholder="One problem per line"></textarea>
   {% endcall %}
 
-  {{ post_link("#delete") }}
   {{ post_link("#similarity-test") }}
 
 {% endblock %}

@@ -1,5 +1,4 @@
-import json
-
+from django.http import JsonResponse
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse, reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
@@ -127,7 +126,7 @@ class SPJCompiler(BaseBackstageMixin, View):
             raise FileNotFoundError('Did you forget to provide a cpp file?')
         except Exception as e:
             result['message'] = repr(e)
-            return HttpResponse(json.dumps(result))
+            return JsonResponse(result)
 
     def get(self, request):
         return render(request, self.template_name)
@@ -187,4 +186,4 @@ class ProblemVisibleSwitch(BaseBackstageMixin, View):
             problem = Problem.objects.select_for_update().get(pk=pk)
             problem.visible = True if not problem.visible else False
             problem.save(update_fields=["visible"])
-        return HttpResponse(json.dumps({'result': 'success'}))
+        return JsonResponse({'result': 'success'})

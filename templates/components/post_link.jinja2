@@ -1,11 +1,12 @@
 {% macro post_link(selector) %}
   <script>
     $("{{ selector }}").on('click', function(e) {
-        var link = $(e.target).data('link');
-        $.post(link, {'csrfmiddlewaretoken': Cookies.get('csrftoken')}, function (data) {
-                location.reload();
-            }
-        );
+      var link = $(e.target).data('link');
+      $.post(link, {'csrfmiddlewaretoken': Cookies.get('csrftoken')}, function (data) {
+          if (data['url']) window.open(data['url']);
+          else location.reload();
+        }
+      );
     });
   </script>
 {% endmacro %}

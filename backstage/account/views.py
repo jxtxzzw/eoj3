@@ -1,5 +1,4 @@
-import json
-
+from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, reverse, HttpResponse
 from django.views.generic.list import ListView, View
 from django.db import transaction
@@ -50,7 +49,7 @@ class AccountPrivilegeSwitch(BaseBackstageMixin, View):
                 elif user.privilege == 'volunteer':
                     user.privilege = 'user'
             user.save()
-        return HttpResponse(json.dumps({'result': 'success'}))
+        return JsonResponse({'result': 'success'})
 
 
 class AccountPasswordChange(BaseBackstageMixin, View):
