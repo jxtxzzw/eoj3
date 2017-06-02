@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^contest/(?P<pk>\d+)/participants/(?P<participant_pk>\d+)/star/$', ContestParticipantStarToggle.as_view(), name='contest_participant_star_toggle'),
     url(r'^contest/(?P<pk>\d+)/participants/create/$', ContestParticipantCreate.as_view(), name='contest_participant_create'),
     url(r'^contest/(?P<pk>\d+)/participants/download/$', ContestParticipantDownload.as_view(), name='contest_participant_download'),
-    url(r'^contest/(?P<pk>\d+)/similarity/new/$', ContestSimilarityTest.as_view(), name='contest_similarity_test'),
+    url(r'^contest/(?P<pk>\d+)/similarity/(?P<approach>\w+)/$', ContestSimilarityTest.as_view(), name='contest_similarity_test'),
 
     url(r'^server/$', ServerList.as_view(), name='server'),
     url(r'^server/create/$', ServerCreate.as_view(), name='server_create'),

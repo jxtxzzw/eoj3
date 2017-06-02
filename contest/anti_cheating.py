@@ -4,6 +4,9 @@ import shortuuid
 import subprocess
 import os
 import re
+from eoj3.settings import PMD_SH_PATH
+
+CPD_SUPPORT_LANG = ["apex", "cpp", "cs", "ecmascript", "fortran", "go", "groovy", "java", "jsp", "matlab", "objectivec", "perl", "php", "plsql", "python", "ruby", "scala", "swift", "vf"]
 
 
 def _similarity_test_sim_approach(path1, path2, lang1='text', lang2='text'):
@@ -21,9 +24,34 @@ def _similarity_test_sim_approach(path1, path2, lang1='text', lang2='text'):
     return sum(raw_data) / len(raw_data)
 
 
-def similarity_test(code1, code2, lang1, lang2, approach='sim'):
-    path1 = os.path.join('/tmp', shortuuid.ShortUUID().random(32))
-    path2 = os.path.join('/tmp', shortuuid.ShortUUID().random(32))
+def _similarity_test_cpd_approach(path1, path2, lang1, lang2):
+    if lang1 != lang2:
+        return ''
+    elif lang1 == 'javascript':
+        lang = 'ecmascript'
+    elif lang1 in ['c11', 'c', 'cpp98', 'cpp14']:
+        lang = 'cpp'
+    elif lang1 == 'csharp':
+        lang = 'cs'
+    else:
+        lang = lang1
+    if lang not in CPD_SUPPORT_LANG:
+        return ''
+    dictory_file = os.path.join('/tmp', 'd')
+    with open(dictory_file, "w") as f:
+        f.write(path1 + ',\n' + path2)
+    report = subprocess.check_output(['/usr/bin/sh', PMD_SH_PATH, 'cpd',
+                                      '--minimum-tokens', '100', '--filelist', dictory_file, '--language', lang,
+                                      '--failOnViolation', 'false', '--skip-lexical-errors'],
+                                     timeout=5, stderr=subprocess.DEVNULL).decode().strip()
+    os.remove(dictory_file)
+    return report
+
+
+def similarity_test(code1, code2, lang1, lang2, approach):
+    path = '/tmp'
+    path1 = os.path.join(path, shortuuid.ShortUUID().random(32))
+    path2 = os.path.join(path, shortuuid.ShortUUID().random(32))
     res = ''
     try:
         with open(path1, 'w') as f, open(path2, 'w') as g:
@@ -33,6 +61,8 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
             similarity = _similarity_test_sim_approach(path1, path2, lang1, lang2)
             if similarity > 75:
                 res = 'similarity confidence %.6f' % similarity
+        elif approach == 'cpd':
+            res += _similarity_test_cpd_approach(path1, path2, lang1, lang2)
     except Exception as e:
         res = 'error encountered %s' % repr(e)
 
@@ -45,14 +75,16 @@ def similarity_test(code1, code2, lang1, lang2, approach='sim'):
 
 class SimilarityTestThread(threading.Thread):
 
-    def __init__(self, contest, output):
+    def __init__(self, contest, output, approach):
         super().__init__()
         self.submissions = contest.submission_set.all()
         self.output = output
+        self.approach = approach
 
     def run(self):
         with open(self.output, 'w', buffering=1) as output:
             print('Similarity test begins at %s' % str(datetime.datetime.now()), file=output)
+            print('approach: %s' % self.approach, file=output)
             print('==========================\n', file=output)
 
             print('=== Total submissions: %d ===\n' % len(self.submissions), file=output)
@@ -65,7 +97,7 @@ class SimilarityTestThread(threading.Thread):
                         continue
                     if sub1.problem != sub2.problem:
                         continue
-                    result = similarity_test(sub1.code, sub2.code, sub1.lang, sub2.lang)
+                    result = similarity_test(sub1.code, sub2.code, sub1.lang, sub2.lang, approach=self.approach)
                     if result:
                         print('%d %d at Problem %d: %s' % (sub1.id, sub2.id, sub1.problem_id, result), file=output)
                 if idx1 % 100 == 0:

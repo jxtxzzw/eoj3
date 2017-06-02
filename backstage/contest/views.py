@@ -263,7 +263,7 @@ class ContestInvitationDownload(BaseBackstageMixin, View):
 
 
 class ContestSimilarityTest(BaseBackstageMixin, View):
-    def post(self, request, pk):
+    def post(self, request, pk, approach):
         file_name = 'Contest-%s-Similarity-Test-%s.log' % (str(pk), str(datetime.datetime.now()).replace(' ', '-'))
-        SimilarityTestThread(Contest.objects.get(pk=pk), os.path.join(GENERATE_DIR, file_name)).start()
+        SimilarityTestThread(Contest.objects.get(pk=pk), os.path.join(GENERATE_DIR, file_name), approach=approach).start()
         return JsonResponse({'url': '/generate/' + file_name})
