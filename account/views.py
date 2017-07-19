@@ -1,21 +1,19 @@
-import random
-from django.shortcuts import render, redirect, HttpResponseRedirect, reverse, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.contrib.auth import PermissionDenied
-from django.views import View
-from django.views.generic.edit import UpdateView, FormView, UpdateView
-from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
-from django.contrib import messages
 from django.contrib.auth import login
-from django.core.mail import send_mail
-from utils import auth_view
-from .forms import (RegisterForm, MyPasswordChangeForm, MySetPasswordForm, ProfileForm, PreferenceForm,
-                    MigrateForm, FeedbackForm)
-from .models import User
 from django.contrib.auth.decorators import login_required
-from utils.models import get_site_settings
-from utils.identicon import Identicon
+from django.core.mail import send_mail
+from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import FormView, UpdateView
+
 from migrate.views import verify_old_user, MigrationThread
+from utils import auth_view
+from utils.identicon import Identicon
+from utils.models import get_site_settings
+from .forms import (RegisterForm, MyPasswordChangeForm, MySetPasswordForm, ProfileForm, PreferenceForm,
+                    MigrateForm, FeedbackForm, LoginForm)
+
 try:
     from eoj3.local_settings import ADMIN_EMAIL_LIST
 except ImportError:
@@ -106,7 +104,7 @@ def my_password_change(request):
 def my_login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('home'))
-    return auth_view.login(request, template_name='login.jinja2')
+    return auth_view.login(request, template_name='login.jinja2', authentication_form=LoginForm)
 
 
 def my_password_reset(request):

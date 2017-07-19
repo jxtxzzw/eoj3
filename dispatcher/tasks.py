@@ -148,7 +148,7 @@ class Dispatcher:
                 server = Server.objects.get(pk=self.server_id)
                 response = requests.post(judge_linker(server.ip, server.port),
                                          json=request, auth=('token', server.token),
-                                         timeout=3600).json()
+                                         timeout=60).json()
                 # print(response)
                 if response['status'] != 'received':
                     raise SystemError('Remote server rejected judge request.', response['message'])
