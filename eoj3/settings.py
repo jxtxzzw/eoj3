@@ -34,6 +34,7 @@ except ImportError:
             }
         }
     }
+    PMD_SH_PATH = None
 
 
 ALLOWED_HOSTS = ['*']
