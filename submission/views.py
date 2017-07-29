@@ -13,6 +13,7 @@ from account.permissions import is_admin_or_root
 from .models import Submission, get_color_from_status, SubmissionStatus
 from dispatcher.tasks import send_rejudge
 from utils.authentication import test_site_open
+from utils.language import normal_lang_id
 
 
 class SubmissionView(UserPassesTestMixin, View):
@@ -37,7 +38,8 @@ class SubmissionView(UserPassesTestMixin, View):
 
     def get(self, request, pk):
         context = dict(submission=self.submission)
-        context['code'] = highlight(self.submission.code, get_lexer_by_name(self.submission.lang), HtmlFormatter())
+        context['code'] = highlight(self.submission.code, get_lexer_by_name(normal_lang_id(self.submission.lang)),
+                                    HtmlFormatter())
         if is_admin_or_root(request.user):
             context['is_privileged'] = True
         if SubmissionStatus.is_judged(self.submission.status):
