@@ -2,7 +2,9 @@ var map = {
   'python': 'python',
   'java': 'java',
   'cpp': 'c_cpp',
-  'c': 'c_cpp'
+  'c': 'c_cpp',
+  'py2': 'python',
+  'pas': 'pascal'
 };
 var editor = ace.edit("editor");
 var lang = $("#id_lang");
