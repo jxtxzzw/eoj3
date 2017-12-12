@@ -53,7 +53,7 @@ def listdir_with_prefix(directory):
 
 
 def normal_regex_check(alias):
-    return re.match(r"^[\.a-z0-9_-]{4,64}$", alias)
+    return re.match(r"^[\.a-zA-Z0-9_-]{4,64}$", alias)
 
 
 def valid_fingerprint_check(fingerprint):
