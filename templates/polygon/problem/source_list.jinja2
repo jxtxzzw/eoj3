@@ -1,0 +1,30 @@
+{% extends 'polygon/problem/base.jinja2' %}
+
+{% block problem_content %}
+
+  <table class="ui celled table">
+    <thead class="full-width">
+      <tr>
+        <th colspan="7">
+          <a href="{{ url('polygon:repo_source_create', problem.pk) }}" class="ui right floated small primary labeled icon button">
+            <i class="code icon"></i> Add Source
+          </a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for source in source_list %}
+      <tr>
+        <td>{{ source.pk }}</td>
+        <td>{{ source.name }}</td>
+        <td>{{ source.get_lang_display() }}</td>
+        <td>{{ source.modified }}</td>
+        <td>{{ source.get_tag_display() }}</td>
+        <td>{{ source.length }}</td>
+        <td><a href="{{ url('polygon:repo_source_edit', problem.pk, source.pk) }}">Edit</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

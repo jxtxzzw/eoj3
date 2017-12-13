@@ -20,6 +20,7 @@ from account.permissions import is_admin_or_root
 from polygon.base_views import PolygonBaseMixin
 from polygon.models import EditSession
 from polygon.problem.case import well_form_text
+from polygon.problem.exception import RepositoryException
 from polygon.problem.forms import ProblemEditForm
 from polygon.problem.session import init_session, pull_session, load_config, save_program_file, delete_program_file, \
     read_program_file, toggle_program_file_use, save_case, read_case, \
@@ -67,10 +68,14 @@ class PolygonProblemMixin(ContextMixin, PolygonBaseMixin):
         pass
 
     def dispatch(self, request, *args, **kwargs):
-        self.request = request
-        self.problem = get_object_or_404(Problem, pk=kwargs.get('pk'))
-        self.init_session_during_dispatch()
-        return super().dispatch(request, *args, **kwargs)
+        try:
+            self.request = request
+            self.problem = get_object_or_404(Problem, pk=kwargs.get('pk'))
+            self.init_session_during_dispatch()
+            return super().dispatch(request, *args, **kwargs)
+        except RepositoryException as e:
+            messages.add_message(request, messages.ERROR, str(e))
+            return redirect(self.request.path)
 
     def test_func(self):
         if not is_problem_manager(self.request.user, self.problem):

@@ -1,123 +1,98 @@
-import json
-from os import path, removedirs, makedirs, rename
+import subprocess
+from django.conf import settings
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.views.generic import CreateView
+from django.views.generic import ListView
+from django.views.generic import UpdateView
+from os import path, makedirs
 
-from copy import deepcopy
-
-import time
-
-from shutil import rmtree
-
+from polygon.models import RepositorySource
 from polygon.problem.exception import RepositoryException
-from polygon.problem.utils import get_repo_directory, normal_regex_check, LANG_CONFIG
-
-TAG_LIST = {
-    'checker': 'checker',
-    'interactor': 'interactor',
-    'generator': 'generator',
-    'validator': 'validator',
-    'solution_main': 'solution - main correct',
-    'solution_correct': 'solution - correct',
-    'solution_tle_or_ok': 'solution - time limit exceeded or correct',
-    'solution_wa': 'solution - wrong answer',
-    'solution_incorrect': 'solution - incorrect',
-    'solution_fail': 'solution - runtime error',
-}
+from polygon.problem.forms import SourceEditForm
+from polygon.problem.utils import LANG_CONFIG
+from polygon.problem.views import PolygonProblemMixin
+from utils import random_string
 
 
-class SourceManager:
-    def __init__(self, problem_id):
-        self.pid = problem_id
-        self.source_dir = path.join(get_repo_directory(self.pid), 'source')
-        self.source_desc_file = path.join(self.source_dir, 'source.desc')
+class SourceListView(PolygonProblemMixin, ListView):
+    template_name = 'polygon/problem/source_list.jinja2'
+    context_object_name = 'source_list'
+
+    def get_queryset(self):
+        return self.problem.repositorysource_set.all()
+
+
+class SourceCreateView(PolygonProblemMixin, CreateView):
+    template_name = 'polygon/problem/source_edit.jinja2'
+    form_class = SourceEditForm
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.author = self.request.user
+        instance.workspace = random_string()
+        instance.problem = self.problem
+        Program(instance).compile()
+        instance.save()
+        return redirect(reverse('polygon:repo_source_list', kwargs=self.kwargs))
+
+    def get_success_url(self):
+        return self.request.path
+
+
+class SourceEditView(PolygonProblemMixin, UpdateView):
+    template_name = 'polygon/problem/source_edit.jinja2'
+    form_class = SourceEditForm
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.workspace = random_string()
+        Program(instance).compile()
+        instance.save()
+        return redirect(self.get_success_url())
+
+    def get_object(self, queryset=None):
+        return RepositorySource.objects.get(pk=self.kwargs['source'], problem_id=self.problem.pk)
+
+    def get_success_url(self):
+        return self.request.path
+
+
+class Program:
+
+    MAX_READ_SIZE = 2048
+
+    @staticmethod
+    def split_and_format_command(cmd, **kwargs):
+        ret = []
+        for x in cmd.split():
+            ret.append(x.format(**kwargs))
+        return ret
+
+    def __init__(self, source: RepositorySource):
+        self.source = source
         try:
-            with open(self.source_desc_file, 'r') as desc_handler:
-                self.source_desc = json.loads(desc_handler.read())
-        except FileNotFoundError:
-            self.source_desc = {}
-        except json.JSONDecodeError:
-            raise RepositoryException("JSON Decode Error when listing source files. Contact admin.")
-
-        makedirs(self.source_dir, exist_ok=True)
-
-    def save_source_desc(self):
-        with open(self.source_desc_file, 'w') as desc_handler:
-            desc_handler.write(json.dumps(self.source_desc))
-
-    def list_source_files(self):
-        raw = deepcopy(self.source_desc)
-        for key, val in raw.items():
-            val['name'] = key
-        return list(raw.values())
-
-    def delete_source_file(self, name):
-        try:
-            self.source_desc.pop(name)
-            rmtree(path.join(self.source_dir, name))
-            self.save_source_desc()
+            _config = LANG_CONFIG[self.source.lang]
+            self.workspace = path.join(settings.REPO_DIR, str(source.problem_id), 'source', self.source.workspace)
+            makedirs(self.workspace, exist_ok=True)
+            self.code_path = path.join(self.workspace, _config['codeFile'])
+            self.exe_path = path.join(self.workspace, _config['exeFile'])
+            self.compiler_command = self.split_and_format_command(_config["compilerCmd"],
+                                                                  workspace=self.workspace, code_path=self.code_path,
+                                                                  exe_path=self.exe_path)
+            self.execute_command = self.split_and_format_command(_config["executeCmd"],
+                                                                 workspace=self.workspace, code_path=self.code_path,
+                                                                 exe_path=self.exe_path)
         except KeyError:
-            raise RepositoryException("Try to delete a file '%s' that does not exist." % name)
+            raise RepositoryException("Unrecognized language.")
 
-    def create_source_file(self, name, tag, user_id, lang, code):
-        self.verify_name(name)
-        self.verify_tag(tag)
-        code_dir = path.join(self.source_dir, name)
-        makedirs(code_dir, exist_ok=True)
-        code_path = path.join(code_dir, LANG_CONFIG[lang]['codeFile'])
-        with open(code_path, 'w') as code_file_handler:
-            code_file_handler.write(code)
-        self.source_desc[name] = {
-            "tag": tag,
-            "userId": user_id,
-            "modificationTime": time.time(),
-            "lang": lang,
-            "length": path.getsize(code_path),
-        }
-        self.save_source_desc()
-
-    def edit_source_file(self, old_name, **kwargs):
-        if old_name not in self.source_desc:
-            raise RepositoryException("You are trying to edit a non-existing source.")
-        name = old_name
-        code_dir = path.join(self.source_dir, name)
-        if 'name' in kwargs:
-            name = kwargs['name']
-            self.verify_name(name)
-            self.source_desc[name] = self.source_desc.pop(old_name)
-            rename(path.join(self.source_dir, old_name), path.join(self.source_dir, name))
-        elif 'code' in kwargs:
-            code_path = path.join(code_dir, LANG_CONFIG[self.source_desc[name]['lang']]['codeFile'])
-            with open(code_path, 'w') as code_file_handler:
-                code_file_handler.write(kwargs['code'])
-            self.source_desc[name].update(length=path.getsize(code_path))
-        elif 'lang' in kwargs:
-            previous_code = self.view_source_file(name)
-            self.source_desc[name].update(lang=kwargs['lang'])
-            code_path = path.join(code_dir, LANG_CONFIG[self.source_desc[name]['lang']]['codeFile'])
-            with open(code_path, 'w') as code_file_handler:
-                code_file_handler.write(previous_code)
-        elif 'tag' in kwargs:
-            tag = kwargs['tag']
-            self.verify_tag(tag)
-            self.source_desc[name].update(tag=tag)
-        else:
-            raise RepositoryException("Unrecognized source file edit command.")
-        self.source_desc[name].update(modificationTime=time.time())
-        self.save_source_desc()
-
-    def view_source_file(self, name):
-        if name not in self.source_desc:
-            raise RepositoryException("You are trying to view a non-existing source.")
-        code_path = path.join(self.source_dir, name, LANG_CONFIG[self.source_desc[name]['lang']]['codeFile'])
-        with open(code_path, 'r') as file:
-            return file.read()
-
-    def verify_name(self, name):
-        code_dir = path.join(self.source_dir, name)
-        if path.exists(code_dir):
-            raise RepositoryException("File '%s' already exists." % name)
-        if not normal_regex_check(name):
-            raise RepositoryException("File name '%s' does not satisfy file regular protocol." % name)
-
-    def verify_tag(self, tag):
-        if tag not in TAG_LIST.keys():
-            raise RepositoryException("Unexpected tag '%s'" % tag)
+    def compile(self):
+        try:
+            with open(self.code_path, 'w') as code_file:
+                code_file.write(self.source.code)
+            pr = subprocess.run(self.compiler_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10)
+            if pr.returncode != 0:
+                # something is wrong
+                raise RepositoryException(pr.stdout.decode() or pr.stderr.decode())
+        except subprocess.TimeoutExpired:
+            raise RepositoryException("Compilation time limit exceeded.")

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 import polygon.problem.views as v
+import polygon.problem.source as s
 
 urlpatterns = [
     url(r'^$', v.ProblemList.as_view(), name='problem_list'),
@@ -36,4 +37,10 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/case/check/$', v.SessionCheckCase.as_view(), name='session_check_case'),
     url(r'^(?P<pk>\d+)/case/delete/$', v.SessionDeleteCase.as_view(), name='session_delete_case'),
     url(r'^(?P<pk>\d+)/case/download/$', v.SessionDownloadCase.as_view(), name='session_download_case'),
+
+
+    url(r'^(?P<pk>\d+)/source/$', s.SourceListView.as_view(), name='repo_source_list'),
+    url(r'^(?P<pk>\d+)/source/add/$', s.SourceCreateView.as_view(), name='repo_source_create'),
+    url(r'^(?P<pk>\d+)/source/(?P<source>\d+)/edit/$', s.SourceEditView.as_view(), name='repo_source_edit'),
+
 ]

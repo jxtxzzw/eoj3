@@ -1,7 +1,9 @@
 from django import forms
 from tagging.models import Tag
 
+from polygon.models import RepositorySource
 from problem.models import Problem
+from utils import random_string
 from utils.multiple_choice_field import CommaSeparatedMultipleChoiceField
 
 
@@ -41,3 +43,9 @@ class ProblemEditForm(forms.ModelForm):
         if ',' not in cleaned_data['tags']:
             cleaned_data['tags'] = "\"%s\"" % cleaned_data['tags']
         return cleaned_data
+
+
+class SourceEditForm(forms.ModelForm):
+    class Meta:
+        model = RepositorySource
+        exclude = ['modified', 'author', 'workspace', 'problem', 'length']

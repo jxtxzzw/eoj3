@@ -7,30 +7,22 @@ from django.conf import settings
 
 LANG_CONFIG = {
     "cpp": {
-        "name": "c++11",
-        "compilerFile": "/usr/bin/g++",
-        "compilerArgs": "-O2 -std=c++11 -o {exe_path} {code_path} -DONLINE_JUDGE -lm -fmax-errors=3",
+        "compilerCmd": "/usr/bin/g++ -O2 -std=c++11 -o {exe_path} {code_path} -DONLINE_JUDGE -lm -fmax-errors=3",
+        "executeCmd": "{exe_path}",
         "codeFile": "foo.cc",
         "exeFile": "foo",
-        "executeFile": "{exe_path}",
     },
     "java": {
-        "name": "java",
-        "compilerFile": "/usr/bin/javac",
-        "compilerArgs": "-d {workspace} -encoding utf8 {code_path}",
+        "compilerCmd": "/usr/bin/javac -d {workspace} -encoding utf8 {code_path}",
+        "executeCmd": "/usr/bin/java -cp {workspace} Main",
         "codeFile": "Main.java",
         "exeFile": "Main",
-        "executeFile": "/usr/bin/java",
-        "executeArgs": "-cp {workspace} Main",
     },
     "python": {
-        "name": "python3",
-        "compilerFile": "/usr/bin/python3",
-        "compilerArgs": "-m py_compile {code_path}",
-        "codeFile": "foo.py",
-        "exeFile": "foo",
-        "executeFile": "/usr/bin/python3",
-        "executeArgs": "{code_path}",
+        "compilerCmd": "/usr/bin/python3 -m py_compile {code_path}",
+        "executeCmd": "/usr/bin/python3 {code_path}",
+        "codeFile": "solution.py",
+        "exeFile": "solution.py",
     }
 }
 
