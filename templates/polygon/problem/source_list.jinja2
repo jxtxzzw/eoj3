@@ -47,7 +47,7 @@
     {% csrf_token %}
     <div class="three fields">
       <div class="field">
-        <label for="checker">Checker {% if problem.checker %}(<a href="#">Download</a>){% endif %}</label>
+        <label for="checker">Checker {% if problem.checker %}(Current: <a href="{{ url('polygon:repo_source_preview', problem.pk) }}?t=checker" target="_blank">{{ problem.checker[:8] }}</a>){% endif %}</label>
         <select name="checker">
           {% for key, val in checkers %}
             <option value="{{ key }}" {% if key == problem.checker %}selected{% endif %}>{{ val }}</option>
@@ -55,17 +55,17 @@
         </select>
       </div>
       <div class="field">
-        <label for="validator">Validator</label>
+        <label for="validator">Validator {% if problem.validator %}(Current: <a href="{{ url('polygon:repo_source_preview', problem.pk) }}?t=validator" target="_blank">{{ problem.validator[:8] }}</a>){% endif %}</label>
         <select name="validator">
-          {% for key, val in checkers %}
+          {% for key, val in validators %}
             <option value="{{ key }}" {% if key == problem.validator %}selected{% endif %}>{{ val }}</option>
           {% endfor %}
         </select>
       </div>
       <div class="field">
-        <label for="interactor">Interactor</label>
+        <label for="interactor">Interactor {% if problem.interactor %}(Current: <a href="{{ url('polygon:repo_source_preview', problem.pk) }}?t=interactor" target="_blank">{{ problem.interactor[:8] }}</a>){% endif %}</label>
         <select name="interactor">
-          {% for key, val in checkers %}
+          {% for key, val in interactors %}
             <option value="{{ key }}" {% if key == problem.interactor %}selected{% endif %}>{{ val }}</option>
           {% endfor %}
         </select>

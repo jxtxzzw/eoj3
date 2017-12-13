@@ -1,13 +1,14 @@
 import subprocess
+from os import path, makedirs
+
 from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import ListView
-from django.views.generic import TemplateView
 from django.views.generic import UpdateView
-from os import path, makedirs
 
 from polygon.models import RepositorySource
 from polygon.problem.exception import RepositoryException
@@ -17,7 +18,17 @@ from polygon.problem.utils import LANG_CONFIG
 from polygon.problem.views import PolygonProblemMixin
 from problem.models import SpecialProgram
 from utils import random_string
-from utils.hash import file_hash, code_hash
+from utils.hash import code_hash
+
+
+class SourceCodeView(PolygonProblemMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            code = SpecialProgram.objects.get(fingerprint=getattr(self.problem, self.request.GET.get('t', ''))).code
+            return HttpResponse(code, content_type='text/plain; charset=utf-8')
+        except Exception as e:
+            print(e)
+            return HttpResponse()
 
 
 class SourceListView(PolygonProblemMixin, ListView):
@@ -28,17 +39,19 @@ class SourceListView(PolygonProblemMixin, ListView):
         return self.problem.repositorysource_set.all()
 
     def get_select_list(self, t):
-        ret = [('', 'None')]
+        ret = [('', 'Use Default')]
         ret += map(lambda x: (x.name, x.name), self.problem.repositorysource_set.filter(tag=t))
+        ret += map(lambda x: (x.fingerprint, x.filename + ' (cloud)'),
+                   SpecialProgram.objects.filter(fingerprint=getattr(self.problem, t), builtin=False))
         ret += map(lambda x: (x.fingerprint, x.filename + ' (builtin)'),
                    SpecialProgram.objects.filter(builtin=True, category=t).order_by('filename'))
         return ret
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['checkers'] = self.checker_list = self.get_select_list('checker')
-        data['validators'] = self.validator_list = self.get_select_list('validator')
-        data['interactors'] = self.interactor_list = self.get_select_list('interactor')
+        data['checkers'] = self.get_select_list('checker')
+        data['validators'] = self.get_select_list('validator')
+        data['interactors'] = self.get_select_list('interactor')
         return data
 
     def post(self, *args, **kwargs):
@@ -103,7 +116,6 @@ class SourceEditView(PolygonProblemMixin, UpdateView):
 
 
 class Program:
-
     MAX_READ_SIZE = 2048
 
     @staticmethod

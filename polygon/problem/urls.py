@@ -42,5 +42,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/source/$', s.SourceListView.as_view(), name='repo_source_list'),
     url(r'^(?P<pk>\d+)/source/add/$', s.SourceCreateView.as_view(), name='repo_source_create'),
     url(r'^(?P<pk>\d+)/source/(?P<source>\d+)/edit/$', s.SourceEditView.as_view(), name='repo_source_edit'),
-
+    url(r'^(?P<pk>\d+)/source/preview/$', s.SourceCodeView.as_view(), name='repo_source_preview'),
 ]
