@@ -2,7 +2,9 @@
 
 {% block problem_content %}
 
-  <table class="ui celled table">
+  {% include 'components/message.jinja2' %}
+
+  <table class="ui celled center aligned table">
     <thead class="full-width">
       <tr>
         <th colspan="7">
@@ -11,6 +13,15 @@
           </a>
         </th>
       </tr>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Lang</th>
+        <th>Tag</th>
+        <th>Modified</th>
+        <th>Length</th>
+        <th>Edit</th>
+      </tr>
     </thead>
     <tbody>
     {% for source in source_list %}
@@ -18,13 +29,49 @@
         <td>{{ source.pk }}</td>
         <td>{{ source.name }}</td>
         <td>{{ source.get_lang_display() }}</td>
-        <td>{{ source.modified }}</td>
         <td>{{ source.get_tag_display() }}</td>
-        <td>{{ source.length }}</td>
+        <td>{{ source.modified | date('Y-m-d h:i:s') }}</td>
+        <td>{{ (source.length / 1024) | round(2) }} KB</td>
         <td><a href="{{ url('polygon:repo_source_edit', problem.pk, source.pk) }}">Edit</a></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+
+  <h4 class="ui horizontal divider header">
+    <i class="tag icon"></i>
+    Select Judge Sources
+  </h4>
+
+  <form class="ui form" method="POST">
+    {% csrf_token %}
+    <div class="three fields">
+      <div class="field">
+        <label for="checker">Checker {% if problem.checker %}(<a href="#">Download</a>){% endif %}</label>
+        <select name="checker">
+          {% for key, val in checkers %}
+            <option value="{{ key }}" {% if key == problem.checker %}selected{% endif %}>{{ val }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="validator">Validator</label>
+        <select name="validator">
+          {% for key, val in checkers %}
+            <option value="{{ key }}" {% if key == problem.validator %}selected{% endif %}>{{ val }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="interactor">Interactor</label>
+        <select name="interactor">
+          {% for key, val in checkers %}
+            <option value="{{ key }}" {% if key == problem.interactor %}selected{% endif %}>{{ val }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="ui positive button">Save</button>
+  </form>
 
 {% endblock %}

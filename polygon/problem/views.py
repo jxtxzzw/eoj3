@@ -208,11 +208,16 @@ class ProblemStaticFileList(PolygonProblemMixin, ListView):
 
 
 class ProblemUploadStaticFile(PolygonProblemMixin, View):
+    @staticmethod
+    def regularize_filename(filename):
+        import re
+        return re.sub(r'[ /"#!:]+', '_', filename)
+
     def post(self, request, *args, **kwargs):
         files = request.FILES.getlist("files[]")
         for file in files:
             save_uploaded_file_to(file, path.join(settings.UPLOAD_DIR, str(self.problem.pk)),
-                                  filename=path.splitext(file.name)[0] + '.' + random_string(16),
+                                  filename=self.regularize_filename(path.splitext(file.name)[0]) + '.' + random_string(16),
                                   keep_extension=True)
         return HttpResponse()
 

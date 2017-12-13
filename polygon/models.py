@@ -70,6 +70,9 @@ class RepositorySource(models.Model):
         self.length = len(self.code.encode())
         return super().save(*args, **kwargs)
 
+    class Meta:
+        unique_together = ('problem', 'name')
+
 
 class RepositoryTest(models.Model):
 
