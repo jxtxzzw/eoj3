@@ -1,0 +1,52 @@
+{% extends 'polygon/problem/base.jinja2' %}
+
+{% block problem_content %}
+
+  {% include 'components/message.jinja2' %}
+
+  <table class="ui celled center aligned table">
+    <thead class="full-width">
+      <tr>
+        <th colspan="11">
+          <a href="{{ url('polygon:repo_test_create', problem.pk) }}" class="ui right floated small primary labeled icon button">
+            <i class="code icon"></i> Add Test(s)
+          </a>
+        </th>
+      </tr>
+      <tr>
+        <th>#</th>
+        <th>Input</th>
+        <th>Output</th>
+        <th>Size</th>
+        <th>Description</th>
+        <th>Comment</th>
+        <th>Group</th>
+        <th colspan="2">Modified</th>
+        <th>Actions</th>
+        <th>Sel</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for test in test_list %}
+      <tr>
+        <td>{{ test.case_number }}</td>
+        <td>{{ test.input_preview }}</td>
+        <td>{{ test.output_preview }}</td>
+        <td>{{ test.size }}</td>
+        <td>{{ test.description }}</td>
+        <td>{% if test.show_in_samples %}In samples. {% endif %}
+          {% if test.show_in_pretests %}In pretests. {% endif %}
+          {% if not test.show_in_tests %}NOT in final tests. {% endif %}
+          {% if test.manual_output_lock %}Output locked. {% endif %}
+        </td>
+        <td>{{ test.group }}</td>
+        <td>{{ test.modified | date('Y-m-d h:i:s') }}</td>
+        <td><a href="#">Move</a></td>
+        <td><a href="#">Delete</a></td>
+        <td><input type="checkbox"></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

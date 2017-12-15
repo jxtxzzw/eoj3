@@ -20,10 +20,6 @@ from account.models import User
 from dispatcher.models import Server
 from polygon.models import EditSession
 from polygon.models import Run
-from polygon.problem.case import (
-    well_form_binary, check_output_with_result_multiple, run_output_multiple, validate_input_multiple,
-    stress_test, generate_multiple, base64decode
-)
 from polygon.problem.utils import valid_fingerprint_check, normal_regex_check
 from problem.models import Problem, SpecialProgram, get_input_path, get_output_path
 from problem.tasks import upload_problem_to_judge_server

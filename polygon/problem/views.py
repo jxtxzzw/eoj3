@@ -19,7 +19,6 @@ from account.models import User
 from account.permissions import is_admin_or_root
 from polygon.base_views import PolygonBaseMixin
 from polygon.models import EditSession
-from polygon.problem.case import well_form_text
 from polygon.problem.exception import RepositoryException
 from polygon.problem.forms import ProblemEditForm
 from polygon.problem.session import init_session, pull_session, load_config, save_program_file, delete_program_file, \

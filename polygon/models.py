@@ -1,5 +1,9 @@
+from os import path
+
+from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
+
 from account.models import User
 from problem.models import Problem
 
@@ -75,11 +79,22 @@ class RepositorySource(models.Model):
 
 
 class RepositoryTest(models.Model):
-
-    fingerprint = models.CharField(max_length=96)
+    fingerprint = models.CharField(max_length=64, default='invalid')
     input_preview = models.TextField(blank=True)
     output_preview = models.TextField(blank=True)
-    show_in_sample = models.BooleanField(default=False)
-    show_in_output = models.BooleanField(default=False)
-    show_in_tests = models.BooleanField(default=False)
+    show_in_samples = models.BooleanField(default=False)
+    show_in_pretests = models.BooleanField(default=False)
+    show_in_tests = models.BooleanField(default=True)
+    manual_output_lock = models.BooleanField(default=False)
+    description = models.TextField(blank=True)
     case_number = models.IntegerField(default=0)
+    generator = models.ForeignKey(RepositorySource, null=True)
+    generate_args = models.TextField(blank=True)
+    group = models.CharField(blank=True, max_length=64)
+    modified = models.DateTimeField(auto_now=True)
+    size = models.IntegerField(default=0)
+
+    problem = models.ForeignKey(Problem)
+
+    class Meta:
+        ordering = ('case_number',)

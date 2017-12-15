@@ -27,7 +27,6 @@ class Problem(models.Model):
     sample = models.TextField(_('Sample'), blank=True)
     hint = models.TextField(_('Hint'), blank=True)
     source = models.CharField(_('Source'), max_length=128, blank=True)
-    judge = models.CharField(_('Judge indicator'), max_length=128, blank=True)  # to delete
 
     visible = models.BooleanField(default=False, db_index=True)
     maintaining = models.BooleanField(default=False)
@@ -42,6 +41,8 @@ class Problem(models.Model):
     pretests = models.TextField(_('Pretest'), blank=True)
     cases = models.TextField(_('Cases'), blank=True)
     points = models.TextField(_('Points'), blank=True)
+
+    well_form_policy = models.BooleanField('Well form policy')
 
     managers = models.ManyToManyField(User, related_name='managing_problems')
 
