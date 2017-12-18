@@ -4,6 +4,7 @@ import re
 
 from django.conf import settings
 
+from utils import random_string
 
 LANG_CONFIG = {
     "cpp": {
@@ -54,3 +55,7 @@ def valid_fingerprint_check(fingerprint):
 
 def get_repo_directory(pid):
     return path.join(settings.REPO_DIR, str(pid))
+
+
+def get_tmp_directory(pid):
+    return path.join(settings.REPO_DIR, str(pid), random_string())

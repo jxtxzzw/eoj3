@@ -1,24 +1,24 @@
+import operator
 import os
 import re
+from functools import cmp_to_key
+
+
+def compare(a, b):
+    x, y = a[0], b[0]
+    try:
+        cx = list(map(lambda x: int(x) if x.isdigit() else x, re.split(r'(\d+)', x)))
+        cy = list(map(lambda x: int(x) if x.isdigit() else x, re.split(r'(\d+)', y)))
+        if operator.eq(cx, cy):
+            raise ArithmeticError
+        return -1 if operator.lt(cx, cy) else 1
+    except Exception:
+        if x == y:
+            return 0
+        return -1 if x < y else 1
 
 
 def sort_data_list_from_directory(directory):
-    import operator
-    from functools import cmp_to_key
-
-    def compare(a, b):
-        x, y = a[0], b[0]
-        try:
-            cx = list(map(lambda x: int(x) if x.isdigit() else x, re.split(r'(\d+)', x)))
-            cy = list(map(lambda x: int(x) if x.isdigit() else x, re.split(r'(\d+)', y)))
-            if operator.eq(cx, cy):
-                raise ArithmeticError
-            return -1 if operator.lt(cx, cy) else 1
-        except Exception:
-            if x == y:
-                return 0
-            return -1 if x < y else 1
-
     try:
         raw_namelist = list(filter(lambda x: os.path.split(x)[0] == '', os.listdir(directory)))
         result = []
@@ -42,6 +42,13 @@ def sort_data_list_from_directory(directory):
     except Exception:
         return []
 
+
+def sort_input_list_from_directory(directory):
+    try:
+        ignore_list = [".DS_Store", ".Spotlight-V100", ".Trashes", "ehthumbs.db", "Thumbs.db"]
+        return sorted(list(filter(lambda x: x not in ignore_list, os.listdir(directory))), key=cmp_to_key(compare))
+    except Exception:
+        return []
 
 def sort_data_from_zipfile(file_path):
     """

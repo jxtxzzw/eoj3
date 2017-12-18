@@ -80,8 +80,8 @@ class RepositorySource(models.Model):
 
 class RepositoryTest(models.Model):
     fingerprint = models.CharField(max_length=64, default='invalid')
-    input_preview = models.TextField(blank=True)
-    output_preview = models.TextField(blank=True)
+    input_preview = models.TextField(blank=True, default='N/A')
+    output_preview = models.TextField(blank=True, default='N/A')
     show_in_samples = models.BooleanField(default=False)
     show_in_pretests = models.BooleanField(default=False)
     show_in_tests = models.BooleanField(default=True)
