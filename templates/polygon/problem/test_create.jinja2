@@ -1,0 +1,45 @@
+{% extends 'polygon/problem/base.jinja2' %}
+
+{% block problem_content %}
+
+  {% include 'components/form.jinja2' %}
+
+{% endblock %}
+
+{% block script %}
+  <script>
+  var select = $("select[name='create_method']");
+
+  function upd() {
+    var visible_list = {
+      "manual": ["create_method", "case_order", "input", "output", "description", "group", "manual_output_lock",
+                 "show_in_samples", "show_in_pretests", "show_in_tests"],
+      "input": ["create_method", "case_order", "upload", "group"],
+      "match": ["create_method", "case_order", "upload", "group"],
+      "gen": ["create_method", "case_order", "generate_cmd", "group"]
+    };
+    var select_val = select.val();
+    $("form")[0].reset();
+
+    $("div.field").each (function () {
+      for (var i = 0; i < visible_list[select_val].length; ++i) {
+        var s = visible_list[select_val][i];
+        if ($(this).find("*[name='" + s + "']").length > 0) {
+          $(this).show();
+          return;
+        }
+        $(this).hide();
+      }
+    });
+
+    select.val(select_val);
+  }
+
+  select.change(function () {
+    upd();
+  });
+
+  upd();
+
+  </script>
+{% endblock %}

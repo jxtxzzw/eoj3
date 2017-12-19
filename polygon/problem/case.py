@@ -82,7 +82,8 @@ class TestManager:
         except FileNotFoundError:
             return 0
 
-    def refresh_test_io(self):
+    def refresh_test_preview(self):
+        self.error = ''
         if self.test.problem.well_form_policy:
             TextFormatter.format_file(self.input_path)
             TextFormatter.format_file(self.output_path)
@@ -91,7 +92,8 @@ class TestManager:
         self.test.fingerprint = case_hash(self.problem_id, self.read_binary(self.input_path),
                                           self.read_binary(self.output_path))
         self.test.size = self.get_size(self.input_path) + self.get_size(self.output_path)
-        self.test.save(update_fields=['input_preview', 'output_preview', 'fingerprint', 'size'])
+        self.test.error = self.error
+        self.test.save(update_fields=['input_preview', 'output_preview', 'fingerprint', 'size', 'error'])
 
     def write_input(self, txt):
         with open(self.input_path, 'w') as f:
@@ -101,8 +103,7 @@ class TestManager:
         with open(self.output_path, 'w') as f:
             f.write(txt)
 
-    @staticmethod
-    def read_abstract(file):
+    def read_abstract(self, file):
         try:
             with open(file, 'r') as f:
                 s = f.read(24)
@@ -112,15 +113,60 @@ class TestManager:
         except UnicodeDecodeError as e:
             return str(e)
         except FileNotFoundError:
-            return "Test not found: %s" % path.split(file)[1]
+            self.error = "Test not found: %s" % path.split(file)[1]
+            return self.error
 
-    @staticmethod
-    def read_binary(file):
+    def read_binary(self, file):
         try:
             with open(file, 'rb') as f:
                 return f.read()
         except FileNotFoundError:
-            return ("Test not found: %s" % path.split(file)[1]).encode()
+            self.error = "Test not found: %s" % path.split(file)[1]
+            return self.error
+
+
+class TestSetManager:
+    def __init__(self, testset):
+        if len(testset) == 0:
+            raise RepositoryException("Test set is empty")
+        self.problem = testset[0].problem
+        self.testset = testset
+        makedirs(self.workspace, exist_ok=True)
+
+    @property
+    def workspace(self):
+        return path.join(settings.REPO_DIR, str(self.problem.pk), 'tests')
+
+    @transaction.atomic
+    def move_after(self, case_num):
+        for test in filter(lambda case: case not in self.testset and case.case_number > case_num,
+                           self.problem.repositorytest_set.all()):
+            test.case_number += len(self.testset)
+            test.save(update_fields=['case_number'])
+        for idx, test in enumerate(self.testset, start=1):
+            test.case_number = case_num + idx
+            test.save(update_fields=['case_number'])
+        self.fix_order()
+
+    @transaction.atomic
+    def fix_order(self):
+        for idx, test in enumerate(self.problem.repositorytest_set.all(), start=1):
+            test.case_number = idx
+            test.save(update_fields=['case_number'])
+        for test in self.testset:
+            test.refresh_from_db(fields=['case_number'])
+
+    @transaction.atomic
+    def appoint_case_number(self):
+        # assign case number automatically to self.testset
+        s = set(self.problem.repositorytest_set.values_list('case_number', flat=True))
+        i = 1
+        for test in self.testset:
+            while i in s:
+                i += 1
+            test.case_number = i
+            s.add(i)
+        self.fix_order()
 
 
 class TestListView(PolygonProblemMixin, ListView):
@@ -132,7 +178,7 @@ class TestListView(PolygonProblemMixin, ListView):
 
 
 class TestCreateView(PolygonProblemMixin, FormView):
-    template_name = 'polygon/problem/source_edit.jinja2'
+    template_name = 'polygon/problem/test_create.jinja2'
     form_class = TestCreateForm
 
     @staticmethod
@@ -148,10 +194,9 @@ class TestCreateView(PolygonProblemMixin, FormView):
 
     def form_valid(self, form):
         create_method = form.cleaned_data["create_method"]
-        count = 0
+        new_tests = []
         if create_method == 'manual':
             try:
-                count += 1
                 test = self.problem.repositorytest_set.create(show_in_samples=form.cleaned_data["show_in_samples"],
                                                               show_in_pretests=form.cleaned_data["show_in_pretests"],
                                                               show_in_tests=form.cleaned_data["show_in_tests"],
@@ -159,10 +204,11 @@ class TestCreateView(PolygonProblemMixin, FormView):
                                                                   "manual_output_lock"],
                                                               description=form.cleaned_data["description"],
                                                               group=form.cleaned_data["group"])
+                new_tests.append(test)
                 tm = TestManager(test)
                 tm.write_input(form.cleaned_data["input"])
                 tm.write_output(form.cleaned_data["output"])
-                tm.refresh_test_io()
+                tm.refresh_test_preview()
             except KeyError:
                 raise RepositoryException("Missing input and output")
         elif create_method == "gen":
@@ -172,12 +218,14 @@ class TestCreateView(PolygonProblemMixin, FormView):
                 with transaction.atomic():
                     for exe, cmd in commands:
                         except_name = exe
-                        count += 1
                         test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
                                                                       description="Generate by \"%s %s\"" % (exe, cmd))
+                        new_tests.append(test)
                         test.generator = self.problem.repositorysource_set.get(name=exe)
                         test.generate_args = cmd
                         test.save(update_fields=['generator_id', 'generate_args'])
+                        tm = TestManager(test)
+                        tm.refresh_test_preview()
             except RepositorySource.DoesNotExist:
                 raise RepositoryException("Illegal source name '%s'" % except_name)
         else:
@@ -190,28 +238,36 @@ class TestCreateView(PolygonProblemMixin, FormView):
             except Exception as e:
                 raise RepositoryException("Illegal zipfile uploaded: %s" % str(e))
             if create_method == "input":
-                for inf in sort_input_list_from_directory(tmp_dir):
-                    count += 1
-                    test = self.problem.repositorytest_set.create(
-                        description="From \"%s\" in \"%s\"" % (inf, zip_filename),
-                        group=form.cleaned_data["group"])
-                    tm = TestManager(test)
-                    shutil.copy(path.join(tmp_dir, inf), tm.input_path)
-                    tm.refresh_test_io()
+                with transaction.atomic():
+                    for inf in sort_input_list_from_directory(tmp_dir):
+                        test = self.problem.repositorytest_set.create(
+                            description="From \"%s\" in \"%s\"" % (inf, zip_filename),
+                            group=form.cleaned_data["group"])
+                        new_tests.append(test)
+                        tm = TestManager(test)
+                        shutil.copy(path.join(tmp_dir, inf), tm.input_path)
+                        tm.refresh_test_preview()
             elif create_method == "match":
-                for inf, ouf in sort_data_list_from_directory(tmp_dir):
-                    count += 1
-                    test = self.problem.repositorytest_set.create(
-                        description="From \"%s\" in \"%s\"" % (inf, zip_filename),
-                        group=form.cleaned_data["group"])
-                    tm = TestManager(test)
-                    shutil.copy(path.join(tmp_dir, inf), tm.input_path)
-                    shutil.copy(path.join(tmp_dir, ouf), tm.output_path)
-                    tm.refresh_test_io()
+                with transaction.atomic():
+                    for inf, ouf in sort_data_list_from_directory(tmp_dir):
+                        test = self.problem.repositorytest_set.create(
+                            description="From \"%s\" in \"%s\"" % (inf, zip_filename),
+                            group=form.cleaned_data["group"])
+                        new_tests.append(test)
+                        tm = TestManager(test)
+                        shutil.copy(path.join(tmp_dir, inf), tm.input_path)
+                        shutil.copy(path.join(tmp_dir, ouf), tm.output_path)
+                        tm.refresh_test_preview()
             else:
                 raise RepositoryException("Unrecognized choice '%s'" % create_method)
 
-        messages.add_message(self.request, messages.SUCCESS, '%d test(s) has been added successfully' % count)
+        tsm = TestSetManager(new_tests)
+        if form.cleaned_data["case_order"].isdigit():
+            tsm.move_after(int(form.cleaned_data["case_order"]))
+        else:
+            tsm.appoint_case_number()
+
+        messages.add_message(self.request, messages.SUCCESS, '%d test(s) has been added successfully' % len(new_tests))
         return redirect(self.request.path)
 
     def get_success_url(self):

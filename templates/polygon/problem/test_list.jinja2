@@ -4,10 +4,10 @@
 
   {% include 'components/message.jinja2' %}
 
-  <table class="ui celled center aligned table">
+  <table class="ui compact small celled center aligned table">
     <thead class="full-width">
-      <tr>
-        <th colspan="11">
+      <tr class="right aligned">
+        <th colspan="12">
           <a href="{{ url('polygon:repo_test_create', problem.pk) }}" data-tooltip="Add test(s)" class="ui small primary icon labeled button">
             <i class="add icon"></i> Add
           </a>
@@ -21,14 +21,14 @@
       </tr>
       <tr>
         <th>#</th>
-        <th>Input</th>
-        <th>Output</th>
-        <th>Size</th>
+        <th class="three wide">Input</th>
+        <th class="three wide">Output</th>
+        <th>KB</th>
         <th>Description</th>
         <th>Comment</th>
         <th>Group</th>
-        <th>Modified</th>
-        <th colspan="2">Actions</th>
+        <th>Created</th>
+        <th colspan="3">Actions</th>
         <th>Sel</th>
       </tr>
     </thead>
@@ -38,17 +38,18 @@
         <td>{{ test.case_number }}</td>
         <td><pre><code>{{ test.input_preview }}</code></pre></td>
         <td><pre><code>{{ test.output_preview }}</code></pre></td>
-        <td>{{ (test.size / 1024) | round(2) }} KB</td>
+        <td>{{ (test.size / 1024) | round(2) }}</td>
         <td>{{ test.description }}</td>
-        <td>{% if test.show_in_samples %}Sample. {% endif %}
-          {% if test.show_in_pretests %}Pretest. {% endif %}
-          {% if not test.show_in_tests %}NOT a final test. {% endif %}
-          {% if test.manual_output_lock %}Output locked. {% endif %}
+        <td>{% if test.show_in_samples %}Sample<br> {% endif %}
+          {% if test.show_in_pretests %}Pretest<br>{% endif %}
+          {% if not test.show_in_tests %}Skipped.<br> {% endif %}
+          {% if test.manual_output_lock %}Out-lock<br>{% endif %}
         </td>
         <td>{{ test.group }}</td>
-        <td>{{ test.modified | date('Y-m-d h:i:s') }}</td>
+        <td>{{ test.created | date('Y-m-d h:i:s') }}</td>
         <td><a href="#">Move</a></td>
         <td><a href="#">Delete</a></td>
+        <td><a href="#">IO</a></td>
         <td><input type="checkbox"></td>
       </tr>
     {% endfor %}

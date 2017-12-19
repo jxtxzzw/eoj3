@@ -91,8 +91,9 @@ class RepositoryTest(models.Model):
     generator = models.ForeignKey(RepositorySource, null=True)
     generate_args = models.TextField(blank=True)
     group = models.CharField(blank=True, max_length=64)
-    modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     size = models.IntegerField(default=0)
+    error = models.TextField(blank=True)
 
     problem = models.ForeignKey(Problem)
 
