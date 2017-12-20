@@ -47,4 +47,6 @@ urlpatterns = [
 
     url(r'^(?P<pk>\d+)/test/$', c.TestListView.as_view(), name='repo_test_list'),
     url(r'^(?P<pk>\d+)/test/add/$', c.TestCreateView.as_view(), name='repo_test_create'),
+    url(r'^(?P<pk>\d+)/test/detail/$', c.TestFullTextView.as_view(), name='repo_test_full_view'),
+    url(r'^(?P<pk>\d+)/test/refresh/$', c.TestRefreshView.as_view(), name='repo_test_refresh'),
 ]

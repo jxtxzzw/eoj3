@@ -1,4 +1,5 @@
 import subprocess
+import resource
 from os import path, makedirs
 
 from django.conf import settings
@@ -154,3 +155,35 @@ class Program:
             raise RepositoryException("Compilation time limit exceeded.")
         except FileNotFoundError:
             raise RepositoryException("Compiler not found. Contact admin.")
+
+    @property
+    def random_fingerprint(self):
+        if hasattr(self, '_random_fingerprint'):
+            self._random_fingerprint = random_string(6)
+        return self._random_fingerprint
+
+    @property
+    def default_output_path(self):
+        return path.join(self.workspace, '%s.out' % self.random_fingerprint)
+
+    @property
+    def default_error_path(self):
+        return path.join(self.workspace, '%s.err' % self.random_fingerprint)
+
+    @staticmethod
+    def setlimits():
+        resource.setrlimit(resource.RLIMIT_FSIZE, (536870912, 536870912))
+
+    def run(self, additional_args, timeout, input_path=None):
+        if not path.exists(self.exe_path):
+            self.compile()
+        inf = open(input_path, 'r') if input_path is not None else None
+        with open(self.default_output_path, 'w') as ouf, open(self.default_error_path, 'w') as err:
+            p = subprocess.Popen(self.execute_command + additional_args, stdin=inf, stdout=ouf, stderr=err,
+                                 preexec_fn=self.setlimits, cwd=self.workspace, )
+            try:
+                returncode = p.wait(timeout)
+                if returncode:
+                    raise RepositoryException('Non-zero exit code %s' % returncode)
+            except subprocess.TimeoutExpired:
+                raise RepositoryException("Process timed out after %d second(s)" % timeout)

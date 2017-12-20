@@ -88,8 +88,6 @@ class RepositoryTest(models.Model):
     manual_output_lock = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     case_number = models.IntegerField(default=0)
-    generator = models.ForeignKey(RepositorySource, null=True)
-    generate_args = models.TextField(blank=True)
     group = models.CharField(blank=True, max_length=64)
     created = models.DateTimeField(auto_now_add=True)
     size = models.IntegerField(default=0)

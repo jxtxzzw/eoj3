@@ -11,7 +11,7 @@
           <a href="{{ url('polygon:repo_test_create', problem.pk) }}" data-tooltip="Add test(s)" class="ui small primary icon labeled button">
             <i class="add icon"></i> Add
           </a>
-          <a class="ui small teal icon labeled button" data-tooltip="Generate input and output">
+          <a class="ui small teal icon labeled button post-link" data-link="{{ url('polygon:repo_test_refresh', problem.pk) }}" data-tooltip="Generate input and output">
             <i class="refresh icon"></i> Refresh
           </a>
           <a class="ui small red icon labeled button" data-tooltip="Upload to judge server">
@@ -36,8 +36,8 @@
     {% for test in test_list %}
       <tr>
         <td>{{ test.case_number }}</td>
-        <td><pre><code>{{ test.input_preview }}</code></pre></td>
-        <td><pre><code>{{ test.output_preview }}</code></pre></td>
+        <td class="selectable left aligned"><a href="{{ url('polygon:repo_test_full_view', problem.pk) }}?id={{ test.pk }}&t=in"><pre><code>{{ test.input_preview }}</code></pre></a></td>
+        <td class="selectable left aligned"><a href="{{ url('polygon:repo_test_full_view', problem.pk) }}?id={{ test.pk }}&t=out"><pre><code>{{ test.output_preview }}</code></pre></a></td>
         <td>{{ (test.size / 1024) | round(2) }}</td>
         <td>{{ test.description }}</td>
         <td>{% if test.show_in_samples %}Sample<br> {% endif %}

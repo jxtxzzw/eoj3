@@ -1,24 +1,35 @@
 import io
+import os
 import re
 import shutil
 import zipfile
+from multiprocessing.pool import Pool
 from os import path, makedirs
+from threading import Thread
 
 import chardet
+import time
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.views import View
 from django.views.generic import FormView
 from django.views.generic import ListView
 
-from polygon.models import RepositorySource
+from polygon.models import RepositorySource, RepositoryTest
 from polygon.problem.exception import RepositoryException
 from polygon.problem.forms import TestCreateForm
+from polygon.problem.source import Program
 from polygon.problem.utils import get_tmp_directory
 from polygon.problem.views import PolygonProblemMixin
 from utils.file_preview import sort_data_list_from_directory, sort_input_list_from_directory
 from utils.hash import case_hash
+
+
+GENERATE_PROMPT = 'Generating...\nReload the page'
 
 
 class TextFormatter:
@@ -122,7 +133,15 @@ class TestManager:
                 return f.read()
         except FileNotFoundError:
             self.error = "Test not found: %s" % path.split(file)[1]
-            return self.error
+            return self.error.encode()
+
+    def regenerate_output(self):
+        self.refresh_test_preview()
+
+    @staticmethod
+    def validate_input_and_generate_output(test):
+        tm = TestManager(test)
+        tm.regenerate_output()
 
 
 class TestSetManager:
@@ -192,6 +211,39 @@ class TestCreateView(PolygonProblemMixin, FormView):
             ret1.append((a, b))
         return ret1
 
+    @staticmethod
+    def split_files(txt):
+        txt = txt.strip()
+        if re.match(r'{(.*)}', txt):
+            lst = filter(lambda x: x, map(lambda x: x.strip(), txt[1:-1].split(',')))
+        else:
+            lst = [txt]
+        return list(lst)
+
+    @staticmethod
+    def split_args(args):
+        return list(filter(lambda x: x, map(lambda x: x.strip(), args)))
+
+    @staticmethod
+    def generate(gen, args, files, tests, timeout):
+        generator = Program(gen)
+        if len(files) == 0:
+            files = [generator.default_output_path]
+        else:
+            files = list(map(lambda x: path.join(generator.workspace, x), files))
+        if len(files) != len(tests):
+            raise RepositoryException("File count and test count differs")
+        generator.run(args, timeout)
+        for file, test in zip(files, tests):
+            tm = TestManager(test)
+            shutil.copy(file, tm.input_path)
+            tm.refresh_test_preview()
+
+    @staticmethod
+    def threaded_generate(data):
+        with Pool(max(os.cpu_count() // 4, 1)) as p:
+            p.map(TestManager.validate_input_and_generate_output, testset)
+
     def form_valid(self, form):
         create_method = form.cleaned_data["create_method"]
         new_tests = []
@@ -212,22 +264,31 @@ class TestCreateView(PolygonProblemMixin, FormView):
             except KeyError:
                 raise RepositoryException("Missing input and output")
         elif create_method == "gen":
-            except_name = ''
-            try:
-                commands = self.get_cmd_from_commands(form.cleaned_data["generate_cmd"])
-                with transaction.atomic():
-                    for exe, cmd in commands:
-                        except_name = exe
-                        test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
-                                                                      description="Generate by \"%s %s\"" % (exe, cmd))
-                        new_tests.append(test)
-                        test.generator = self.problem.repositorysource_set.get(name=exe)
-                        test.generate_args = cmd
-                        test.save(update_fields=['generator_id', 'generate_args'])
-                        tm = TestManager(test)
-                        tm.refresh_test_preview()
-            except RepositorySource.DoesNotExist:
-                raise RepositoryException("Illegal source name '%s'" % except_name)
+            commands = self.get_cmd_from_commands(form.cleaned_data["generate_cmd"])
+            with transaction.atomic():
+                data = []
+                for exe, cmd in commands:
+                    try:
+                        generator = self.problem.repositorysource_set.get(name=exe)
+                        if '>' in cmd:
+                            args, files = cmd.split('>')
+                        else:
+                            args, files = cmd, ''
+                        args = self.split_args(args)
+                        files = self.split_files(files)
+                        local_test = []
+                        for i in range(max(len(files), 1)):
+                            test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
+                                                                          description="Generate by \"%s %s\"" % (exe, cmd),
+                                                                          input_preview=GENERATE_PROMPT,
+                                                                          output_preview=GENERATE_PROMPT)
+                            local_test.append(test)
+                            new_tests.append(test)
+                        data.append((generator, args, files, local_test, self.problem.time_limit / 1000 * 10 * max(len(files), 1)))
+                    except RepositorySource.DoesNotExist:
+                        pass
+
+                    Thread(target=self.threaded_generate, args=(data,)).start()
         else:
             try:
                 tmp_dir = get_tmp_directory(self.problem.pk)
@@ -272,3 +333,41 @@ class TestCreateView(PolygonProblemMixin, FormView):
 
     def get_success_url(self):
         return self.request.path
+
+
+class TestFullTextView(PolygonProblemMixin, View):
+    def get(self, *args, **kwargs):
+        try:
+            id = self.request.GET['id']
+            test = self.problem.repositorytest_set.get(pk=id)
+            tm = TestManager(test)
+            if self.request.GET['t'] == 'in':
+                p = tm.input_path
+            elif self.request.GET['t'] == 'out':
+                p = tm.output_path
+            else:
+                raise KeyError
+            return HttpResponse(tm.read_binary(p), content_type='text/plain; charset=utf-8')
+        except (KeyError, RepositoryTest.DoesNotExist):
+            raise PermissionDenied
+
+
+class TestRefreshView(PolygonProblemMixin, View):
+
+    @staticmethod
+    def threaded_post(testset):
+        with Pool(max(os.cpu_count() // 4, 1)) as p:
+            p.map(TestManager.validate_input_and_generate_output, testset)
+
+    def post(self, *args, **kwargs):
+        """
+        This will:
+        1. Fix order
+        2. Regenerate input for generated tests
+        3. Regenerate output for unlocked tests
+        """
+        TestSetManager(self.problem.repositorytest_set.all()).fix_order()
+        self.problem.repositorytest_set.all().update(input_preview=GENERATE_PROMPT,
+                                                     output_preview=GENERATE_PROMPT)
+        Thread(target=self.threaded_post, args=(list(self.problem.repositorytest_set.all()), )).start()
+        return HttpResponse()
