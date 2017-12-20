@@ -28,7 +28,6 @@ from polygon.problem.views import PolygonProblemMixin
 from utils.file_preview import sort_data_list_from_directory, sort_input_list_from_directory
 from utils.hash import case_hash
 
-
 GENERATE_PROMPT = 'Generating...\nReload the page'
 
 
@@ -242,7 +241,7 @@ class TestCreateView(PolygonProblemMixin, FormView):
     @staticmethod
     def threaded_generate(data):
         with Pool(max(os.cpu_count() // 4, 1)) as p:
-            p.map(TestManager.validate_input_and_generate_output, testset)
+            p.map(TestCreateView.generate, data)
 
     def form_valid(self, form):
         create_method = form.cleaned_data["create_method"]
@@ -279,12 +278,14 @@ class TestCreateView(PolygonProblemMixin, FormView):
                         local_test = []
                         for i in range(max(len(files), 1)):
                             test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
-                                                                          description="Generate by \"%s %s\"" % (exe, cmd),
+                                                                          description="Generate by \"%s %s\"" % (
+                                                                          exe, cmd),
                                                                           input_preview=GENERATE_PROMPT,
                                                                           output_preview=GENERATE_PROMPT)
                             local_test.append(test)
                             new_tests.append(test)
-                        data.append((generator, args, files, local_test, self.problem.time_limit / 1000 * 10 * max(len(files), 1)))
+                        data.append((generator, args, files, local_test,
+                                     self.problem.time_limit / 1000 * 10 * max(len(files), 1)))
                     except RepositorySource.DoesNotExist:
                         pass
 
@@ -353,7 +354,6 @@ class TestFullTextView(PolygonProblemMixin, View):
 
 
 class TestRefreshView(PolygonProblemMixin, View):
-
     @staticmethod
     def threaded_post(testset):
         with Pool(max(os.cpu_count() // 4, 1)) as p:
@@ -369,5 +369,5 @@ class TestRefreshView(PolygonProblemMixin, View):
         TestSetManager(self.problem.repositorytest_set.all()).fix_order()
         self.problem.repositorytest_set.all().update(input_preview=GENERATE_PROMPT,
                                                      output_preview=GENERATE_PROMPT)
-        Thread(target=self.threaded_post, args=(list(self.problem.repositorytest_set.all()), )).start()
+        Thread(target=self.threaded_post, args=(list(self.problem.repositorytest_set.all()),)).start()
         return HttpResponse()
