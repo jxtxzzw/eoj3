@@ -91,7 +91,8 @@ class RepositoryTest(models.Model):
     group = models.CharField(blank=True, max_length=64)
     created = models.DateTimeField(auto_now_add=True)
     size = models.IntegerField(default=0)
-    error = models.TextField(blank=True)
+    file_error = models.TextField(blank=True)
+    invalid = models.TextField(blank=True)
 
     problem = models.ForeignKey(Problem)
 

@@ -176,6 +176,7 @@ class Program:
 
     def run(self, additional_args, timeout, input_path=None):
         if not path.exists(self.exe_path):
+            print('compiling')
             self.compile()
         inf = open(input_path, 'r') if input_path is not None else None
         with open(self.default_output_path, 'w') as ouf, open(self.default_error_path, 'w') as err:

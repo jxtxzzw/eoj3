@@ -34,7 +34,7 @@
     </thead>
     <tbody>
     {% for test in test_list %}
-      <tr>
+      <tr class="{% if test.invalid or test.file_error %}warning{% endif %}">
         <td>{{ test.case_number }}</td>
         <td class="selectable left aligned"><a href="{{ url('polygon:repo_test_full_view', problem.pk) }}?id={{ test.pk }}&t=in"><pre><code>{{ test.input_preview }}</code></pre></a></td>
         <td class="selectable left aligned"><a href="{{ url('polygon:repo_test_full_view', problem.pk) }}?id={{ test.pk }}&t=out"><pre><code>{{ test.output_preview }}</code></pre></a></td>
@@ -52,6 +52,9 @@
         <td><a href="#">IO</a></td>
         <td><input type="checkbox"></td>
       </tr>
+      {% if test.invalid or test.file_error %}
+      <tr class="warning"><td colspan="12"><i class="attention icon"></i> {% if test.invalid %}{{ test.invalid }}{% elif test.file_error %}{{ test.file_error }}{% endif %}</tr>
+      {% endif %}
     {% endfor %}
     </tbody>
   </table>

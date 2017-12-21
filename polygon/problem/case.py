@@ -69,13 +69,13 @@ class TextFormatter:
 
 class TestManager:
     def __init__(self, test):
-        self.problem_id = test.problem_id
+        self.problem = test.problem
         self.test = test
         makedirs(self.workspace, exist_ok=True)
 
     @property
     def workspace(self):
-        return path.join(settings.REPO_DIR, str(self.problem_id), 'tests')
+        return path.join(settings.REPO_DIR, str(self.problem.pk), 'tests')
 
     @property
     def input_path(self):
@@ -93,17 +93,17 @@ class TestManager:
             return 0
 
     def refresh_test_preview(self):
-        self.error = ''
+        self.file_error = ''
         if self.test.problem.well_form_policy:
             TextFormatter.format_file(self.input_path)
             TextFormatter.format_file(self.output_path)
         self.test.input_preview = self.read_abstract(self.input_path)
         self.test.output_preview = self.read_abstract(self.output_path)
-        self.test.fingerprint = case_hash(self.problem_id, self.read_binary(self.input_path),
+        self.test.fingerprint = case_hash(self.problem.pk, self.read_binary(self.input_path),
                                           self.read_binary(self.output_path))
         self.test.size = self.get_size(self.input_path) + self.get_size(self.output_path)
-        self.test.error = self.error
-        self.test.save(update_fields=['input_preview', 'output_preview', 'fingerprint', 'size', 'error'])
+        self.test.file_error = self.file_error
+        self.test.save(update_fields=['input_preview', 'output_preview', 'fingerprint', 'size', 'file_error'])
 
     def write_input(self, txt):
         with open(self.input_path, 'w') as f:
@@ -123,18 +123,32 @@ class TestManager:
         except UnicodeDecodeError as e:
             return str(e)
         except FileNotFoundError:
-            self.error = "Test not found: %s" % path.split(file)[1]
-            return self.error
+            self.file_error = "Test not found: %s" % path.split(file)[1]
+            return self.file_error
 
     def read_binary(self, file):
         try:
             with open(file, 'rb') as f:
                 return f.read()
         except FileNotFoundError:
-            self.error = "Test not found: %s" % path.split(file)[1]
-            return self.error.encode()
+            self.file_error = "Test not found: %s" % path.split(file)[1]
+            return self.file_error.encode()
 
     def regenerate_output(self):
+        timeout = self.problem.time_limit / 1000 * 3  # 3 times time limit
+        try:
+            try:
+                std = Program(self.problem.repositorysource_set.get(tag='solution_main'))
+            except (RepositorySource.DoesNotExist, RepositorySource.MultipleObjectsReturned):
+                raise RepositoryException("There should be one and only one main correct solution")
+            std.run([], timeout, self.input_path)
+            shutil.copy(std.default_output_path, self.output_path)
+            if self.test.invalid:
+                self.test.invalid = ''
+                self.test.save(update_fields=['invalid'])
+        except Exception as e:
+            self.test.invalid = str(e)
+            self.test.save(update_fields=['invalid'])
         self.refresh_test_preview()
 
     @staticmethod
@@ -183,6 +197,7 @@ class TestSetManager:
             while i in s:
                 i += 1
             test.case_number = i
+            test.save(update_fields=['case_number'])
             s.add(i)
         self.fix_order()
 
@@ -217,7 +232,7 @@ class TestCreateView(PolygonProblemMixin, FormView):
             lst = filter(lambda x: x, map(lambda x: x.strip(), txt[1:-1].split(',')))
         else:
             lst = [txt]
-        return list(lst)
+        return list(filter(lambda x: x, lst))
 
     @staticmethod
     def split_args(args):
@@ -232,11 +247,16 @@ class TestCreateView(PolygonProblemMixin, FormView):
             files = list(map(lambda x: path.join(generator.workspace, x), files))
         if len(files) != len(tests):
             raise RepositoryException("File count and test count differs")
-        generator.run(args, timeout)
-        for file, test in zip(files, tests):
-            tm = TestManager(test)
-            shutil.copy(file, tm.input_path)
-            tm.refresh_test_preview()
+        try:
+            generator.run(args, timeout)
+            for file, test in zip(files, tests):
+                tm = TestManager(test)
+                shutil.copy(file, tm.input_path)
+                tm.refresh_test_preview()
+        except RepositoryException as e:
+            for test in tests:
+                test.invalid = str(e)
+                test.save(update_fields=['invalid'])
 
     @staticmethod
     def threaded_generate(data):
@@ -244,6 +264,13 @@ class TestCreateView(PolygonProblemMixin, FormView):
             p.starmap(TestCreateView.generate, data)
 
     def form_valid(self, form):
+        def sort_new_tests():
+            tsm = TestSetManager(new_tests)
+            if form.cleaned_data["case_order"].isdigit():
+                tsm.move_after(int(form.cleaned_data["case_order"]))
+            else:
+                tsm.appoint_case_number()
+
         create_method = form.cleaned_data["create_method"]
         new_tests = []
         if create_method == 'manual':
@@ -260,36 +287,37 @@ class TestCreateView(PolygonProblemMixin, FormView):
                 tm.write_input(form.cleaned_data["input"])
                 tm.write_output(form.cleaned_data["output"])
                 tm.refresh_test_preview()
+                sort_new_tests()
             except KeyError:
                 raise RepositoryException("Missing input and output")
         elif create_method == "gen":
             commands = self.get_cmd_from_commands(form.cleaned_data["generate_cmd"])
-            with transaction.atomic():
-                data = []
-                for exe, cmd in commands:
-                    try:
-                        generator = self.problem.repositorysource_set.get(name=exe)
-                        if '>' in cmd:
-                            args, files = cmd.split('>')
-                        else:
-                            args, files = cmd, ''
-                        args = self.split_args(args)
-                        files = self.split_files(files)
-                        local_test = []
-                        for i in range(max(len(files), 1)):
-                            test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
-                                                                          description="Generate by \"%s %s\"" % (
-                                                                          exe, cmd),
-                                                                          input_preview=GENERATE_PROMPT,
-                                                                          output_preview=GENERATE_PROMPT)
-                            local_test.append(test)
-                            new_tests.append(test)
-                        data.append((generator, args, files, local_test,
-                                     self.problem.time_limit / 1000 * 10 * max(len(files), 1)))
-                    except RepositorySource.DoesNotExist:
-                        pass
+            data = []
+            for exe, cmd in commands:
+                try:
+                    generator = self.problem.repositorysource_set.get(name=exe)
+                    if '>' in cmd:
+                        args, files = cmd.split('>')
+                    else:
+                        args, files = cmd, ''
+                    args = self.split_args(args)
+                    files = self.split_files(files)
+                    local_test = []
+                    for i in range(max(len(files), 1)):
+                        test = self.problem.repositorytest_set.create(group=form.cleaned_data["group"],
+                                                                      description="Generate by \"%s %s\"" % (
+                                                                      exe, cmd),
+                                                                      input_preview=GENERATE_PROMPT,
+                                                                      output_preview=GENERATE_PROMPT)
+                        local_test.append(test)
+                        new_tests.append(test)
+                    data.append((generator, args, files, local_test,
+                                 self.problem.time_limit / 1000 * 10 * max(len(files), 1)))  # given 10 times time limit
+                except RepositorySource.DoesNotExist:
+                    pass
 
-                    Thread(target=self.threaded_generate, args=(data,)).start()
+                sort_new_tests()
+                Thread(target=self.threaded_generate, args=(data,)).start()
         else:
             try:
                 tmp_dir = get_tmp_directory(self.problem.pk)
@@ -322,12 +350,7 @@ class TestCreateView(PolygonProblemMixin, FormView):
                         tm.refresh_test_preview()
             else:
                 raise RepositoryException("Unrecognized choice '%s'" % create_method)
-
-        tsm = TestSetManager(new_tests)
-        if form.cleaned_data["case_order"].isdigit():
-            tsm.move_after(int(form.cleaned_data["case_order"]))
-        else:
-            tsm.appoint_case_number()
+            sort_new_tests()
 
         messages.add_message(self.request, messages.SUCCESS, '%d test(s) has been added successfully' % len(new_tests))
         return redirect(self.request.path)
