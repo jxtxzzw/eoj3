@@ -241,7 +241,7 @@ class TestCreateView(PolygonProblemMixin, FormView):
     @staticmethod
     def threaded_generate(data):
         with Pool(max(os.cpu_count() // 4, 1)) as p:
-            p.map(TestCreateView.generate, data)
+            p.starmap(TestCreateView.generate, data)
 
     def form_valid(self, form):
         create_method = form.cleaned_data["create_method"]

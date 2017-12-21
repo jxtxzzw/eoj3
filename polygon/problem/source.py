@@ -158,7 +158,7 @@ class Program:
 
     @property
     def random_fingerprint(self):
-        if hasattr(self, '_random_fingerprint'):
+        if not hasattr(self, '_random_fingerprint'):
             self._random_fingerprint = random_string(6)
         return self._random_fingerprint
 
