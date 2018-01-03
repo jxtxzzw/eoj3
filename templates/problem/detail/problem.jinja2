@@ -1,9 +1,22 @@
 {% extends 'problem/detail/base.jinja2' %}
 {% from 'components/problem.jinja2' import problem_view with context %}
+{% from 'components/submit.jinja2' import submit_view with context %}
 
 {% block problem_content %}
 
-  {{ problem_view(problem.title, False) }}
+  <div class="ui stackable grid">
+    <div class="twelve wide column">
+      {{ problem_view(problem.title, False) }}
+    </div>
+    <div class="four wide column">
+
+    </div>
+  </div>
+
+
+  <div class="ui hidden divider" style="margin-bottom: 3em;"></div>
+
+  {{ submit_view(submit_action=url('problem:submit', problem.pk), margin_top=True) }}
 
 {% endblock %}
 

@@ -136,6 +136,17 @@ class ProblemDetailMixin(TemplateResponseMixin, ContextMixin, UserPassesTestMixi
     def test_func(self):
         return self.privileged or self.problem.visible
 
+    def get_submit_data(self):
+        data = {}
+        submission_pk = self.request.GET.get('submission', None)
+        if submission_pk:
+            submission = Submission.objects.get(pk=submission_pk)
+            if get_permission_for_submission(self.request.user, submission):
+                data['code'] = submission.code
+        data['lang_choices'] = LANG_CHOICE
+        data['default_problem'] = self.problem.pk
+        return data
+
     def get_context_data(self, **kwargs):
         data = super(ProblemDetailMixin, self).get_context_data(**kwargs)
         data['problem'] = self.problem
@@ -146,6 +157,8 @@ class ProblemDetailMixin(TemplateResponseMixin, ContextMixin, UserPassesTestMixi
                                                              is_public=True,
                                                              is_removed=False,
                                                              level=0).count()
+
+        data.update(self.get_submit_data())
         return data
 
 
@@ -182,23 +195,9 @@ class ProblemView(ProblemDetailMixin, TemplateView):
         return data
 
 
-class ProblemSubmitView(ProblemDetailMixin, TemplateView):
-
-    template_name = 'problem/detail/submit.jinja2'
-
+class ProblemSubmitView(ProblemDetailMixin, View):
     def test_func(self):
         return super(ProblemSubmitView, self).test_func() and self.user.is_authenticated
-
-    def get_context_data(self, **kwargs):
-        data = super(ProblemSubmitView, self).get_context_data(**kwargs)
-        submission_pk = self.request.GET.get('submission', None)
-        if submission_pk:
-            submission = Submission.objects.get(pk=submission_pk)
-            if get_permission_for_submission(self.request.user, submission):
-                data['code'] = submission.code
-        data['lang_choices'] = LANG_CHOICE
-        data['default_problem'] = self.problem.pk
-        return data
 
     def post(self, request, pk):
         try:
