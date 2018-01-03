@@ -1,11 +1,15 @@
 import json
 from collections import defaultdict
+from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q, Count
 from django.conf import settings
+from django.db.models.functions import TruncDate
+from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncYear
 from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse, get_object_or_404, reverse, render, Http404, redirect
@@ -324,8 +328,42 @@ class ProblemStatisticsView(ProblemDetailMixin, StatusList):
         else:
             return self.problem.submission_set.filter(status=SubmissionStatus.ACCEPTED).order_by("-create_time")
 
+    def get_sub_growth(self):
+        if not self.problem.submission_set.filter(status=SubmissionStatus.ACCEPTED).exists():
+            return
+        first_accepted_time = self.problem.submission_set.filter(status=SubmissionStatus.ACCEPTED).last().create_time
+        if datetime.now() - first_accepted_time > timedelta(days=365): function = TruncYear
+        elif datetime.now() - first_accepted_time > timedelta(days=30): function = TruncMonth
+        else: function = TruncDate
+        self.ctx['sub_growth'] = self.problem.submission_set.filter(status=SubmissionStatus.ACCEPTED).\
+            annotate(date=function('create_time')).values('date'). \
+            annotate(count=Count('id')).values('date', 'count').order_by("date")
+        if len(self.ctx['sub_growth']) > 1:
+            self.ctx['show_sub_growth'] = True
+        for idx, count in enumerate(self.ctx['sub_growth']):
+            if idx == 0: continue
+            count['count'] += self.ctx['sub_growth'][idx - 1]['count']
+
+    def get_runtime_distribution(self):
+        ret = {}
+        lang_set = set()
+        time_interval = self.problem.time_limit / 1000 / 25
+        for i in range(0, 25):
+            ret.setdefault(i * time_interval, {"runtime": i * time_interval})
+        for submission in self.problem.submission_set.filter(status=SubmissionStatus.ACCEPTED).only("id", "lang", "status_time").all():
+            time, lang = int(submission.status_time / time_interval) * time_interval, submission.get_lang_display()
+            ret.setdefault(time, {"runtime": time})
+            ret[time].setdefault(lang, 0)
+            ret[time][lang] += 1
+            lang_set.add(lang)
+
+        self.ctx["runtime_dist"] = sorted(ret.values(), key=lambda x: x["runtime"])
+        self.ctx["runtime_lang_set"] = list(lang_set)
+        if self.ctx["runtime_dist"]:
+            self.ctx["show_runtime_dist"] = True
+
     def get_context_data(self, **kwargs):
-        data = super(ProblemStatisticsView, self).get_context_data(**kwargs)
+        self.ctx = data = super(ProblemStatisticsView, self).get_context_data(**kwargs)
         data['user_ac_count'] = get_problem_accept_user_count(self.problem.id)
         data['user_all_count'] = get_problem_all_user_count(self.problem.id)
         data['user_ratio'] = get_problem_accept_user_ratio(self.problem.id)
@@ -339,6 +377,9 @@ class ProblemStatisticsView(ProblemDetailMixin, StatusList):
         data['tags_choices'] = Tag.objects.all().values_list("name", flat=True)
         data['public_edit_access'] = is_problem_accepted(self.request.user, self.problem)
         data['all_valid'] = True
+        self.get_sub_growth()
+        self.get_runtime_distribution()
+
         return data
 
 
