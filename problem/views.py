@@ -76,6 +76,7 @@ class ProblemList(ListView):
         current_problem_set = [problem.pk for problem in data['problem_list']]
         for problem in data['problem_list']:
             problem.personal_label = 0
+        data['show_tags'] = True
         if self.request.user.is_authenticated:
             # Get AC / Wrong
             attempt_list = set(get_attempted_problem_list(self.request.user.id))
@@ -102,6 +103,9 @@ class ProblemList(ListView):
                         if counter >= 5:
                             break
             data['unsolved_submissions'] = unsolved_submissions
+
+            if not self.request.user.show_tags:
+                data['show_tags'] = False
 
         # Get Accepted of all users
         problem_ids = list(map(lambda x: x.id, data['problem_list']))
@@ -136,17 +140,6 @@ class ProblemDetailMixin(TemplateResponseMixin, ContextMixin, UserPassesTestMixi
     def test_func(self):
         return self.privileged or self.problem.visible
 
-    def get_submit_data(self):
-        data = {}
-        submission_pk = self.request.GET.get('submission', None)
-        if submission_pk:
-            submission = Submission.objects.get(pk=submission_pk)
-            if get_permission_for_submission(self.request.user, submission):
-                data['code'] = submission.code
-        data['lang_choices'] = LANG_CHOICE
-        data['default_problem'] = self.problem.pk
-        return data
-
     def get_context_data(self, **kwargs):
         data = super(ProblemDetailMixin, self).get_context_data(**kwargs)
         data['problem'] = self.problem
@@ -157,8 +150,6 @@ class ProblemDetailMixin(TemplateResponseMixin, ContextMixin, UserPassesTestMixi
                                                              is_public=True,
                                                              is_removed=False,
                                                              level=0).count()
-
-        data.update(self.get_submit_data())
         return data
 
 
@@ -179,8 +170,37 @@ class DiscussionView(ProblemDetailMixin, FormView):
 
 
 class ProblemView(ProblemDetailMixin, TemplateView):
-
     template_name = 'problem/detail/problem.jinja2'
+
+    def get_submit_data(self):
+        data = {}
+        submission_pk = self.request.GET.get('submission', None)
+        if submission_pk:
+            submission = Submission.objects.get(pk=submission_pk)
+            if get_permission_for_submission(self.request.user, submission):
+                data['code'] = submission.code
+        data['lang_choices'] = LANG_CHOICE
+        data['default_problem'] = self.problem.pk
+        return data
+
+    def get_stats(self):
+        data = {
+            'user_ac_count': get_problem_accept_user_count(self.problem.id),
+            'user_all_count': get_problem_all_user_count(self.problem.id),
+            'ac_count': get_problem_accept_count(self.problem.id),
+            'all_count': get_problem_all_count(self.problem.id),
+            'difficulty': get_problem_difficulty(self.problem.id),
+            'stats': get_problem_stats(self.problem.id),
+            'tags': edit_string_for_tags(self.problem.tags),
+            'tags_choices': Tag.objects.all().values_list("name", flat=True),
+            'public_edit_access': self.privileged or is_problem_accepted(self.request.user, self.problem),
+        }
+        try:
+            last_sub_time = self.problem.submission_set.first().create_time
+        except:
+            last_sub_time = None
+        data.update(last_sub_time=last_sub_time)
+        return data
 
     def get_context_data(self, **kwargs):
         data = super(ProblemView, self).get_context_data()
@@ -190,7 +210,11 @@ class ProblemView(ProblemDetailMixin, TemplateView):
         if self.request.user.is_authenticated:
             show_tags = self.request.user.show_tags
         if show_tags:
-            data['tags'] = self.problem.tags
+            data['tags_list'] = self.problem.tags
+            data['show_tags'] = True
+
+        data.update(self.get_submit_data())
+        data.update(self.get_stats())
 
         return data
 
