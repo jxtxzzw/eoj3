@@ -13,6 +13,7 @@ PARTICIPANT_RANK = 'c{contest}_u{user}_rank'
 PARTICIPANT_RANK_LIST = 'c{contest}_rank_list'
 CONTEST_FIRST_YES = 'c{contest}_first_yes'
 FORTNIGHT = 86400 * 14
+INF = 1000000000
 
 
 def get_penalty(start_time, submit_time):

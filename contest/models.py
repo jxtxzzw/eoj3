@@ -226,3 +226,13 @@ class ContestInvitation(models.Model):
     class Meta:
         unique_together = ('contest', 'code')
         ordering = ['-pk']
+
+
+class RatingChange(models.Model):
+    contest = models.ForeignKey(Contest)
+    user = models.ForeignKey(User)
+    cache_time = models.DateTimeField()
+    new_rating = models.IntegerField()
+
+    class Meta:
+        ordering = ['-cache_time']

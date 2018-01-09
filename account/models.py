@@ -92,6 +92,7 @@ class User(AbstractUser):
     score = models.FloatField(default=0)
     username_change_attempt = models.IntegerField(default=0)
     email_subscription = models.BooleanField(default=True)
+    rating = models.FloatField(default=1500)
 
     def __str__(self):
         return self.username
