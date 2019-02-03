@@ -7,11 +7,11 @@
 
   <div class="ui text menu stackable">
     <a href="{{ url('profile', request.user.pk) }}" class="item">我的主页</a>
-    <a href="{{ url('account:profile') }}" class="{{ active('account:profile') }} item">资料</a>
-    <a href="{{ url('account:security') }}" class="{{ active('account:security') }} item">安全</a>
-    <a href="{{ url('account:preference') }}" class="{{ active('account:preference') }} item">偏好</a>
-    <a href="{{ url('account:payment') }}" class="{{ active('account:payment') }} item">EMB</a>
-    <a href="{{ url('migrate') }}" class="{{ active('migrate') }} item">迁移</a>
+    <a href="{{ url('accounts:profile') }}" class="{{ active('accounts:profile') }} item">资料</a>
+    <a href="{{ url('accounts:security') }}" class="{{ active('accounts:security') }} item">安全</a>
+    <a href="{{ url('accounts:preference') }}" class="{{ active('accounts:preference') }} item">偏好</a>
+    <a href="{{ url('accounts:payment') }}" class="{{ active('accounts:payment') }} item">EMB</a>
+    <a href="{{ url('museum') }}" class="{{ active('museum') }} item">迁移</a>
   </div>
 
   {% block account_setting %}

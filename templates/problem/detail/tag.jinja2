@@ -5,7 +5,7 @@
   </div>
   <div class="content">
     <div class="description">
-      <form class="ui form" action="{{ url('problem:update_tags', problem.pk) }}" method="POST" style="margin-bottom: 0.5em">
+      <form class="ui form" action="{{ url('problems:update_tags', problem.pk) }}" method="POST" style="margin-bottom: 0.5em">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.path }}">
         <div class="field">
@@ -33,7 +33,7 @@
   <div class="content">
     <div class="description">
       {% for tag in tags_list %}
-      <a href="{{ url('problem:list') }}?tag={{ tag }}" class="ui label">{{ tag }}</a>
+      <a href="{{ url('problems:list') }}?tag={{ tag }}" class="ui label">{{ tag }}</a>
       {% endfor %}
     </div>
   </div>

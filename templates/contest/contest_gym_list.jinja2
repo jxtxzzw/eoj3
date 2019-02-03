@@ -21,7 +21,7 @@
     <tbody>
       {% for contest in contest_list %}
         <tr class="center aligned">
-          <td><a href="{{ url('contest:dashboard', contest.pk) }}">{{ contest.title }}</a></td>
+          <td><a href="{{ url('contests:dashboard', contest.pk) }}">{{ contest.title }}</a></td>
           <td style="font-size:.9em"><div class="ui list">
             {% for m in contest.managers.all() %}
               <div class="item">{{ username_display(m) }}</div>
@@ -38,7 +38,7 @@
             <h5 class="ui header red">{{ _('Running') }}</h5>
           {% elif contest.status == -1 %}
             {% if contest.access_level == 30 %}
-              <a href="{{ url('contest:dashboard', contest.pk) }}" style="white-space:nowrap;background-color:#c00;color:white;font-weight:bold;padding:0.2em 0.4em 0.2em 0.4em;text-decoration:underline;">{{ _('Register') }} »</a>
+              <a href="{{ url('contests:dashboard', contest.pk) }}" style="white-space:nowrap;background-color:#c00;color:white;font-weight:bold;padding:0.2em 0.4em 0.2em 0.4em;text-decoration:underline;">{{ _('Register') }} »</a>
             {% else %}
               <h5 class="ui header teal">{{ _('Pending') }}</h5>
             {% endif %}
@@ -49,7 +49,7 @@
           <td>{% if contest.access_level >= 30 %}<i class="green large check icon"></i>
           {% elif contest.access_level >= 10 %}<i class="orange large remove icon"></i>
           {% else %}<i class="red large lock icon"></i>{% endif %}</td>
-          <td><i class="icon fitted user" aria-hidden="true"></i> <a href="{{ url('contest:standings', contest.pk) }}">&times; {{ contest.participants__count }}</a></td>
+          <td><i class="icon fitted user" aria-hidden="true"></i> <a href="{{ url('contests:standings', contest.pk) }}">&times; {{ contest.participants__count }}</a></td>
         </tr>
       {% endfor %}
     </tbody>

@@ -9,7 +9,7 @@
     {% else %}
       <div class="ui blue horizontal label">New</div>
     {% endif %}
-    <a href="{{ url('problem:detail', problem.pk) }}">{{ problem }}</a>
+    <a href="{{ url('problems:detail', problem.pk) }}">{{ problem }}</a>
   </div>
 {% endmacro %}
 

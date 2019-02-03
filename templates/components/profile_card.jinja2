@@ -6,7 +6,7 @@
     </div>
     <div class="content">
       <span class="header">{{ profile.get_username_display() }}{% if profile.pk == request.user.pk %}
-        <a href="{{ url('account:profile') }}"><i class="ui icon edit"></i></a>{% endif %}</span>
+        <a href="{{ url('accounts:profile') }}"><i class="ui icon edit"></i></a>{% endif %}</span>
       <div class="meta">
         {% with join_time = (profile.date_joined | naturaltime) %}
         <span class="date">{{ _("Joined in %(time)s", time=join_time) }}</span>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="extra content">
-      <a href="{{ url('problem:status') }}?user={{ profile.pk }}">{{ _('%(num)d problems solved.', num=solved) }}</a>
+      <a href="{{ url('problems:status') }}?user={{ profile.pk }}">{{ _('%(num)d problems solved.', num=solved) }}</a>
     </div>
   </div>
 

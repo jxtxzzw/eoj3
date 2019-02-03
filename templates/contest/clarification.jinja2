@@ -22,7 +22,7 @@
         {% if is_privileged and not clarification.answer %}
           <div class="ui divider"></div>
           <form class="ui form" method="POST"
-                action="{{ url('contest:clarification_answer', contest.pk, clarification.pk) }}">
+                action="{{ url('contests:clarification_answer', contest.pk, clarification.pk) }}">
             {% csrf_token %}
             <div class="field">
               <label>Builtin Response:</label>
@@ -66,7 +66,7 @@
 
 
   <div class="ui divider"></div>
-  <form class="ui form" method="POST" action="{{ url('contest:clarification', contest.pk) }}">
+  <form class="ui form" method="POST" action="{{ url('contests:clarification', contest.pk) }}">
     {% csrf_token %}
     <div class="field">
       {% if is_privileged %}

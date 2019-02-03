@@ -24,7 +24,7 @@
         <li class="item">{{ _("You should make sure that you didn't read the problems in advance.") }}</li>
         <li class="item">{{ _("Your progress will appear in the standings.") }}</li>
       </ul>
-      <form class="ui form" action="{{ url('contest:vp_join', contest.pk) }}" method="post">
+      <form class="ui form" action="{{ url('contests:vp_join', contest.pk) }}" method="post">
         {% csrf_token %}
         <div class="field">
           <div class="ui calendar">
@@ -41,7 +41,7 @@
   {% endif %}
 
   {% if not registered and participate_contest_status <= 0 %}
-    {# private contest registration #}
+    {# private contests registration #}
     <div>
       <h3 class="ui header">
         <i class="privacy icon"></i>
@@ -54,7 +54,7 @@
         <li class="item">{{ _('Enter a valid invitation code to join the contest, OR') }}</li>
         <li class="item">{{ _('Re-login with the given account.') }}</li>
       </ul>
-      <form class="ui form" action="{{ url('contest:invitation', contest.pk) }}" method="post">
+      <form class="ui form" action="{{ url('contests:invitation', contest.pk) }}" method="post">
         {% csrf_token %}
         <div class="ui action fluid input">
           <input type="text" name="code" placeholder="{{ _('If you have an invitation code...') }}" style="font-family:monospace">
@@ -66,7 +66,7 @@
   {% endif %}
 
   {% if (public_register == -1 or public_register == 1) and not has_permission %}
-    {# public rated contest registration #}
+    {# public rated contests registration #}
     <div class="ui info message">
       <div class="header">
         {{ _('Rated contest requires registration.') }}
@@ -78,12 +78,12 @@
       </ul>
     </div>
     {% if public_register == -1 %}
-    <form class="ui form" action="{{ url('contest:public_register', contest.pk) }}" method="post">
+    <form class="ui form" action="{{ url('contests:public_register', contest.pk) }}" method="post">
       {% csrf_token %}
       <button class="fluid ui primary button">{{ _('OK, Register') }}</button>
     </form>
     {% else %}
-    <form class="ui form" action="{{ url('contest:public_register', contest.pk) }}" method="post">
+    <form class="ui form" action="{{ url('contests:public_register', contest.pk) }}" method="post">
       {% csrf_token %}
       <button class="fluid ui red button">{{ _('Cancel my registration') }}</button>
     </form>
@@ -112,10 +112,10 @@
           {% if contest.contest_type == 1 %}
             <span class="label ui horizontal {{ level_colors[contest_problem.problem.level] }}">{{ contest_problem.problem.get_level_display() }}</span>
           {% endif %}
-            <a href="{{ url('contest:problem', contest.pk, contest_problem.identifier) }}">
+            <a href="{{ url('contests:problems', contest.pk, contest_problem.identifier) }}">
               {{ contest_problem.problem.title }}</a>{% if contest.contest_type != 1 %} <span class="text grey" style="font-size: .7em;">({{ contest_problem.problem.time_limit / 1000 | round(1) }} sec / {{ contest_problem.problem.memory_limit }} MB)</span>{% endif %}
             {% if not site_closed and (contest_problem.problem.visible or is_privileged) %}
-              <a style="float: right;" data-tooltip="{{ _('Practice in problemset') }}" href="{{ url('problem:detail', contest_problem.problem.pk) }}"><i class="icon external"></i></a>
+              <a style="float: right;" data-tooltip="{{ _('Practice in problemset') }}" href="{{ url('problems:detail', contest_problem.problem.pk) }}"><i class="icon external"></i></a>
             {% endif %}
           {% if contest.contest_type == 1 %}
             <div style="float:right">
@@ -126,7 +126,7 @@
           {% endif %}
           </td>
           <td class="selectable {% if enable_scoring %}{% if contest_problem.personal_label > 0 %}accepted{% elif contest_problem.personal_label < 0 %}warning{% endif %}{% else %}{% if contest_problem.personal_label == 1 %}accepted{% elif contest_problem.personal_label == 2 %}warning{% elif contest_problem.personal_label < 0 %}attempted{% endif %}{% endif %}">
-            <a {% if contest_problem.personal_label == 2 %}data-tooltip="Accepted out of this contest" data-inverted=""{% endif %} href="{{ url('contest:status', contest.pk) }}?problem={{ contest_problem.identifier }}&verdict=v0">
+            <a {% if contest_problem.personal_label == 2 %}data-tooltip="Accepted out of this contest" data-inverted=""{% endif %} href="{{ url('contests:status', contest.pk) }}?problem={{ contest_problem.identifier }}&verdict=v0">
               {% if enable_scoring %}{{ contest_problem.total_user_count }} / {{ contest_problem.max_score }} / {{ contest_problem.avg_score }}{% else %}{% if contest_problem.ac_user_count %}<i class="icon fitted user" aria-hidden="true"></i> x {{ contest_problem.ac_user_count }}{% endif %}{% endif %}
             </a>
           </td>
@@ -174,7 +174,7 @@
   {% endif %}
   {% endif %}
 
-  {# score distribution (for rated contest and scoring contest) #}
+  {# score distribution (for rated contests and scoring contests) #}
   {% if contest.access_level == 30 and (contest.scoring_method == 'cf' or contest.scoring_method == 'oi') %}
     <h3 class="ui header">
       <i class="bar chart icon"></i>
@@ -223,7 +223,7 @@
 
   {% endif %}
 
-  {# contest information (always public) #}
+  {# contests information (always public) #}
 
   <h3 class="ui header">
     <i class="info circle icon"></i>

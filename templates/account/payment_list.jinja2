@@ -21,17 +21,17 @@
           <td>{{ payment.create_time | date('Y-m-d H:i:s') }}</td>
           <td>
             {% if payment.type == "reward" %}
-              {% if payment.detail.type == "problem" %}
-                Accepted in <a href="{{ url('problem:detail', payment.detail.id) }}">Problem #{{ payment.detail.id }}</a>
-              {% elif payment.detail.type == "contest" %}
-                Accepted in <a href="{{ url('contest:dashboard', payment.detail.id) }}">Contest #{{ payment.detail.id }}</a>
+              {% if payment.detail.type == "problems" %}
+                Accepted in <a href="{{ url('problems:detail', payment.detail.id) }}">Problem #{{ payment.detail.id }}</a>
+              {% elif payment.detail.type == "contests" %}
+                Accepted in <a href="{{ url('contests:dashboard', payment.detail.id) }}">Contest #{{ payment.detail.id }}</a>
               {% endif %}
             {% elif payment.type == "change_username" %}
               Change username to <b>{{ payment.detail.new }}</b>
             {% elif payment.type == "download_case" %}
               Case #{{ payment.detail.case_num }} in Submission #{{ payment.detail.submission }} <a href="{{ url('download_case') }}?p={{ payment.pk }}&t=in">input</a> or <a href="{{ url('download_case') }}?p={{ payment.pk }}&t=out">output</a>.
             {% elif payment.type == "view_report" %}
-              Submission #{{ payment.detail.id }} full report {% if payment.detail.contest %}<a href="{{ url('contest:submission', payment.detail.contest, payment.detail.id) }}">{% else %}<a href="{{ url('problem:submission', payment.detail.problem, payment.detail.id) }}">{% endif %}here</a>.
+              Submission #{{ payment.detail.id }} full report {% if payment.detail.contest %}<a href="{{ url('contests:submission', payment.detail.contest, payment.detail.id) }}">{% else %}<a href="{{ url('problems:submission', payment.detail.problem, payment.detail.id) }}">{% endif %}here</a>.
             {% endif %}
           </td>
           <td>{{ payment.credit | round(1) }}</td>

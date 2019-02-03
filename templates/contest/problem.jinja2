@@ -16,6 +16,6 @@
 {#    {% else %}#}
 {#      <div class="ui error message">Running out of attempts.</div>#}
 {#    {% endif %}#}
-      {{ submit_view(submit_action=url('contest:submit', contest.pk, contest_problem.identifier), margin_top=True) }}
+      {{ submit_view(submit_action=url('contests:submit', contest.pk, contest_problem.identifier), margin_top=True) }}
   {% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect, render
 from django.contrib.auth.mixins import UserPassesTestMixin
 
-from account.permissions import is_admin_or_root
+from accounts.permissions import is_admin_or_root
 
 
 class BaseBackstageMixin(UserPassesTestMixin):

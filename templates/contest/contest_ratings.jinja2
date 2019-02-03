@@ -50,10 +50,10 @@
         {% for rating in rating_list %}
           <tr class="center aligned">
             <td>{{ rating.contest_id }}</td>
-            <td><a href="{{ url('contest:dashboard', rating.contest_id) }}">{{ rating.contest.title }}</a></td>
+            <td><a href="{{ url('contests:dashboard', rating.contest_id) }}">{{ rating.contest.title }}</a></td>
             <td>{{ rating.modified | date('Y-m-d') }}</td>
-            <td><a href="{{ url('contest:standings', rating.contest_id) }}">{{ rating.rank }}</a></td>
-            <td><a href="{{ url('contest:my', rating.contest_id) }}">{{ rating.solved }}</a></td>
+            <td><a href="{{ url('contests:standings', rating.contest_id) }}">{{ rating.rank }}</a></td>
+            <td><a href="{{ url('contests:my', rating.contest_id) }}">{{ rating.solved }}</a></td>
             <td>{{ rating.rating }}</td>
           </tr>
         {% endfor %}

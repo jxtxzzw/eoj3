@@ -65,7 +65,7 @@ if (document.getElementById("editor") && window.hasOwnProperty("ace")) {
       'mode': 'c_cpp', 'name': 'Detecting'
     }
   };
-  var lang_key = "lang?c=" + $("#default-contest").val();
+  var lang_key = "lang?c=" + $("#default-contests").val();
   var ele = $('.ui.search.dropdown.language');
   var all_lang = ele.find('.item').map(function () {
     return $(this).data('value');
@@ -78,7 +78,7 @@ if (document.getElementById("editor") && window.hasOwnProperty("ace")) {
   var editor = ace.edit("editor");
   var lang = $("#id_lang");
   var code = $("#id_code");
-  var problem = $("*[name='problem']");
+  var problem = $("*[name='problems']");
   var code_param = "", code_in_storage_key = "";
   var auto_lang = ele.dropdown('get value') == "auto";
   var detected_lang = "cpp";
@@ -115,7 +115,7 @@ if (document.getElementById("editor") && window.hasOwnProperty("ace")) {
   function updateStorageKey() {
     var problem_val = problem.val();
     if (problem_val) {
-      code_param = "?c=" + $("#default-contest").val() + "&p=" + problem_val;
+      code_param = "?c=" + $("#default-contests").val() + "&p=" + problem_val;
       code_in_storage_key = "code" + code_param;
       if (window.sessionStorage && window.sessionStorage.getItem(code_in_storage_key)) {
         code.val(window.sessionStorage.getItem(code_in_storage_key));
@@ -240,7 +240,7 @@ function updatePastSubmissions() {
 function updateProblemTags() {
   var fetch_url = location.href.split('?')[0] + "?onlytag=1";
   $.get(fetch_url, function (data) {
-    $("#problem-tags").replaceWith(data);
+    $("#problems-tags").replaceWith(data);
     $('.ui.selection.dropdown.maximum-5')
       .dropdown({
         maxSelections: 5
@@ -248,7 +248,7 @@ function updateProblemTags() {
   });
 }
 
-$("#problem-submit").click(function (event) {
+$("#problems-submit").click(function (event) {
   detectLanguage();
   var button = $(event.currentTarget);
   var form = button.closest("form");

@@ -43,11 +43,11 @@
             {% endfor %}
             </div>
           {% endif %}
-            <a href="{{ url('problem:detail', problem.pk) }}">{{ problem.title }}</a>
+            <a href="{{ url('problems:detail', problem.pk) }}">{{ problem.title }}</a>
           </td>
           <td class="hidden-on-small">{{ problem.reward | round(1) }}</td>
           <td class="selectable {% if problem.personal_label > 0 %}accepted{% elif problem.personal_label < 0 %}attempted{% endif %}">
-            <a href="{{ url('problem:statistics', problem.pk) }}">{% if problem.ac_user_count %}<i class="icon fitted user" aria-hidden="true"></i> x {{ problem.ac_user_count }}{% endif %}</a>
+            <a href="{{ url('problems:statistics', problem.pk) }}">{% if problem.ac_user_count %}<i class="icon fitted user" aria-hidden="true"></i> x {{ problem.ac_user_count }}{% endif %}</a>
           </td>
           {% if comparing %}<td>{% if problem.her_label > 0 %}<i class="large green checkmark icon"></i>{% elif problem.her_label < 0 %}<i class="large red remove icon"></i>{% endif %}</td>{% endif %}
         </tr>
@@ -75,11 +75,11 @@
           {% for s in unsolved_submissions %}
             <div class="event">
               <div class="content"><span class="summary">
-                {% if s.contest_problem %}<a class="text black" href="{{ url('contest:dashboard', s.contest_id) }}">{{ s.contest }}</a> — <a class="text black" href="{{ url('contest:problem', s.contest_id, s.contest_problem.identifier) }}">{{ s.contest_problem }}</a>
-                {% else %}<a class="text black" href="{{ url('problem:detail', s.problem_id) }}">{{ s.problem }}</a>
+                {% if s.contest_problem %}<a class="text black" href="{{ url('contests:dashboard', s.contest_id) }}">{{ s.contest }}</a> — <a class="text black" href="{{ url('contests:problems', s.contest_id, s.contest_problem.identifier) }}">{{ s.contest_problem }}</a>
+                {% else %}<a class="text black" href="{{ url('problems:detail', s.problem_id) }}">{{ s.problem }}</a>
                 {% endif %}</span> →
-                {% if not s.contest_id %}<a href="{{ url('problem:submission', s.problem_id, s.id) }}">
-                {% else %}<a href="{{ url('contest:submission', s.contest_id, s.id) }}">
+                {% if not s.contest_id %}<a href="{{ url('problems:submission', s.problem_id, s.id) }}">
+                {% else %}<a href="{{ url('contests:submission', s.contest_id, s.id) }}">
                 {% endif %}{{ _('Sub.') }} #{{ s.id }}</a>. &nbsp;&nbsp;
                 <span class="date">{{ s.create_time | naturaltime }}</span>
               </div>
@@ -95,7 +95,7 @@
         <div class="header">{{ _('Compare with') }}</div>
       </div>
       <div class="content">
-        <form style="margin-bottom:0;" id="compare-form" action="{{ url('problem:compare_with') }}" method="POST">
+        <form style="margin-bottom:0;" id="compare-form" action="{{ url('problems:compare_with') }}" method="POST">
           {% csrf_token %}
           <div class="ui user search">
             <div class="ui fluid icon input">

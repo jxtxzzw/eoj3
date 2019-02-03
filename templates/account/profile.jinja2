@@ -16,7 +16,7 @@
 
   <div class="ui hidden divider"></div>
 
-  {% call modal("修改用户名", id="modify-username-modal", action=url('account:change_username')) %}
+  {% call modal("修改用户名", id="modify-username-modal", action=url('accounts:change_username')) %}
     <div class="ui form">
       {% csrf_token %}
       <div class="field">

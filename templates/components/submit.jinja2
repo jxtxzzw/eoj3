@@ -56,9 +56,9 @@
   <div id="current-submission"></div>
 
   {% if contest %}
-    <div id="past-submissions" data-url="{{ url('contest:past_submission', contest.id, contest_problem.identifier) }}"></div>
+    <div id="past-submissions" data-url="{{ url('contests:past_submission', contest.id, contest_problem.identifier) }}"></div>
   {% else %}
-    <div id="past-submissions" data-url="{{ url('problem:past_submission', problem.id) }}"></div>
+    <div id="past-submissions" data-url="{{ url('problems:past_submission', problem.id) }}"></div>
   {% endif %}
 
 {% endmacro %}

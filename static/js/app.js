@@ -117,11 +117,11 @@ $.filterChangeTo = function (filter, value) {
 $('.ui.dropdown.status-filter').each(function () {
   var api_url = null;
   if ($(this).data('filter-type') == 'user' && !$(this).hasClass("local")) {
-    if ($(this).data('filter-contest'))
-      api_url = '/api/search/user/?kw={query}&contest=' + $(this).data('filter-contest');
+    if ($(this).data('filter-contests'))
+      api_url = '/api/search/user/?kw={query}&contests=' + $(this).data('filter-contests');
     else api_url = '/api/search/user/?kw={query}';
   } else if ($(this).data('filter-type') == 'problem' && !$(this).hasClass("local"))
-    api_url = '/api/search/problem/?kw={query}';
+    api_url = '/api/search/problems/?kw={query}';
   $(this).dropdown({
     onChange: function (value) {
       $.filterChangeTo($(this).data('filter-type'), value);
@@ -147,10 +147,10 @@ $('.ui.dropdown.user-search')
   })
 ;
 
-$('.ui.dropdown.problem-search')
+$('.ui.dropdown.problems-search')
   .dropdown({
     apiSettings: {
-      url: $(this).data('query') || '/api/search/problem/?kw={query}'
+      url: $(this).data('query') || '/api/search/problems/?kw={query}'
     }
   });
 

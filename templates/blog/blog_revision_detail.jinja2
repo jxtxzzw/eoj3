@@ -24,7 +24,7 @@
     <label>Compare</label>
   </div>
   <p>{{ username_display(revision.author) }} edited {{ revision.create_time | naturaltime }}</p>
-  <p><b><i>This is a past version of blog <a href="{{ url('blog:detail', blog.pk) }}">{{ blog.title }}</a></i></b></p>
+  <p><b><i>This is a past version of blog <a href="{{ url('shares:detail', blog.pk) }}">{{ blog.title }}</a></i></b></p>
 
   <div id="revision-passage">
   {% cache 3600 'blog_view#'+blog.pk.__str__()+'#'+blog.edit_time.__str__()+'#'+revision.create_time.__str__() %}

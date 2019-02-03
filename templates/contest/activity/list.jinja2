@@ -7,7 +7,7 @@
 {% block content %}
 
   {% if privileged %}
-  <a class="ui button basic" href="{{ url('contest:activity_add') }}">Add an activity</a>
+  <a class="ui button basic" href="{{ url('contests:activity_add') }}">Add an activity</a>
   {% endif %}
 
   <table class="ui celled center aligned table">
@@ -24,7 +24,7 @@
       {% for activity in activity_list %}
         <tr>
           <td>{{ activity.pk }}</td>
-          <td><a href="{{ url('contest:activity_register', activity.pk) }}">{{ activity.title }}</a></td>
+          <td><a href="{{ url('contests:activity_register', activity.pk) }}">{{ activity.title }}</a></td>
           <td>{{ activity.register_start_time | date("Y-m-d H:i") }}</td>
           <td>{{ activity.register_end_time | date("Y-m-d H:i") }}</td>
 {#          <td><i class="icon fitted user" aria-hidden="true"></i> &times; {{ activity.participants__count }}</td>#}

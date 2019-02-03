@@ -10,11 +10,11 @@
   {% if not contest.standings_without_problem %}
     {% if contest.scoring_method == "acm" or (contest.contest_problem_list | length) == 1 %}
       {% for problem in contest.contest_problem_list %}
-        <th style="{{ column_style }}"><a href="{{ url('contest:problem', contest.pk, problem.identifier) }}">{{ problem.identifier }}</a></th>
+        <th style="{{ column_style }}"><a href="{{ url('contests:problems', contest.pk, problem.identifier) }}">{{ problem.identifier }}</a></th>
       {% endfor %}
     {% else %}
       {% for problem in contest.contest_problem_list %}
-        <th style="{{ column_style }}"><a href="{{ url('contest:problem', contest.pk, problem.identifier) }}">{{ problem.identifier }}</a><br>{{ problem.weight }}</th>
+        <th style="{{ column_style }}"><a href="{{ url('contests:problems', contest.pk, problem.identifier) }}">{{ problem.identifier }}</a><br>{{ problem.weight }}</th>
       {% endfor %}
     {% endif %}
   {% endif %}
@@ -42,7 +42,7 @@
   {% if not contest.standings_without_problem %}
     {% for problem in contest.contest_problem_list %}
       {% set d = rank.detail[problem.problem_id] %}
-      {% set url_param = '?user=%d&problem=%s' % (rank.user.user.pk, problem.identifier) %}
+      {% set url_param = '?user=%d&problems=%s' % (rank.user.user.pk, problem.identifier) %}
       {% if d %}
         {% if d.waiting %}
           <td class="penalty-box" data-param="{{ url_param }}"><span class="score text blue"><i class="help icon"></i></td>

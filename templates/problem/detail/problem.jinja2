@@ -19,7 +19,7 @@
                     emb = (difficulty | round(1)) %}
             <p>{{ _('<b>%(usr_ac_cnt)s Solved</b> out of %(usr_all_cnt)s users tried.', usr_ac_cnt=usr_ac_cnt, usr_all_cnt=usr_all_cnt)  }}</p>
             <p>{{ _('<b>%(ac_cnt)s Accepted</b> out of %(all_cnt)s tried.', ac_cnt=ac_cnt, all_cnt=all_cnt) }}</p>
-            <p>{{ _('<b>%(emb)s</b> EMB will be rewarded for solving this problem.', emb=emb) }}</p>
+            <p>{{ _('<b>%(emb)s</b> EMB will be rewarded for solving this problems.', emb=emb) }}</p>
             {% endwith %}
           </div>
         </div>
@@ -28,7 +28,7 @@
             <p><b>{{ _('Created') }}</b>: {{ problem.create_time | naturaltime }}.</p>
             <p><b>{{ _('Updated') }}</b>: {{ problem.update_time | naturaltime }}.</p>
             <p><b>{{ _('Latest Submission') }}</b>: {% if last_sub_time %}{{ last_sub_time | naturaltime }}{% else %}N/A{% endif %}.</p>
-            <p><b>{{ _('Source') }}</b>: {% if problem.source %}<a href="{{ url('problem:list') }}?source={{ problem.source }}">{{ problem.source }}</a>{% else %}N/A{% endif %}</p>
+            <p><b>{{ _('Source') }}</b>: {% if problem.source %}<a href="{{ url('problems:list') }}?source={{ problem.source }}">{{ problem.source }}</a>{% else %}N/A{% endif %}</p>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
   <div class="ui hidden divider" style="margin-bottom: 3em;"></div>
 
   {% if request.user.is_authenticated %}
-  {{ submit_view(submit_action=url('problem:submit', problem.pk), margin_top=True) }}
+  {{ submit_view(submit_action=url('problems:submit', problem.pk), margin_top=True) }}
   {% endif %}
 
 {% endblock %}

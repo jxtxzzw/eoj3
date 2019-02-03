@@ -29,9 +29,9 @@
         Problem {{ submission.contest_problem.identifier }}
       </h1>
 
-      <form action="{{ url('contest:balloon_cancel', contest.pk, submission.pk) }}" method="post">
+      <form action="{{ url('contests:balloon_cancel', contest.pk, submission.pk) }}" method="post">
         {% csrf_token %}
-        <a href="{{ url('contest:balloon', contest.pk) }}" class="ui primary button">
+        <a href="{{ url('contests:balloon', contest.pk) }}" class="ui primary button">
           Done
         </a>
         <button type="submit" class="ui red button">I can't do this</button>

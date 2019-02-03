@@ -1,37 +1,37 @@
 from django.conf.urls import url
 
-from backstage.email.views import EmailCreateView, EmailUpdateView, EmailAddRecipient, EmailDeleteRecipient, \
+from backstage.views.email.views import EmailCreateView, EmailUpdateView, EmailAddRecipient, EmailDeleteRecipient, \
     EmailPreview, EmailSend, EmailRecipientErrorReport
-from backstage.email.views import EmailList
-from .account.views import AccountList, AccountPrivilegeSwitch, AccountPasswordChange, AccountPolygonSwitch, AccountActiveSwitch, \
+from backstage.views.email.views import EmailList
+from backstage.views.account.views import AccountList, AccountPrivilegeSwitch, AccountPasswordChange, AccountPolygonSwitch, AccountActiveSwitch, \
     AccountSchoolList, AccountAddSchool, AccountEditSchool
 from .base_views import Index
-from .contest.views import ContestList, ContestSendInvitationMail, ContestApplyRatingChanges, ContestWithdrawRatingChanges, \
+from backstage.views.contest.views import ContestList, ContestSendInvitationMail, ContestApplyRatingChanges, ContestWithdrawRatingChanges, \
     ApplyGlobalChangesToRating
-from .problem.views import ProblemList, ProblemVisibleSwitch, ProblemTagList, ProblemTagCreate, ProblemTagEdit, \
+from backstage.views.problem.views import ProblemList, ProblemVisibleSwitch, ProblemTagList, ProblemTagCreate, ProblemTagEdit, \
     ProblemArchiveList, ProblemArchiveEdit, ProblemArchiveCreate, ProblemSourceBatchEdit, ProblemTagDelete
-from .server.views import ServerCreate, ServerUpdate, ServerList, ServerDelete, ServerRefresh, ServerEnableOrDisable, \
+from backstage.views.server.views import ServerCreate, ServerUpdate, ServerList, ServerDelete, ServerRefresh, ServerEnableOrDisable, \
     ServerUpdateToken, ServerSynchronize, ServerProblemStatusList, ServerSemaphoreReset, RejudgeAllCrashedSubmission
-from .site.views import SiteSettingsUpdate, MigrateList, OldSubmissionQuery, OldSubmissionRejudge
-from .blog.views import BlogList, BlogRecommendSwitch, BlogVisibleSwitch
-from .log.views import UpdateLogList, UpdateLogCreate, UpdateLogDelete
+from backstage.views.site.views import SiteSettingsUpdate, MigrateList, OldSubmissionQuery, OldSubmissionRejudge
+from backstage.views.blog.views import BlogList, BlogRecommendSwitch, BlogVisibleSwitch
+from backstage.views.log.views import UpdateLogList, UpdateLogCreate, UpdateLogDelete
 
 app_name = "backstage"
 
 urlpatterns = [
     url(r'^$', Index.as_view(), name='index'),
 
-    url(r'^account/$', AccountList.as_view(), name='account'),
-    url(r'^account/privilege/(?P<pk>\d+)/$', AccountPrivilegeSwitch.as_view(), name='account_privilege_switch'),
-    url(r'^account/polygon/(?P<pk>\d+)/$', AccountPolygonSwitch.as_view(), name='account_polygon_switch'),
-    url(r'^account/password/(?P<pk>\d+)/$', AccountPasswordChange.as_view(), name='account_password_change'),
-    url(r'^account/active/(?P<pk>\d+)/$', AccountActiveSwitch.as_view(), name='account_active_switch'),
-    url(r'^account/school/$', AccountSchoolList.as_view(), name='account_school'),
-    url(r'^account/school/add/$', AccountAddSchool.as_view(), name='account_school_add'),
-    url(r'^account/school/(?P<pk>\d+)/edit/$', AccountEditSchool.as_view(), name='account_school_edit'),
+    url(r'^accounts/$', AccountList.as_view(), name='accounts'),
+    url(r'^accounts/privilege/(?P<pk>\d+)/$', AccountPrivilegeSwitch.as_view(), name='account_privilege_switch'),
+    url(r'^accounts/polygon/(?P<pk>\d+)/$', AccountPolygonSwitch.as_view(), name='account_polygon_switch'),
+    url(r'^accounts/password/(?P<pk>\d+)/$', AccountPasswordChange.as_view(), name='account_password_change'),
+    url(r'^accounts/active/(?P<pk>\d+)/$', AccountActiveSwitch.as_view(), name='account_active_switch'),
+    url(r'^accounts/school/$', AccountSchoolList.as_view(), name='account_school'),
+    url(r'^accounts/school/add/$', AccountAddSchool.as_view(), name='account_school_add'),
+    url(r'^accounts/school/(?P<pk>\d+)/edit/$', AccountEditSchool.as_view(), name='account_school_edit'),
 
-    url(r'^problem/$', ProblemList.as_view(), name='problem'),
-    url(r'^problem/(?P<pk>\d+)/visible/$', ProblemVisibleSwitch.as_view(), name='problem_visible_switch'),
+    url(r'^problems/$', ProblemList.as_view(), name='problems'),
+    url(r'^problems/(?P<pk>\d+)/visible/$', ProblemVisibleSwitch.as_view(), name='problem_visible_switch'),
     url(r'^tags/$', ProblemTagList.as_view(), name='tags'),
     url(r'^tags/add/$', ProblemTagCreate.as_view(), name='tag_add'),
     url(r'^tags/(?P<pk>\d+)/edit/$', ProblemTagEdit.as_view(), name='tag_edit'),
@@ -39,13 +39,13 @@ urlpatterns = [
     url(r'^archive/$', ProblemArchiveList.as_view(), name='archive'),
     url(r'^archive/add/$', ProblemArchiveCreate.as_view(), name='archive_add'),
     url(r'^archive/(?P<pk>\d+)/edit/$', ProblemArchiveEdit.as_view(), name='archive_edit'),
-    url(r'^problem/source/$', ProblemSourceBatchEdit.as_view(), name='source_edit'),
+    url(r'^problems/source/$', ProblemSourceBatchEdit.as_view(), name='source_edit'),
 
-    url(r'^contest/$', ContestList.as_view(), name='contest'),
-    url(r'^contest/send/invitation/$', ContestSendInvitationMail.as_view(), name='contest_send_invitation'),
-    url(r'^contest/(?P<cid>\d+)/ratings/apply/$', ContestApplyRatingChanges.as_view(), name='contest_apply_ratings'),
-    url(r'^contest/(?P<cid>\d+)/ratings/withdraw/$', ContestWithdrawRatingChanges.as_view(), name='contest_withdraw_ratings'),
-    url(r'^contest/ratings/global/$', ApplyGlobalChangesToRating.as_view(), name='contest_apply_ratings_global'),
+    url(r'^contests/$', ContestList.as_view(), name='contests'),
+    url(r'^contests/send/invitation/$', ContestSendInvitationMail.as_view(), name='contest_send_invitation'),
+    url(r'^contests/(?P<cid>\d+)/ratings/apply/$', ContestApplyRatingChanges.as_view(), name='contest_apply_ratings'),
+    url(r'^contests/(?P<cid>\d+)/ratings/withdraw/$', ContestWithdrawRatingChanges.as_view(), name='contest_withdraw_ratings'),
+    url(r'^contests/ratings/global/$', ApplyGlobalChangesToRating.as_view(), name='contest_apply_ratings_global'),
 
     url(r'^server/$', ServerList.as_view(), name='server'),
     url(r'^server/create/$', ServerCreate.as_view(), name='server_create'),
@@ -60,13 +60,13 @@ urlpatterns = [
     url(r'^server/rejudge/crashed/$', RejudgeAllCrashedSubmission.as_view(), name='rejudge_crashed_submission'),
 
     url(r'^site/$', SiteSettingsUpdate.as_view(), name='site'),
-    url(r'^migrate/$', MigrateList.as_view(), name='migrate'),
-    url(r'^migrate/code/(?P<submission_id>\d+)/', OldSubmissionQuery.as_view(), name='migrate_code'),
-    url(r'^migrate/rejudge/(?P<submission_id>\d+)/', OldSubmissionRejudge.as_view(), name='migrate_rejudge'),
+    url(r'^museum/$', MigrateList.as_view(), name='museum'),
+    url(r'^museum/code/(?P<submission_id>\d+)/', OldSubmissionQuery.as_view(), name='migrate_code'),
+    url(r'^museum/rejudge/(?P<submission_id>\d+)/', OldSubmissionRejudge.as_view(), name='migrate_rejudge'),
 
-    url(r'^blog/$', BlogList.as_view(), name='blog'),
-    url(r'^blog/(?P<pk>\d+)/visible/$', BlogVisibleSwitch.as_view(), name='blog_visible_switch'),
-    url(r'^blog/(?P<pk>\d+)/recommend/$', BlogRecommendSwitch.as_view(), name='blog_recommend_switch'),
+    url(r'^shares/$', BlogList.as_view(), name='shares'),
+    url(r'^shares/(?P<pk>\d+)/visible/$', BlogVisibleSwitch.as_view(), name='blog_visible_switch'),
+    url(r'^shares/(?P<pk>\d+)/recommend/$', BlogRecommendSwitch.as_view(), name='blog_recommend_switch'),
 
     url(r'^log/$', UpdateLogList.as_view(), name='log'),
     url(r'^log/create/$', UpdateLogCreate.as_view(), name='log_create'),

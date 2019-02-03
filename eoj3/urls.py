@@ -1,29 +1,27 @@
-import re
-
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.static import serve
 
-from account.profile import ProfileView
-from home.search import search_view
-from migrate.views import migrate_view
-from utils.auth_view import logout
-from utils.comment import login_required_post_comment
+from accounts.profile import ProfileView
+from shares.views.search import search_view
+from museum.views import migrate_view
+from commons.utils import logout
+from commons.utils import login_required_post_comment
 import django_comments_xtd.api as comment_xtd_api
 
-from account.views import my_login, RegisterView, FeedbackView
-from home.views import home_view, faq_view, TestView, forbidden_view, not_found_view, server_error_view, update_log_view, PasteView
-from home.museum import museum_view
-from problem.views import make_payment_for_full_report, case_download_link
+from accounts.views import my_login, RegisterView, FeedbackView
+from shares.views.views import home_view, faq_view, TestView, forbidden_view, not_found_view, server_error_view, update_log_view, PasteView
+from shares.views.museum import museum_view
+from problems.views import make_payment_for_full_report, case_download_link
 from submission.print import PrintCodeView, PrintCodeDownload, PrintAdminView, PrintPdfDownload
-from utils.site_settings import force_closed
+from commons.utils.site_settings import force_closed
 from .settings import UPLOAD_DIR, DEBUG, STATIC_DIR, MEDIA_URL, MEDIA_ROOT
 
 
 urlpatterns = [
     url(r'^login/$', my_login, name='login'),
-    url(r'^contest/', include('contest.urls', namespace='contest')),
+    url(r'^contests/', include('contests.urls', namespace='contests')),
     url(r'^backstage/', include('backstage.urls', namespace='backstage')),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^logout/$', logout, name='logout'),
@@ -33,15 +31,15 @@ urlpatterns = [
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^$', home_view, name='home'),
     url(r'^faq/$', faq_view, name='faq'),
-    url(r'^problem/', include('problem.urls', namespace='problem'), kwargs=force_closed()),
+    url(r'^problems/', include('problems.urls', namespace='problems'), kwargs=force_closed()),
     url(r'^register/$', RegisterView.as_view(), name='register'),
-    url(r'^account/', include('account.urls', namespace='account')),
-    url(r'^blog/', include('blog.urls', namespace='blog'), kwargs=force_closed()),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^shares/', include('shares.urls', namespace='shares'), kwargs=force_closed()),
     url(r'^feedback/', FeedbackView.as_view(), name='feedback'),
     url(r'^polygon/', include('polygon.urls', namespace='polygon')),
     url(r'^message/', include('message.urls', namespace='message')),
     url(r'^notification/', include('notification.urls', namespace='notification')),
-    url(r'^migrate/$', migrate_view, name='migrate'),
+    url(r'^museum/$', migrate_view, name='museum'),
     url(r'^pay/report/', make_payment_for_full_report, name='pay_report', kwargs=force_closed()),
     url(r'^case/download/$', case_download_link, name='download_case', kwargs=force_closed()),
     url(r'^museum/$', museum_view, name='museum'),

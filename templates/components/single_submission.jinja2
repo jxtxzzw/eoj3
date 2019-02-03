@@ -25,9 +25,9 @@
       <th rowspan="{% if submission.status_message %}3{% else %}2{% endif %}" style="padding:1em">{{ submission.id }}</th>
     {% if not hide_problem %}
       {% if submission.contest_id and submission.contest_problem %}
-        <td><a href="{{ url('contest:problem', submission.contest_id, submission.contest_problem.identifier) }}">{{ submission.contest_problem }}</a></td>
+        <td><a href="{{ url('contests:problems', submission.contest_id, submission.contest_problem.identifier) }}">{{ submission.contest_problem }}</a></td>
       {% else %}
-        <td><a href="{{ url('problem:detail', submission.problem_id) }}">{{ submission.problem }}</a></td>
+        <td><a href="{{ url('problems:detail', submission.problem_id) }}">{{ submission.problem }}</a></td>
       {% endif %}
     {% endif %}
       <td>{% if submission.lang %}{{ submission.get_lang_display() }}{% else %}N/A{% endif %}</td>

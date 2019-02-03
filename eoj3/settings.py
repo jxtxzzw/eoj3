@@ -86,27 +86,17 @@ INSTALLED_APPS = [
   'django.contrib.humanize',
   'django.contrib.sites',
 
-  'api',
-  'home',
-  'account',
-  'dispatcher',
-  'problem',
+  'accounts',
   'backstage',
-  'submission',
-  'contest',
-  'utils',
-  'tests',
-  'blog',
-  'migrate',
-  'polygon',
-  'message',
-  'filemanager',
-  'paste',
+  'commons',
+  'contests',
+  'museum',
+  'problems',
+  'shares',
 
   # third-party packages
   'widget_tweaks',
   'django_jinja',
-  'django_jinja.contrib._humanize',
   'tagging',
   'debug_toolbar',
   'captcha',
@@ -115,8 +105,6 @@ INSTALLED_APPS = [
   'django_comments_xtd',
   'django_comments',
   'notifications',
-
-  'django_q',
 ]
 
 MIDDLEWARE = [
@@ -283,7 +271,7 @@ STATICFILES_DIRS = []
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'accounts.User'
 SESSION_COOKIE_AGE = 1209600  # default 2 weeks
 LOGIN_URL = '/login/'
 UPLOAD_DIR = os.path.join(BASE_DIR, "upload")
@@ -340,7 +328,7 @@ COMMENTS_XTD_APP_MODEL_OPTIONS = {
     'allow_feedback': True,
     'show_feedback': False,
   },
-  'contest.contest': {
+  'contests.contests': {
     'allow_flagging': False,
     'allow_feedback': False,
     'show_feedback': False,
@@ -352,7 +340,7 @@ COMMENT_MAX_LENGTH = 3000
 # notification
 NOTIFICATIONS_SOFT_DELETE = True
 
-AUTHENTICATION_BACKENDS = ['account.permissions.UsernameOrEmailModelBackend']
+AUTHENTICATION_BACKENDS = ['accounts.permissions.UsernameOrEmailModelBackend']
 
 Q_CLUSTER = {
   'name': 'eoj_cluster',

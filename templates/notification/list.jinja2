@@ -20,11 +20,11 @@
         <div class="summary">
           {{ username_display(item.actor) }} {{ item.verb }}
           {% if item.target.__class__.__name__ == 'Contest' %}
-            <a href="{{ url('contest:dashboard', item.target.pk) }}">{{ item.target.title }}</a>
+            <a href="{{ url('contests:dashboard', item.target.pk) }}">{{ item.target.title }}</a>
           {% elif item.target.__class__.__name__ == 'Problem' %}
-            <a href="{{ url('problem:discussion', item.target.pk) }}">{{ item.target.title }}</a>
+            <a href="{{ url('problems:discussion', item.target.pk) }}">{{ item.target.title }}</a>
           {% elif item.target.__class__.__name__ == 'Blog' %}
-            <a href="{{ url('blog:detail', item.target.pk) }}">{{ item.target.title }}</a>
+            <a href="{{ url('shares:detail', item.target.pk) }}">{{ item.target.title }}</a>
           {% endif %}
         </div>
       </div>

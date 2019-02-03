@@ -6,9 +6,9 @@
 
 {% block content %}
 
-  <a href="{{ url('contest:activity_register', activity.pk) }}" class="ui basic button">Back to activity</a>
-  <a href="{{ url('contest:activity_admin_add', activity.pk) }}" class="ui basic button">Add a user</a>
-  <a data-link="{{ url('contest:activity_confirm_email', activity.pk) }}" class="ui basic button post-link">Send Confirm Email</a>
+  <a href="{{ url('contests:activity_register', activity.pk) }}" class="ui basic button">Back to activity</a>
+  <a href="{{ url('contests:activity_admin_add', activity.pk) }}" class="ui basic button">Add a user</a>
+  <a data-link="{{ url('contests:activity_confirm_email', activity.pk) }}" class="ui basic button post-link">Send Confirm Email</a>
 
   <table class="ui celled very compact center aligned small table">
     <thead>
@@ -41,7 +41,7 @@
           <td>{{ participant.graduate_year }}</td>
           <td>{% if participant.is_deleted %}Yes{% endif %}</td>
           <td>{% if participant.is_confirmed %}Yes{% endif %}</td>
-          <td><a href="{{ url('contest:activity_admin_update', activity.pk, participant.pk) }}">Edit</a></td>
+          <td><a href="{{ url('contests:activity_admin_update', activity.pk, participant.pk) }}">Edit</a></td>
         </tr>
       {% endfor %}
     </tbody>

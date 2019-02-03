@@ -8,20 +8,20 @@
 
   {% if is_privileged %}
   <div class="ui right floated buttons">
-    <a class="ui labeled icon primary button" href="{{ url('contest:update_standings', contest.pk) }}"><i class="refresh icon"></i>{{ _('Refresh') }}</a>
+    <a class="ui labeled icon primary button" href="{{ url('contests:update_standings', contest.pk) }}"><i class="refresh icon"></i>{{ _('Refresh') }}</a>
     <div class="ui simple dropdown icon button">
       <i class="settings icon"></i>
       <div class="menu">
-        <a class="item" href="{{ url('contest:download_standings', contest.pk) }}" target="_blank">
+        <a class="item" href="{{ url('contests:download_standings', contest.pk) }}" target="_blank">
           <i class="download icon"></i> {{ _('Standings as .csv') }}
         </a>
-        <a class="item" href="{{ url('contest:report_testsys', contest.pk) }}" target="_blank">
+        <a class="item" href="{{ url('contests:report_testsys', contest.pk) }}" target="_blank">
           <i class="download icon"></i> {{ _('Standings (TestSys)') }}
         </a>
-        <a class="item" href="{{ url('contest:download_code', contest.pk) }}?t=all" target="_blank">
+        <a class="item" href="{{ url('contests:download_code', contest.pk) }}?t=all" target="_blank">
           <i class="code icon"></i> {{ _('Download All Codes') }}
         </a>
-        <a class="item" href="{{ url('contest:download_code', contest.pk) }}?t=all_accepted" target="_blank">
+        <a class="item" href="{{ url('contests:download_code', contest.pk) }}?t=all_accepted" target="_blank">
           <i class="checkmark icon"></i> {{ _('Accepted Codes') }}
         </a>
         <a class="item" href="?privilege=true" target="_blank">
@@ -96,7 +96,7 @@
     {{ my_paginator() }}
   {% endif %}
 
-  <div id="penalty-detail-modal" class="ui small modal" data-api="{{ url('contest:penalty_detail', contest.pk) }}">
+  <div id="penalty-detail-modal" class="ui small modal" data-api="{{ url('contests:penalty_detail', contest.pk) }}">
     <div class="content">
     </div>
   </div>

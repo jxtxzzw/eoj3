@@ -29,7 +29,7 @@
         <i class="puzzle icon"></i>
       </div>
       <div class="content">
-        <a href="{{ url('problem:detail', ret.pk) }}" class="summary">
+        <a href="{{ url('problems:detail', ret.pk) }}" class="summary">
           Problem #{{ ret.pk }}: {{ ret.title }}
         </a>
         <div class="extra text">
@@ -38,7 +38,7 @@
           {% endcache %}
         </div>
         {% if ret.source %}
-          <a class="meta" href="{{ url('problem:list') }}?source={{ ret.source }}">
+          <a class="meta" href="{{ url('problems:list') }}?source={{ ret.source }}">
             Source: {{ ret.source }}
           </a>
         {% endif %}
@@ -60,7 +60,7 @@
         <i class="flag checkered icon"></i>
       </div>
       <div class="content">
-        <a href="{{ url('contest:dashboard', ret.pk) }}" class="summary">
+        <a href="{{ url('contests:dashboard', ret.pk) }}" class="summary">
           比赛/作业: {{ ret.title }}
         </a>
         {% if ret.contest_type == 0 and ret.start_time %}
@@ -75,7 +75,7 @@
       </div>
       <div class="content">
         <a class="summary">
-          Blog: <a href="{{ url('blog:detail', ret.pk) }}">{{ ret.title }}</a> by {{ username_display(ret.author) }}
+          Blog: <a href="{{ url('shares:detail', ret.pk) }}">{{ ret.title }}</a> by {{ username_display(ret.author) }}
         </a>
         <div class="extra text">
           {% cache 3600 'blog_preview#' + ret.pk.__str__() + '#' + ret.edit_time.__str__() %}

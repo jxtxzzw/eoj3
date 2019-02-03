@@ -7,20 +7,20 @@
 {% block content %}
 
   <div class="ui text stackable menu">
-    <a class="{{ active('contest:dashboard') }} {{ active('contest:problem') }} item" href="{{ url('contest:dashboard', contest.pk) }}">{{ _('Dashboard') }}</a>
+    <a class="{{ active('contests:dashboard') }} {{ active('contests:problems') }} item" href="{{ url('contests:dashboard', contest.pk) }}">{{ _('Dashboard') }}</a>
     {% if request.user.is_authenticated %}
-    <a class="{{ active('contest:question') }} item" href="{{ url('contest:question', contest.pk) }}">{{ _('Q&A') }} <div id="qa-new-flag" class="ui red horizontal label" style="margin-left: 0.5em;{% if not check_new %}display:none{% endif %}">NEW</div></a>
-    <a class="{{ active('contest:my') }} item" href="{{ url('contest:my', contest.pk) }}">{{ _('My') }}</a>
+    <a class="{{ active('contests:question') }} item" href="{{ url('contests:question', contest.pk) }}">{{ _('Q&A') }} <div id="qa-new-flag" class="ui red horizontal label" style="margin-left: 0.5em;{% if not check_new %}display:none{% endif %}">NEW</div></a>
+    <a class="{{ active('contests:my') }} item" href="{{ url('contests:my', contest.pk) }}">{{ _('My') }}</a>
     {% endif %}
     {% if contest.common_status_access_level >= 0 or is_privileged %}
-      <a class="{{ active('contest:status') }} item" href="{{ url('contest:status', contest.pk) }}">{{ _('Status') }}</a>
-      <a class="{{ active('contest:standings') }} item" href="{{ url('contest:standings', contest.pk) }}">{{ _('Standings') }}</a>
+      <a class="{{ active('contests:status') }} item" href="{{ url('contests:status', contest.pk) }}">{{ _('Status') }}</a>
+      <a class="{{ active('contests:standings') }} item" href="{{ url('contests:standings', contest.pk) }}">{{ _('Standings') }}</a>
     {% endif %}
     {% if is_volunteer or is_privileged %}
-      <a class="{{ active('contest:balloon') }} item" href="{{ url('contest:balloon', contest.pk) }}">{{ _('Balloon') }}</a>
+      <a class="{{ active('contests:balloon') }} item" href="{{ url('contests:balloon', contest.pk) }}">{{ _('Balloon') }}</a>
     {% endif %}
     {% if analysis_available %}
-      <a class="item" href="{{ url('blog:detail', contest.analysis_blog_id) }}" target="_blank">{{ _('Analysis') }}</a>
+      <a class="item" href="{{ url('shares:detail', contest.analysis_blog_id) }}" target="_blank">{{ _('Analysis') }}</a>
     {% endif %}
     {% if is_privileged %}
       <a class="item" href="{{ url('polygon:contest_meta', contest.pk) }}">{{ _('Manage') }}</a>
@@ -92,8 +92,8 @@
             <div class="ui segment">
               <div class="ui relaxed link list">
                 {% for contest_problem in contest_problem_list %}
-                  <a class="item {{ active('contest:problem', cid=contest.pk, pid=contest_problem.identifier) }}"
-                     href="{{ url('contest:problem', contest.pk, contest_problem.identifier) }}">
+                  <a class="item {{ active('contests:problems', cid=contest.pk, pid=contest_problem.identifier) }}"
+                     href="{{ url('contests:problems', contest.pk, contest_problem.identifier) }}">
                       {{ contest_problem.identifier }}. {{ contest_problem.problem.title }}
                   </a>
                 {% endfor %}
@@ -179,7 +179,7 @@
   {% if has_permission and request.user.is_authenticated %}
   <script>
   function checkNew() {
-    $.get("{{ url('contest:check', contest.pk) }}", function (data) {
+    $.get("{{ url('contests:check', contest.pk) }}", function (data) {
       var indicator = parseInt(data);
       if (indicator >= 1) {
         $("#qa-new-flag").show();

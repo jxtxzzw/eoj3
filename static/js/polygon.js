@@ -21,8 +21,8 @@ $("#basic-info-button").click(function () {
   }).modal('show');
 });
 
-$('#contest-create-button').click(function () {
-  $("#contest-create")
+$('#contests-create-button').click(function () {
+  $("#contests-create")
     .modal('show');
 });
 $("#session-create-form")
@@ -289,10 +289,10 @@ if ($("#session-case-app").length > 0) {
   });
 }
 
-if ($("#contest-problem-app").length > 0) {
+if ($("#contests-problems-app").length > 0) {
   Vue.options.delimiters = ["[[", "]]"];
   new Vue({
-    el: "#contest-problem-app",
+    el: "#contests-problems-app",
     data: {
       appData: []
     },
@@ -322,7 +322,7 @@ if ($("#contest-problem-app").length > 0) {
         }.bind(this));
       },
       readjustProblemPoint: function (e) {
-        var modal = $("#problem-point-modal");
+        var modal = $("#problems-point-modal");
         var form = modal.find("form");
         var problem = $(e.currentTarget).data("id");
         modal.modal({
@@ -337,7 +337,7 @@ if ($("#contest-problem-app").length > 0) {
         }).modal('show');
       },
       readjustProblemIdentifier: function (e) {
-        var modal = $("#problem-identifier-modal");
+        var modal = $("#problems-identifier-modal");
         var form = modal.find("form");
         var problem = $(e.currentTarget).data("id");
         modal.modal({
@@ -371,10 +371,10 @@ if ($("#contest-problem-app").length > 0) {
       this.updateConfig();
     },
     mounted: function () {
-      $('.ui.dropdown.problem-search').each(function () {
+      $('.ui.dropdown.problems-search').each(function () {
         $(this).dropdown({
           apiSettings: {
-            url: $(this).data('query') || '/api/search/problem/?kw={query}'
+            url: $(this).data('query') || '/api/search/problems/?kw={query}'
           }
         });
       });

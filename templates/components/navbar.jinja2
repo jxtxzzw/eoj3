@@ -12,11 +12,11 @@
       <i class="dropdown icon"></i>
       <div class="menu">
         <a class="item" href="{{ url('profile', request.user.pk) }}">{{ _('Profile') }}</a>
-        <a class="item" href="{{ url('blog:index', request.user.pk) }}">{{ _('Blog') }}</a>
-        <a class="item" href="{{ url('problem:status') }}?user={{ request.user.pk }}">{{ _('Submission') }}</a>
-        <a class="item" href="{{ url('account:profile') }}">{{ _('Settings') }}</a>
-        <a class="item" href="{{ url('account:payment') }}">{{ _('Payment') }}</a>
-        <a class="item" href="{{ url('migrate') }}">{{ _('Migrate') }}</a>
+        <a class="item" href="{{ url('shares:index', request.user.pk) }}">{{ _('Blog') }}</a>
+        <a class="item" href="{{ url('problems:status') }}?user={{ request.user.pk }}">{{ _('Submission') }}</a>
+        <a class="item" href="{{ url('accounts:profile') }}">{{ _('Settings') }}</a>
+        <a class="item" href="{{ url('accounts:payment') }}">{{ _('Payment') }}</a>
+        <a class="item" href="{{ url('museum') }}">{{ _('Migrate') }}</a>
         <a class="item" href="{{ url('feedback') }}">{{ _('Feedback') }}</a>
       {% if user is admin %}
         <a class="item" href="{{ url('backstage:index') }}">{{ _('Backstage') }}</a>
@@ -41,9 +41,9 @@
       <span class="text"><b>EOJ</b></span>
       <div class="menu">
         <a class="item" href="{{ url('home') }}">{{ _('Home') }}</a>
-        <a class="item" href="{{ url('contest:list') }}">{{ _('Contests') }}</a>
-        <a class="item" href="{{ url('problem:list') }}">{{ _('Problems') }}</a>
-        <a class="item" href="{{ url('contest:gym') }}">{{ _('Gym') }}</a>
+        <a class="item" href="{{ url('contests:list') }}">{{ _('Contests') }}</a>
+        <a class="item" href="{{ url('problems:list') }}">{{ _('Problems') }}</a>
+        <a class="item" href="{{ url('contests:gym') }}">{{ _('Gym') }}</a>
       </div>
     </div>
 
@@ -54,9 +54,9 @@
 
   <div class="ui container" id="navbar-large">
     <a class="{{ active('home') }} item" href="{{ url('home') }}"><i class="home icon"></i>{{ _('Home') }}</a>
-    <a class="{{ active('contest:list') }} item" href="{{ url('contest:list') }}"><i class="flag icon"></i>{{ _('Contests') }}</a>
-    <a class="item {{ active('problem:*') }}" href="{{ url('problem:list') }}"><i class="book icon"></i>{{ _('Problems') }}</a>
-    <a class="{{ active('contest:gym') }} item" href="{{ url('contest:gym') }}"><i class="paper plane icon"></i>{{ _('Gym') }}</a>
+    <a class="{{ active('contests:list') }} item" href="{{ url('contests:list') }}"><i class="flag icon"></i>{{ _('Contests') }}</a>
+    <a class="item {{ active('problems:*') }}" href="{{ url('problems:list') }}"><i class="book icon"></i>{{ _('Problems') }}</a>
+    <a class="{{ active('contests:gym') }} item" href="{{ url('contests:gym') }}"><i class="paper plane icon"></i>{{ _('Gym') }}</a>
 
 
     <div class="right menu">

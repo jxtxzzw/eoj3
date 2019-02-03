@@ -107,7 +107,7 @@
       {% for submission in submission_list %}
         <tr>
           <td>
-          {% if not submission.contest_id %}<a href="{{ url('problem:submission', submission.problem_id, submission.id) }}">{{ submission.id }}{% else %}<a href="{{ url('contest:submission', submission.contest_id, submission.id) }}">{{ submission.id }}{% endif %}{% if not all_valid and (submission.unofficial or (contest and submission.contest_id != contest.pk) or (not contest and submission.contest_id)) %}*{% endif %}
+          {% if not submission.contest_id %}<a href="{{ url('problems:submission', submission.problem_id, submission.id) }}">{{ submission.id }}{% else %}<a href="{{ url('contests:submission', submission.contest_id, submission.id) }}">{{ submission.id }}{% endif %}{% if not all_valid and (submission.unofficial or (contest and submission.contest_id != contest.pk) or (not contest and submission.contest_id)) %}*{% endif %}
           </a></td>
         {% if submission.contest_time and participate_contest_status == 0 %}
           <td>{{ submission.contest_time | timedelta(True) }}</td>
@@ -119,10 +119,10 @@
         {% endif %}
           {% if not hide_problems %}
             {% if not contest %}
-              <td><a href="{{ url('problem:detail', submission.problem_id) }}">{{ submission.problem }}</a></td>
+              <td><a href="{{ url('problems:detail', submission.problem_id) }}">{{ submission.problem }}</a></td>
             {% else %}
               {% if submission.contest_problem %}
-                <td><a href="{{ url('contest:problem', contest.pk, submission.contest_problem.identifier) }}">{{ submission.contest_problem }}</a></td>
+                <td><a href="{{ url('contests:problems', contest.pk, submission.contest_problem.identifier) }}">{{ submission.contest_problem }}</a></td>
               {% else %}
                 <td>{{ _('N/A') }}</td>
               {% endif %}

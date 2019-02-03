@@ -73,9 +73,9 @@
   {{ status(hide_problems=True, code_length=True, judge_server=True) }}
 
   <div class="ui right floated buttons">
-    <a class="ui green button" href="{{ url('problem:status') }}?problem={{ problem.pk }}&verdict=v0">{{ _('Accepted') }}</a>
+    <a class="ui green button" href="{{ url('problems:status') }}?problem={{ problem.pk }}&verdict=v0">{{ _('Accepted') }}</a>
     <div class="or"></div>
-    <a class="ui button" href="{{ url('problem:status') }}?problem={{ problem.pk }}">{{ _('All submissions') }}
+    <a class="ui button" href="{{ url('problems:status') }}?problem={{ problem.pk }}">{{ _('All submissions') }}
       <i class="right chevron icon"></i>
     </a>
   </div>

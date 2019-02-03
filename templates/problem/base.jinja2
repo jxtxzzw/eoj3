@@ -5,10 +5,10 @@
 {% block content %}
 
   <div class="ui stackable secondary menu small">
-    <a class="{{ active('problem:list') }} item" href="{{ url('problem:list') }}">{{ _('PROBLEMSET') }}</a>
-    <a class="{{ active('problem:source') }} item" href="{{ url('problem:source') }}">{{ _('SOURCE') }}</a>
-    <a class="{{ active('problem:millionaire') }} item" href="{{ url('problem:millionaire') }}">{{ _('MILLIONAIRE') }}</a>
-    <a class="{{ active('problem:status') }} item" href="{{ url('problem:status') }}">{{ _('STATUS') }}</a>
+    <a class="{{ active('problems:list') }} item" href="{{ url('problems:list') }}">{{ _('PROBLEMSET') }}</a>
+    <a class="{{ active('problems:source') }} item" href="{{ url('problems:source') }}">{{ _('SOURCE') }}</a>
+    <a class="{{ active('problems:millionaire') }} item" href="{{ url('problems:millionaire') }}">{{ _('MILLIONAIRE') }}</a>
+    <a class="{{ active('problems:status') }} item" href="{{ url('problems:status') }}">{{ _('STATUS') }}</a>
   </div>
 
   {% block problem_content %}

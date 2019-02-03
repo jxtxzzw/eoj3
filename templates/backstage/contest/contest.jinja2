@@ -22,7 +22,7 @@
       {% for contest in contest_list %}
         <tr>
           <td scope="row">{{ contest.pk }}</td>
-          <td><a href="{{ url('contest:dashboard', contest.pk) }}">{{ contest.title }}</a></td>
+          <td><a href="{{ url('contests:dashboard', contest.pk) }}">{{ contest.title }}</a></td>
           <td>{{ contest.start_time | date('Y-m-d H:i') }}</td>
           <td>{{ contest.end_time | date('Y-m-d H:i') }}</td>
           <td><a class="post-link" data-link="{{ url('backstage:contest_apply_ratings', contest.pk) }}">Apply</a></td>
