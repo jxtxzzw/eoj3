@@ -1,0 +1,24 @@
+version: "3"
+services:
+
+  eoj-redis:
+    image: redis:5-alpine
+    container_name: eoj-redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - $PWD/data/redis:/data
+
+  eoj-postgres:
+    image: postgres:11-alpine
+    container_name: eoj-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - $PWD/data/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=eoj
+      - POSTGRES_USER=eoj
+      - POSTGRES_PASSWORD=eoj

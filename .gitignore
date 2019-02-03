@@ -3,6 +3,7 @@
 *.DS_Store
 .idea/
 __pycache__/
+venv/
 
 # Database
 *.sqlite3

@@ -9,7 +9,6 @@ Jinja2
 kombu
 Markdown
 MarkupSafe
-mysqlclient
 ordered-set
 Pygments
 python-markdown-math
