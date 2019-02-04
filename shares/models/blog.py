@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Sum, Case, When, IntegerField
 from accounts.models import User
-from commons.models import Text
+from commons.models import RichText
 from shares.models.base import Share
 
 
@@ -28,7 +28,7 @@ class BlogQuerySet(models.QuerySet):
 
 class Blog(Share):
   title = models.TextField(max_length=128)
-  content = models.ForeignKey(Text, on_delete=models.SET_NULL, null=True)
+  content = models.ForeignKey(RichText, on_delete=models.SET_NULL, null=True)
 
   likes = models.ManyToManyField(User, through='BlogLikes', related_name='blog_user_like')
   recommend = models.BooleanField(default=False)

@@ -123,88 +123,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'eoj3.urls'
 
-TEMPLATES = [
-  {
-    'BACKEND': 'django_jinja.backend.Jinja2',
-    'DIRS': [os.path.join(BASE_DIR, 'templates')],
-    # 'OPTIONS': {'environment': 'eoj3.jinja2.environment'},
-    'APP_DIRS': True,
-    'OPTIONS': {
-      "undefined": None,
-      "match_extension": ".jinja2",
-      'context_processors': [
-        'django.template.context_processors.debug',
-        'django.template.context_processors.request',
-        'django.contrib.auth.context_processors.auth',
-        'django.contrib.messages.context_processors.messages',
-        "django.template.context_processors.i18n",
-        'notification.context_processors.notification_processor.notification_processor',
-      ],
-      "globals": {
-        "myGlobal": "utils.jinja2.globals.is_active",
-        "myGlobal2": "utils.jinja2.globals.paginator",
-        "myGlobal3": "utils.jinja2.globals.render_field",
-        "myGlobal4": "utils.jinja2.globals.url_replace",
-        "myGlobal5": "utils.jinja2.globals.static_file_modify",
-        "myGlobal6": "utils.jinja2.globals.render_comment_tree",
-        "myGlobal7": "utils.jinja2.globals.url_encode",
-        "myGlobal8": "utils.jinja2.globals.username_display",
-        "myGlobal9": "utils.jinja2.globals.get_current_language",
-      },
-      "filters": {
-        "myFilter": "utils.jinja2.filters.status_choice",
-        "myFilter2": "utils.jinja2.filters.timedelta_format",
-        "myFilter3": "utils.jinja2.filters.markdown_format",
-        "myFilter4": "utils.jinja2.filters.sample_format",
-        "myFilter5": "utils.jinja2.filters.minute_format",
-        "myFilter6": "utils.jinja2.filters.get_intro",
-        "myFilter7": "utils.jinja2.filters.n2br",
-        "myFilter8": "utils.jinja2.filters.xss_filter",
-        "myFilter9": "utils.jinja2.filters.natural_duration",
-      },
-      "tests": {
-        "myTest": "utils.jinja2.tests.is_admin",
-      },
-      "extensions": [
-        "jinja2.ext.do",
-        "jinja2.ext.loopcontrols",
-        "jinja2.ext.with_",
-        "jinja2.ext.i18n",
-        "jinja2.ext.autoescape",
-        "django_jinja.builtins.extensions.CsrfExtension",
-        "django_jinja.builtins.extensions.CacheExtension",
-        "django_jinja.builtins.extensions.TimezoneExtension",
-        "django_jinja.builtins.extensions.UrlsExtension",
-        "django_jinja.builtins.extensions.StaticFilesExtension",
-        "django_jinja.builtins.extensions.DjangoFiltersExtension",
-      ],
-      "translation_engine": "django.utils.translation",
-    },
-  },
-  {
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [os.path.join(BASE_DIR, 'templates')],
-    'APP_DIRS': True,
-    'OPTIONS': {
-      'context_processors': [
-        'django.template.context_processors.debug',
-        'django.template.context_processors.request',
-        'django.contrib.auth.context_processors.auth',
-        'django.contrib.messages.context_processors.messages',
-        "django.template.context_processors.i18n",
-      ]
-    },
-  },
-]
-
 WSGI_APPLICATION = 'eoj3.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
   {
@@ -251,11 +170,6 @@ LANGUAGE_CODE = 'zh-Hans'
 LANGUAGES = (
   ('zh-Hans', '简体中文'),
   ('en', 'English')
-)
-
-LOCALE_PATHS = (
-  os.path.join(BASE_DIR, 'locale'),
-  os.path.join(BASE_DIR, 'locale', 'humanize')
 )
 
 USE_I18N = True
@@ -354,6 +268,3 @@ Q_CLUSTER = {
   'django_redis': 'default',
   'log_level': 'WARNING',
 }
-
-SUBMISSION_INTERVAL_LIMIT = 5
-SUBMISSION_ATTEMPT_LIMIT = 100

@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Sum, Case, When, IntegerField
 from accounts.models import User
-from commons.models import Text
+from commons.models import RichText
 from problems.models import Problem
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,7 +29,7 @@ class BlogQuerySet(models.QuerySet):
 
 class BlogRevision(models.Model):
   title = models.TextField()
-  content = models.ForeignKey(Text, on_delete=models.SET_NULL, null=True)
+  content = models.ForeignKey(RichText, on_delete=models.SET_NULL, null=True)
   created_by = models.ForeignKey(User, on_delete=models.CASCADE)
   create_time = models.DateTimeField(auto_now_add=True)
 
@@ -39,7 +39,7 @@ class BlogRevision(models.Model):
 
 class Blog(models.Model):
   title = models.CharField(max_length=128)
-  content = models.ForeignKey(Text, on_delete=models.SET_NULL, null=True)
+  content = models.ForeignKey(RichText, on_delete=models.SET_NULL, null=True)
   created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
   visible = models.BooleanField("Visible to all users", default=True)

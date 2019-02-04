@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from commons.fields.languages import LanguageField
-from commons.languages import LANG_CHOICES
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
@@ -137,7 +136,7 @@ class UserProfile(models.Model):
   preferred_lang = LanguageField()
   motto = models.TextField(max_length=256, blank=True)
 
-  avatar = models.ImageField(upload_to='avatar', default='avatar/default.jpg')
+  avatar = models.ImageField(upload_to='avatars/%Y/%m/%d/', default='avatars/default.jpg')
   avatar_small = ImageSpecField(source='avatar',
                                 processors=[ResizeToFill(50, 50)],
                                 format='JPEG',
