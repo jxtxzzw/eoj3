@@ -9,42 +9,46 @@
 
   <table class="ui very padded center aligned celled table">
     <thead>
-      <tr>
-        <th class="six wide">
-          <h4 class="ui header"><i class="user icon"></i> 人数</h4>
-        </th>
-        <th class="six wide">
-          <h4 class="ui header"><i class="tag icon"></i> 提交量</h4>
-        </th>
-        <th class="four wide">
-          <h4 class="ui header">奖励</h4>
-        </th>
-      </tr>
+    <tr>
+      <th class="six wide">
+        <h4 class="ui header"><i class="user icon"></i> 人数</h4>
+      </th>
+      <th class="six wide">
+        <h4 class="ui header"><i class="tag icon"></i> 提交量</h4>
+      </th>
+      <th class="four wide">
+        <h4 class="ui header">奖励</h4>
+      </th>
+    </tr>
     </thead>
     <tbody>
+    <tr>
+      <td>
+        <div class="ui statistic">
+          <div class="value">{{ user_ac_count }} / {{ user_all_count }}</div>
+          <div class="label">{{ "%.2f %%" | format(user_ratio) }} 解出</div>
+        </div>
+      </td>
+      <td>
+        <div class="ui statistic">
+          <div class="value">{{ ac_count }} / {{ all_count }}</div>
+          <div class="label">{{ "%.2f %%" | format(ratio) }} 通过</div>
+        </div>
+      </td>
+      <td>
+        <div class="ui statistic">
+          <div class="value">{{ difficulty | round(1) }}</div>
+          <div class="label">EMB</div>
+        </div>
+      </td>
+    </tr>
+    {% if all_count > 0 %}
       <tr>
-        <td>
-          <div class="ui statistic">
-            <div class="value">{{ user_ac_count }} / {{ user_all_count }}</div>
-            <div class="label">{{ "%.2f %%" | format(user_ratio) }} 解出</div>
-          </div>
-        </td>
-        <td>
-          <div class="ui statistic">
-            <div class="value">{{ ac_count }} / {{ all_count }}</div>
-            <div class="label">{{ "%.2f %%" | format(ratio) }} 通过</div>
-          </div>
-        </td>
-        <td>
-          <div class="ui statistic">
-            <div class="value">{{ difficulty | round(1) }}</div>
-            <div class="label">EMB</div>
-          </div>
+        <td colspan="3">
+          <div id="distribution"></div>
         </td>
       </tr>
-      {% if all_count > 0 %}
-      <tr><td colspan="3"><div id="distribution"></div></td></tr>
-      {% endif %}
+    {% endif %}
     </tbody>
   </table>
 
@@ -88,7 +92,7 @@
         <div class="sub header">你的提交用大圆标出</div>
       </div>
     </h3>
-  <div id="runtime-distribution"></div>
+    <div id="runtime-distribution"></div>
   {% endif %}
 
 {% endblock %}
@@ -99,72 +103,76 @@
   <script src="/static/node_modules/@antv/g2/dist/g2.min.js"></script>
   <script src="/static/node_modules/@antv/data-set/dist/data-set.min.js"></script>
   <script type="text/javascript">
-    {% if all_count > 0 %}
-    Morris.Donut({
-      element: 'distribution',
-      data: [
-        {label: "Accepted", value: {{ stats.ac }}, color: '#21BA45' },
-        {label: "Wrong Answer", value: {{ stats.wa }}, color: '#DB2828' },
-        {label: "Time Limit Exceeded", value: {{ stats.tle }}, color: '#F2711C' },
-        {label: "Runtime Error", value: {{ stats.re }}, color: '#FBBD08' },
-        {label: "Compile Error", value: {{ stats.ce }}, color: '#878787' },
-        {label: "Others", value: {{ stats.others }}, color: '#2185D0' }
-      ]
-    });
-    {% endif %}
+      {% if all_count > 0 %}
+          Morris.Donut({
+              element: 'distribution',
+              data: [
+                  {label: "Accepted", value: {{ stats.ac }}, color: '#21BA45'},
+                  {label: "Wrong Answer", value: {{ stats.wa }}, color: '#DB2828'},
+                  {label: "Time Limit Exceeded", value: {{ stats.tle }}, color: '#F2711C'},
+                  {label: "Runtime Error", value: {{ stats.re }}, color: '#FBBD08'},
+                  {label: "Compile Error", value: {{ stats.ce }}, color: '#878787'},
+                  {label: "Others", value: {{ stats.others }}, color: '#2185D0'}
+              ]
+          });
+      {% endif %}
 
-    var myFontFamily = "Open Sans";
+      var myFontFamily = "Open Sans";
 
-    {% if runtime_data %}
-    var runtimeData = [
-      {% for d in runtime_data %}{lang: "{{ d.get_lang_display() }}", length: {{ d.code_length }}, time: {{ d.status_time }}, mine: {% if d.mine %}true{% else %}false{% endif %}, href: "{{ d.link }}" }, {% endfor %}
-    ];
+      {% if runtime_data %}
+          var runtimeData = [
+                  {% for d in runtime_data %}{lang: "{{ d.get_lang_display() }}",
+                      length: {{ d.code_length }},
+                      time: {{ d.status_time }},
+                      mine: {% if d.mine %}true{% else %}false{% endif %},
+                      href: "{{ d.link }}" }, {% endfor %}
+          ];
 
-    var chart = new G2.Chart({
-      container: 'runtime-distribution',
-      forceFit: true,
-      height: 400
-    });
-    chart.source(runtimeData);
-    chart.tooltip({
-      showTitle: false,
-      "g2-tooltip": {
-        fontFamily: myFontFamily
-      },
-{#      crosshairs: {#}
-{#        type: 'cross'#}
-{#      },#}
-      itemTpl: '<li data-index={index} style="margin-bottom:4px;">' +
-               '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
-               '{name}<br/>' + '{value}' + '</li>'
-    });
-    chart.legend('lang', {
-      textStyle: {
-        fontFamily: myFontFamily
-      }
-    });
-    chart.legend('mine', false);
-    chart.point()
-      .position('length*time')
-      .color('lang', ["#00b5ad", "#2185d0", "#a333c8", "#6435c9", "#b5cc18", "#fbbd08"])
-      .size('mine', function (mine) {
-        return mine ? 7 : 3;
-      })
-      .opacity(0.5)
-      .shape('circle')
-      .tooltip('lang*length*time', function (lang, length, time) {
-        return {
-          name: lang,
-          value: length + 'B, ' + time + 's'
-        };
-      });
+          var chart = new G2.Chart({
+              container: 'runtime-distribution',
+              forceFit: true,
+              height: 400
+          });
+          chart.source(runtimeData);
+          chart.tooltip({
+              showTitle: false,
+              "g2-tooltip": {
+                  fontFamily: myFontFamily
+              },
+              {#      crosshairs: {#}
+              {#        type: 'cross'#}
+              {#      },#}
+              itemTpl: '<li data-index={index} style="margin-bottom:4px;">' +
+                  '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' +
+                  '{name}<br/>' + '{value}' + '</li>'
+          });
+          chart.legend('lang', {
+              textStyle: {
+                  fontFamily: myFontFamily
+              }
+          });
+          chart.legend('mine', false);
+          chart.point()
+              .position('length*time')
+              .color('lang', ["#00b5ad", "#2185d0", "#a333c8", "#6435c9", "#b5cc18", "#fbbd08"])
+              .size('mine', function (mine) {
+                  return mine ? 7 : 3;
+              })
+              .opacity(0.5)
+              .shape('circle')
+              .tooltip('lang*length*time', function (lang, length, time) {
+                  return {
+                      name: lang,
+                      value: length + 'B, ' + time + 's'
+                  };
+              });
 
-    chart.render();
-    chart.on("click", function (ev) {
-      if (ev.hasOwnProperty("data") && ev.data.hasOwnProperty("_origin"))
-        location.href = ev.data._origin.href;
-    });
-    {% endif %}
+          chart.render();
+          chart.on("click", function (ev) {
+              if (ev.hasOwnProperty("data") && ev.data.hasOwnProperty("_origin"))
+                  location.href = ev.data._origin.href;
+          });
+      {% endif %}
 
   </script>
 {% endblock %}

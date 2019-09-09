@@ -6,15 +6,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0019_contest_authors'),
+  ]
 
-    dependencies = [
-        ('contest', '0019_contest_authors'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='allowed_lang',
-            field=models.CharField(default='c,cc14,cpp,cs,hs,java,js,ocaml,pas,perl,php,py2,pypy,python,rs,scala', max_length=192, verbose_name='Allowed languages'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='allowed_lang',
+      field=models.CharField(default='c,cc14,cpp,cs,hs,java,js,ocaml,pas,perl,php,py2,pypy,python,rs,scala',
+                             max_length=192, verbose_name='Allowed languages'),
+    ),
+  ]

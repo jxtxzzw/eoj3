@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0046_contestproblemplag'),
+  ]
 
-    dependencies = [
-        ('contest', '0046_contestproblemplag'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contestproblemplag',
-            name='keep_match',
-            field=models.PositiveIntegerField(default=20),
-        ),
-        migrations.AddField(
-            model_name='contestproblemplag',
-            name='update_time',
-            field=models.DateTimeField(auto_now=True),
-        ),
-        migrations.AlterField(
-            model_name='contestproblemplag',
-            name='language',
-            field=models.CharField(default='c/c++', max_length=20),
-        ),
-        migrations.AlterField(
-            model_name='contestproblemplag',
-            name='status',
-            field=models.IntegerField(choices=[(-1, 'Pending'), (0, 'Ready'), (1, 'Failed')]),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contestproblemplag',
+      name='keep_match',
+      field=models.PositiveIntegerField(default=20),
+    ),
+    migrations.AddField(
+      model_name='contestproblemplag',
+      name='update_time',
+      field=models.DateTimeField(auto_now=True),
+    ),
+    migrations.AlterField(
+      model_name='contestproblemplag',
+      name='language',
+      field=models.CharField(default='c/c++', max_length=20),
+    ),
+    migrations.AlterField(
+      model_name='contestproblemplag',
+      name='status',
+      field=models.IntegerField(choices=[(-1, 'Pending'), (0, 'Ready'), (1, 'Failed')]),
+    ),
+  ]

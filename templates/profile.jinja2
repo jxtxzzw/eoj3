@@ -265,32 +265,32 @@
                           attrs: attrs
                       });
 
-            if (cfg.origin._origin.lastWeek) {
-              var linePath = [['M', points[2].x, points[2].y], ['L', points[3].x, points[3].y]];
-              container.addShape('path', {
-                zIndex: 1,
-                attrs: {
-                  path: this.parsePath(linePath),
-                  lineWidth: 1,
-                  stroke: '#777777'
-                }
-              });
-              if (cfg.origin._origin.lastDay) {
-                container.addShape('path', {
-                  zIndex: 1,
-                  attrs: {
-                    path: this.parsePath([['M', points[1].x, points[1].y], ['L', points[2].x, points[2].y]]),
-                    lineWidth: 1,
-                    stroke: '#777777'
+                      if (cfg.origin._origin.lastWeek) {
+                          var linePath = [['M', points[2].x, points[2].y], ['L', points[3].x, points[3].y]];
+                          container.addShape('path', {
+                              zIndex: 1,
+                              attrs: {
+                                  path: this.parsePath(linePath),
+                                  lineWidth: 1,
+                                  stroke: '#777777'
+                              }
+                          });
+                          if (cfg.origin._origin.lastDay) {
+                              container.addShape('path', {
+                                  zIndex: 1,
+                                  attrs: {
+                                      path: this.parsePath([['M', points[1].x, points[1].y], ['L', points[2].x, points[2].y]]),
+                                      lineWidth: 1,
+                                      stroke: '#777777'
+                                  }
+                              });
+                          }
+                      }
+                      container.sort();
+                      return polygon;
                   }
-                });
               }
-            }
-            container.sort();
-            return polygon;
-          }
-        }
-      });
+          });
 
           const data = {{ heatmap | safe }};
           const weekToMonth = {{ week_to_month | safe }};

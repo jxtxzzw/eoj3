@@ -2,32 +2,33 @@
 
 {% block problem_content %}
 
-{% macro show_tags(problem) %}
-  <div style="float:right">
-  {% for tag in problem.my_tags %}
-    <a href="?tag={{ tag }}" class="label horizontal ui problem-tag">{{ tag }}</a>
-  {% endfor %}
-  </div>
-{% endmacro %}
+  {% macro show_tags(problem) %}
+    <div style="float:right">
+      {% for tag in problem.my_tags %}
+        <a href="?tag={{ tag }}" class="label horizontal ui problem-tag">{{ tag }}</a>
+      {% endfor %}
+    </div>
+  {% endmacro %}
 
-{% macro accept_status(problem) %}
-  {% if problem.personal_label > 0 %}accepted{% elif problem.personal_label < 0 %}attempted{% endif %}
-{% endmacro %}
+  {% macro accept_status(problem) %}
+    {% if problem.personal_label > 0 %}accepted{% elif problem.personal_label < 0 %}attempted{% endif %}
+  {% endmacro %}
 
-{% macro accept_user_count(problem) %}
-  {% if problem.ac_user_count %}<i class="icon fitted user" aria-hidden="true"></i> x {{ problem.ac_user_count }}{% endif %}
-{% endmacro %}
+  {% macro accept_user_count(problem) %}
+    {% if problem.ac_user_count %}<i class="icon fitted user" aria-hidden="true"></i> x
+      {{ problem.ac_user_count }}{% endif %}
+  {% endmacro %}
 
   <div class="ui stackable grid">
     <div class="eight wide column">
       <table class="ui backend compact center aligned middle aligned celled unstackable table">
         <thead>
-          <tr>
-            <th class="left aligned">时下流行</th>
-            <th>热度</th>
-            <th>奖励</th>
-            <th>解出</th>
-          </tr>
+        <tr>
+          <th class="left aligned">时下流行</th>
+          <th>热度</th>
+          <th>奖励</th>
+          <th>解出</th>
+        </tr>
         </thead>
         <tbody>
         {% for problem in trending_problems %}
@@ -46,11 +47,11 @@
     <div class="eight wide column">
       <table class="ui backend compact center aligned middle aligned celled unstackable table">
         <thead>
-          <tr>
-            <th class="left aligned">未解之谜</th>
-            <th>更新时间</th>
-            <th>尝试人数</th>
-          </tr>
+        <tr>
+          <th class="left aligned">未解之谜</th>
+          <th>更新时间</th>
+          <th>尝试人数</th>
+        </tr>
         </thead>
         <tbody>
         {% for problem in unsolved_problems %}
@@ -70,14 +71,14 @@
   </div>
 
   {% macro problem_list_display(title, problem_list, with_tags=False) %}
-     <div class="eight wide column">
+    <div class="eight wide column">
       <table class="ui backend compact center aligned middle aligned celled unstackable table">
         <thead>
-          <tr>
-            <th class="left aligned">{{ title }}</th>
-            <th>奖励</th>
-            <th>解出</th>
-          </tr>
+        <tr>
+          <th class="left aligned">{{ title }}</th>
+          <th>奖励</th>
+          <th>解出</th>
+        </tr>
         </thead>
         <tbody>
         {% for problem in problem_list %}
@@ -108,9 +109,9 @@
   </div>
 
   <script>
-  gtag('event', 'view', {
-    'event_category': 'recommendation_list',
-  });
+      gtag('event', 'view', {
+          'event_category': 'recommendation_list',
+      });
   </script>
 
 {% endblock %}

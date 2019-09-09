@@ -4,50 +4,49 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0044_auto_20181106_1212'),
+  ]
 
-    dependencies = [
-        ('contest', '0044_auto_20181106_1212'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contestproblem',
-            name='ac_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='ac_user_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='avg_score',
-            field=models.FloatField(default=0),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='first_yes_by',
-            field=models.PositiveIntegerField(blank=True, null=True),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='first_yes_time',
-            field=models.DurationField(blank=True, null=True),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='max_score',
-            field=models.FloatField(default=0),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='total_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='contestproblem',
-            name='total_user_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contestproblem',
+      name='ac_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='ac_user_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='avg_score',
+      field=models.FloatField(default=0),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='first_yes_by',
+      field=models.PositiveIntegerField(blank=True, null=True),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='first_yes_time',
+      field=models.DurationField(blank=True, null=True),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='max_score',
+      field=models.FloatField(default=0),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='total_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='contestproblem',
+      name='total_user_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+  ]

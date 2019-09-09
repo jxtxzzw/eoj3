@@ -6,15 +6,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0004_remove_problem_created_by'),
+    ('dispatcher', '0001_initial'),
+  ]
 
-    dependencies = [
-        ('problem', '0004_remove_problem_created_by'),
-        ('dispatcher', '0001_initial'),
-    ]
-
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='serverproblemstatus',
-            unique_together=set([('server', 'problem')]),
-        ),
-    ]
+  operations = [
+    migrations.AlterUniqueTogether(
+      name='serverproblemstatus',
+      unique_together=set([('server', 'problem')]),
+    ),
+  ]

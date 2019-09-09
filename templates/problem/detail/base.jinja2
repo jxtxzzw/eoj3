@@ -13,7 +13,7 @@
       {% if not active('problem:discussion') and discussion_count > 0 %}{{ discussion_count }} 个{% endif %}讨论
     </a>
     {% if is_privileged %}
-    <a class="item" href="{{ url('polygon:problem_list_2') }}?exact={{ problem.pk }}">管理</a>
+      <a class="item" href="{{ url('polygon:problem_list_2') }}?exact={{ problem.pk }}">管理</a>
     {% endif %}
   </div>
 

@@ -6,22 +6,22 @@
 
   <table class="ui compact celled unstackable table">
     <thead>
-      <tr class="ui center aligned">
-        <th class="one wide">#</th>
-        <th></th>
-        <th class="two wide">解决</th>
-        <th class="two wide">EMB</th>
-      </tr>
+    <tr class="ui center aligned">
+      <th class="one wide">#</th>
+      <th></th>
+      <th class="two wide">解决</th>
+      <th class="two wide">EMB</th>
+    </tr>
     </thead>
     <tbody>
-      {% for rank in rank_list %}
-        <tr class="ui center aligned">
-          <td scope="row">{{ page_obj.start_index() + loop.index0 }}</td>
-          <td>{{ username_display(rank) }}</td>
-          <td>{{ rank.solved }}</td>
-          <td>{{ rank.score | round(1) }}</td>
-        </tr>
-      {% endfor %}
+    {% for rank in rank_list %}
+      <tr class="ui center aligned">
+        <td scope="row">{{ page_obj.start_index() + loop.index0 }}</td>
+        <td>{{ username_display(rank) }}</td>
+        <td>{{ rank.solved }}</td>
+        <td>{{ rank.score | round(1) }}</td>
+      </tr>
+    {% endfor %}
     </tbody>
   </table>
 

@@ -6,15 +6,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0013_taginfo'),
+    ('polygon', '0005_remove_case_in_tests'),
+  ]
 
-    dependencies = [
-        ('problem', '0013_taginfo'),
-        ('polygon', '0005_remove_case_in_tests'),
-    ]
-
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='revision',
-            unique_together=set([('problem', 'revision')]),
-        ),
-    ]
+  operations = [
+    migrations.AlterUniqueTogether(
+      name='revision',
+      unique_together=set([('problem', 'revision')]),
+    ),
+  ]

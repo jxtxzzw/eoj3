@@ -9,7 +9,8 @@
   {% do error_exists.append(1) %}
 {% endif %}
 
-<form class="ui form {% if error_exists %}error{% endif %}" action="{{ action_path or request.get_full_path() }}" method="post" enctype="multipart/form-data">
+<form class="ui form {% if error_exists %}error{% endif %}" action="{{ action_path or request.get_full_path() }}"
+      method="post" enctype="multipart/form-data">
   {% csrf_token %}
   <input type="hidden" name="next" value="{{ request.get_full_path() }}">
   <div class="ui error message">
@@ -93,7 +94,7 @@
 </form>
 
 <script>
-  $(".ui.form").submit(function() {
-    $(this).prop('loading', true);
-  });
+    $(".ui.form").submit(function () {
+        $(this).prop('loading', true);
+    });
 </script>

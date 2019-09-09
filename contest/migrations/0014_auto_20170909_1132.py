@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0013_auto_20170908_1652'),
+  ]
 
-    dependencies = [
-        ('contest', '0013_auto_20170908_1652'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='contestparticipant',
-            options={},
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='contestparticipant',
+      options={},
+    ),
+  ]

@@ -6,17 +6,16 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0018_auto_20180712_1337'),
+  ]
 
-    dependencies = [
-        ('problem', '0018_auto_20180712_1337'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='problemstatus',
-            name='problem',
-        ),
-        migrations.DeleteModel(
-            name='ProblemStatus',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='problemstatus',
+      name='problem',
+    ),
+    migrations.DeleteModel(
+      name='ProblemStatus',
+    ),
+  ]

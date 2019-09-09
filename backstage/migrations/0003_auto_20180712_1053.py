@@ -6,15 +6,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('backstage', '0002_auto_20180712_1038'),
+  ]
 
-    dependencies = [
-        ('backstage', '0002_auto_20180712_1038'),
-    ]
-
-    operations = [
-        migrations.RenameField(
-            model_name='updatelog',
-            old_name='signature',
-            new_name='created_by',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name='updatelog',
+      old_name='signature',
+      new_name='created_by',
+    ),
+  ]

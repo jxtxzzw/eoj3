@@ -4,29 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0024_auto_20181108_2313'),
+  ]
 
-    dependencies = [
-        ('problem', '0024_auto_20181108_2313'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='problem',
-            name='judge',
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='judging_memory_limit',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='judging_time_limit',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='package_id',
-            field=models.IntegerField(null=True),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='problem',
+      name='judge',
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='judging_memory_limit',
+      field=models.IntegerField(null=True),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='judging_time_limit',
+      field=models.IntegerField(null=True),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='package_id',
+      field=models.IntegerField(null=True),
+    ),
+  ]

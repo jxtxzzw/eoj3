@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0005_auto_20170423_2348'),
+  ]
 
-    dependencies = [
-        ('contest', '0005_auto_20170423_2348'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contestparticipant',
-            name='hidden_comment',
-            field=models.TextField(blank=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contestparticipant',
+      name='hidden_comment',
+      field=models.TextField(blank=True),
+    ),
+  ]

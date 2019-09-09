@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0002_auto_20170406_1637'),
+  ]
 
-    dependencies = [
-        ('account', '0002_auto_20170406_1637'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='user',
-            name='privilege',
-            field=models.CharField(choices=[('user', 'Regular User'), ('admin', 'Admin'), ('root', 'Root'), ('volunteer', 'Volunteer')], default='user', max_length=12),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='user',
+      name='privilege',
+      field=models.CharField(
+        choices=[('user', 'Regular User'), ('admin', 'Admin'), ('root', 'Root'), ('volunteer', 'Volunteer')],
+        default='user', max_length=12),
+    ),
+  ]

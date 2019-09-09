@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0005_auto_20170825_2201'),
+  ]
 
-    dependencies = [
-        ('submission', '0005_auto_20170825_2201'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='submission',
-            name='rewarded',
-            field=models.BooleanField(default=False),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='submission',
+      name='rewarded',
+      field=models.BooleanField(default=False),
+    ),
+  ]

@@ -7,35 +7,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('problem', '0006_auto_20170829_2033'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('problem', '0006_auto_20170829_2033'),
-    ]
-
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='problemmanagement',
-            unique_together=set([]),
-        ),
-        migrations.RemoveField(
-            model_name='problemmanagement',
-            name='problem',
-        ),
-        migrations.RemoveField(
-            model_name='problemmanagement',
-            name='user',
-        ),
-        migrations.RemoveField(
-            model_name='problem',
-            name='manager',
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='managers',
-            field=models.ManyToManyField(related_name='managing_problems', to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.DeleteModel(
-            name='ProblemManagement',
-        ),
-    ]
+  operations = [
+    migrations.AlterUniqueTogether(
+      name='problemmanagement',
+      unique_together=set([]),
+    ),
+    migrations.RemoveField(
+      model_name='problemmanagement',
+      name='problem',
+    ),
+    migrations.RemoveField(
+      model_name='problemmanagement',
+      name='user',
+    ),
+    migrations.RemoveField(
+      model_name='problem',
+      name='manager',
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='managers',
+      field=models.ManyToManyField(related_name='managing_problems', to=settings.AUTH_USER_MODEL),
+    ),
+    migrations.DeleteModel(
+      name='ProblemManagement',
+    ),
+  ]

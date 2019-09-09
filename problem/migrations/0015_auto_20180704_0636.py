@@ -6,20 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0014_problem_group_config'),
+  ]
 
-    dependencies = [
-        ('problem', '0014_problem_group_config'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='problem',
-            name='level',
-            field=models.IntegerField(choices=[(1, 'Easy'), (2, 'Medium-Easy'), (3, 'Medium'), (4, 'Medium-Hard'), (5, 'Hard')], default=3, verbose_name='Difficulty Level'),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='template_config',
-            field=models.TextField(blank=True, default='{}', verbose_name='Template'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='problem',
+      name='level',
+      field=models.IntegerField(
+        choices=[(1, 'Easy'), (2, 'Medium-Easy'), (3, 'Medium'), (4, 'Medium-Hard'), (5, 'Hard')], default=3,
+        verbose_name='Difficulty Level'),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='template_config',
+      field=models.TextField(blank=True, default='{}', verbose_name='Template'),
+    ),
+  ]

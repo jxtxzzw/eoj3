@@ -7,41 +7,40 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  initial = True
 
-    initial = True
+  dependencies = [
+    ('problem', '0001_initial'),
+  ]
 
-    dependencies = [
-        ('problem', '0001_initial'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Server',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=30, unique=True)),
-                ('ip', models.CharField(max_length=30)),
-                ('port', models.IntegerField()),
-                ('token', models.CharField(max_length=192)),
-                ('add_time', models.DateTimeField(auto_now_add=True)),
-                ('last_seen_time', models.DateTimeField(auto_now=True)),
-            ],
-            options={
-                'ordering': ['last_seen_time'],
-            },
-        ),
-        migrations.CreateModel(
-            name='ServerProblemStatus',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('testdata_hash', models.CharField(blank=True, max_length=64, verbose_name='Testdata hash')),
-                ('problem', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='problem.Problem')),
-                ('server', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dispatcher.Server')),
-            ],
-        ),
-        migrations.AddField(
-            model_name='server',
-            name='problems',
-            field=models.ManyToManyField(through='dispatcher.ServerProblemStatus', to='problem.Problem'),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='Server',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('name', models.CharField(max_length=30, unique=True)),
+        ('ip', models.CharField(max_length=30)),
+        ('port', models.IntegerField()),
+        ('token', models.CharField(max_length=192)),
+        ('add_time', models.DateTimeField(auto_now_add=True)),
+        ('last_seen_time', models.DateTimeField(auto_now=True)),
+      ],
+      options={
+        'ordering': ['last_seen_time'],
+      },
+    ),
+    migrations.CreateModel(
+      name='ServerProblemStatus',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('testdata_hash', models.CharField(blank=True, max_length=64, verbose_name='Testdata hash')),
+        ('problem', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='problem.Problem')),
+        ('server', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dispatcher.Server')),
+      ],
+    ),
+    migrations.AddField(
+      model_name='server',
+      name='problems',
+      field=models.ManyToManyField(through='dispatcher.ServerProblemStatus', to='problem.Problem'),
+    ),
+  ]

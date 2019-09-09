@@ -6,18 +6,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  initial = True
 
-    initial = True
+  dependencies = [
+  ]
 
-    dependencies = [
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='SiteSettings',
-            fields=[
-                ('key', models.CharField(max_length=254, primary_key=True, serialize=False)),
-                ('val', models.TextField(blank=True)),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='SiteSettings',
+      fields=[
+        ('key', models.CharField(max_length=254, primary_key=True, serialize=False)),
+        ('val', models.TextField(blank=True)),
+      ],
+    ),
+  ]

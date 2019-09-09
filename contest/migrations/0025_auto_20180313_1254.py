@@ -7,15 +7,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0024_auto_20180313_1129'),
+  ]
 
-    dependencies = [
-        ('contest', '0024_auto_20180313_1129'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='activityparticipant',
-            name='email',
-            field=models.CharField(max_length=192, validators=[django.core.validators.EmailValidator()]),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='activityparticipant',
+      name='email',
+      field=models.CharField(max_length=192, validators=[django.core.validators.EmailValidator()]),
+    ),
+  ]

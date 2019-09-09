@@ -4,46 +4,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0022_taginfo_parent_id'),
+  ]
 
-    dependencies = [
-        ('problem', '0022_taginfo_parent_id'),
-    ]
-
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='problemconteststatus',
-            unique_together=set(),
-        ),
-        migrations.RemoveField(
-            model_name='problemconteststatus',
-            name='problem',
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='ac_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='ac_user_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='reward',
-            field=models.PositiveIntegerField(default=9.9),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='total_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='problem',
-            name='total_user_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.DeleteModel(
-            name='ProblemContestStatus',
-        ),
-    ]
+  operations = [
+    migrations.AlterUniqueTogether(
+      name='problemconteststatus',
+      unique_together=set(),
+    ),
+    migrations.RemoveField(
+      model_name='problemconteststatus',
+      name='problem',
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='ac_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='ac_user_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='reward',
+      field=models.PositiveIntegerField(default=9.9),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='total_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='problem',
+      name='total_user_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.DeleteModel(
+      name='ProblemContestStatus',
+    ),
+  ]

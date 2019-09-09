@@ -23,7 +23,7 @@ def query_user(kw):
   results = list()
   if kw and len(kw) >= 3:
     for user in User.objects.filter(username__icontains=kw, is_active=True).exclude(username__icontains='#'). \
-                    all().only('username')[:5]:
+                  all().only('username')[:5]:
       results.append(dict(title=escape(user.username), url=reverse('profile', kwargs=dict(pk=user.pk))))
   return dict(name='User', results=results)
 
@@ -66,7 +66,7 @@ def query_problem(kw, all=False):
   q = get_problem_q_object(kw, all)
   if q:
     for problem in sorted_query(
-        Problem.objects.defer("description", "input", "output", "hint").filter(q).distinct().all(), kw):
+      Problem.objects.defer("description", "input", "output", "hint").filter(q).distinct().all(), kw):
       results.append(dict(title=escape(problem.title),
                           url=reverse('problem:detail', kwargs=dict(pk=problem.pk))))
   return dict(name='Problem', results=results)

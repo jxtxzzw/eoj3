@@ -19,7 +19,7 @@ def invalidate_problem(problem: Problem, save=True):
   problem.ac_count = len(ac_list)
   problem.total_count = len(query_list)
   reward_est = 5 - (2 * problem.ac_ratio + 3 * problem.ac_user_ratio) * min(log10(problem.ac_user_count + 1), 1.2) \
-        + max(6 - 2 * log10(problem.ac_user_count + 1), 0)
+               + max(6 - 2 * log10(problem.ac_user_count + 1), 0)
   # reward_est = (max(reward_est, 0.) ** 2) / 10
   problem.reward = max(min(reward_est, 9.9), 0.1)
   for field in problem._meta.local_fields:
@@ -123,6 +123,6 @@ def tags_stat(user_id):
   accept_counter = Counter()
   accept_list = get_accept_problem_list(user_id)
   for tag_id in TaggedItem.objects.filter(content_type=ContentType.objects.get_for_model(Problem)) \
-                      .filter(object_id__in=accept_list).values_list("tag_id", flat=True):
+    .filter(object_id__in=accept_list).values_list("tag_id", flat=True):
     accept_counter[tag_id] += 1
   return {tag_id: (accept_counter[tag_id], cnt) for tag_id, cnt in all_count.items()}

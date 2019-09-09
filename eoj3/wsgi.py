@@ -13,6 +13,7 @@ from django.core.wsgi import get_wsgi_application
 
 PROJECT_DIR = dirname(dirname(abspath(__file__)))
 import sys
+
 sys.path.insert(0, PROJECT_DIR)
 sys.path.insert(0, dirname(PROJECT_DIR))
 

@@ -143,7 +143,7 @@ class CaseCreateForm(forms.Form):
 
   def clean(self):
     if self.cleaned_data["option"] == "single" and (
-        self.cleaned_data["input_file"] is None or self.cleaned_data["output_file"] is None):
+      self.cleaned_data["input_file"] is None or self.cleaned_data["output_file"] is None):
       raise forms.ValidationError("输入输出文件是必须的。")
     if self.cleaned_data["option"] == "batch" and self.cleaned_data["batch_file"] is None:
       raise forms.ValidationError("文件压缩包是必须的。")

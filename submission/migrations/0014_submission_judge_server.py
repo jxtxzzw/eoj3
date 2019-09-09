@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0013_submission_report_paid'),
+  ]
 
-    dependencies = [
-        ('submission', '0013_submission_report_paid'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='submission',
-            name='judge_server',
-            field=models.CharField(blank=True, max_length=30),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='submission',
+      name='judge_server',
+      field=models.CharField(blank=True, max_length=30),
+    ),
+  ]

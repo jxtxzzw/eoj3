@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0003_submission_addon_info'),
+  ]
 
-    dependencies = [
-        ('submission', '0003_submission_addon_info'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='submission',
-            name='lang',
-            field=models.CharField(choices=[('c', 'C'), ('cpp', 'C++'), ('py2', 'Python 2'), ('python', 'Python 3'), ('java', 'Java 8'), ('pas', 'Pascal')], default='cpp', max_length=12, verbose_name='Language'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='submission',
+      name='lang',
+      field=models.CharField(
+        choices=[('c', 'C'), ('cpp', 'C++'), ('py2', 'Python 2'), ('python', 'Python 3'), ('java', 'Java 8'),
+                 ('pas', 'Pascal')], default='cpp', max_length=12, verbose_name='Language'),
+    ),
+  ]

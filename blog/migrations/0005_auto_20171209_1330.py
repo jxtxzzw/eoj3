@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('blog', '0004_blog_recommend'),
+  ]
 
-    dependencies = [
-        ('blog', '0004_blog_recommend'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='blog',
-            name='visible',
-            field=models.BooleanField(default=True, verbose_name='Visible'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='blog',
+      name='visible',
+      field=models.BooleanField(default=True, verbose_name='Visible'),
+    ),
+  ]

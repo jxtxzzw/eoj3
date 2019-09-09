@@ -6,28 +6,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0002_contestproblem_first_solved_by'),
+  ]
 
-    dependencies = [
-        ('contest', '0002_contestproblem_first_solved_by'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='contestparticipant',
-            options={'ordering': ['rank']},
-        ),
-        migrations.RemoveField(
-            model_name='contestproblem',
-            name='first_solved_by',
-        ),
-        migrations.AddField(
-            model_name='contestparticipant',
-            name='rank',
-            field=models.IntegerField(default=0),
-        ),
-        migrations.AlterField(
-            model_name='contest',
-            name='rule',
-            field=models.CharField(choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('oi2', 'Traditional OI Rule')], default='acm', max_length=12, verbose_name='Rule'),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='contestparticipant',
+      options={'ordering': ['rank']},
+    ),
+    migrations.RemoveField(
+      model_name='contestproblem',
+      name='first_solved_by',
+    ),
+    migrations.AddField(
+      model_name='contestparticipant',
+      name='rank',
+      field=models.IntegerField(default=0),
+    ),
+    migrations.AlterField(
+      model_name='contest',
+      name='rule',
+      field=models.CharField(choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('oi2', 'Traditional OI Rule')],
+                             default='acm', max_length=12, verbose_name='Rule'),
+    ),
+  ]

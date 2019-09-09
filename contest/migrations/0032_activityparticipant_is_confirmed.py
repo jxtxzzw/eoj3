@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0031_auto_20180502_0812'),
+  ]
 
-    dependencies = [
-        ('contest', '0031_auto_20180502_0812'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='activityparticipant',
-            name='is_confirmed',
-            field=models.BooleanField(default=False),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='activityparticipant',
+      name='is_confirmed',
+      field=models.BooleanField(default=False),
+    ),
+  ]

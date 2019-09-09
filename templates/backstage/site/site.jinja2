@@ -11,18 +11,18 @@
   </div>
   <table class="ui table">
     <thead>
-      <tr>
-        <th>Key</th>
-        <th>Value</th>
-      </tr>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
     </thead>
     <tbody>
-      {% for settings in site_settings %}
-        <tr>
-          <td>{{ settings.key }}</td>
-          <td>{{ settings.val }}</td>
-        </tr>
-      {% endfor %}
+    {% for settings in site_settings %}
+      <tr>
+        <td>{{ settings.key }}</td>
+        <td>{{ settings.val }}</td>
+      </tr>
+    {% endfor %}
     </tbody>
   </table>
 

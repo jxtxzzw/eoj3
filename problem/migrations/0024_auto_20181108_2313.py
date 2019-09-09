@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0023_auto_20181108_2301'),
+  ]
 
-    dependencies = [
-        ('problem', '0023_auto_20181108_2301'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='problem',
-            name='reward',
-            field=models.FloatField(default=9.9),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='problem',
+      name='reward',
+      field=models.FloatField(default=9.9),
+    ),
+  ]

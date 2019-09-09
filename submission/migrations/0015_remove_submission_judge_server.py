@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0014_submission_judge_server'),
+  ]
 
-    dependencies = [
-        ('submission', '0014_submission_judge_server'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='submission',
-            name='judge_server',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='submission',
+      name='judge_server',
+    ),
+  ]

@@ -8,41 +8,40 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('contest', '0020_auto_20180107_1224'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('contest', '0020_auto_20180107_1224'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='ContestUserRating',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating', models.IntegerField(default=1500)),
-                ('modified', models.DateTimeField()),
-            ],
-            options={
-                'ordering': ['-modified'],
-            },
-        ),
-        migrations.AddField(
-            model_name='contest',
-            name='rated',
-            field=models.BooleanField(default=False),
-        ),
-        migrations.AddField(
-            model_name='contestuserrating',
-            name='contest',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contest.Contest'),
-        ),
-        migrations.AddField(
-            model_name='contestuserrating',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AlterUniqueTogether(
-            name='contestuserrating',
-            unique_together=set([('contest', 'user')]),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='ContestUserRating',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('rating', models.IntegerField(default=1500)),
+        ('modified', models.DateTimeField()),
+      ],
+      options={
+        'ordering': ['-modified'],
+      },
+    ),
+    migrations.AddField(
+      model_name='contest',
+      name='rated',
+      field=models.BooleanField(default=False),
+    ),
+    migrations.AddField(
+      model_name='contestuserrating',
+      name='contest',
+      field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contest.Contest'),
+    ),
+    migrations.AddField(
+      model_name='contestuserrating',
+      name='user',
+      field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+    ),
+    migrations.AlterUniqueTogether(
+      name='contestuserrating',
+      unique_together=set([('contest', 'user')]),
+    ),
+  ]

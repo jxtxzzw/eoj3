@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0017_contest_case_public'),
+  ]
 
-    dependencies = [
-        ('contest', '0017_contest_case_public'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='case_public',
-            field=models.BooleanField(default=False, verbose_name='Cases can be downloaded if paid'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='case_public',
+      field=models.BooleanField(default=False, verbose_name='Cases can be downloaded if paid'),
+    ),
+  ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0015_auto_20190112_1547'),
+  ]
 
-    dependencies = [
-        ('polygon', '0015_auto_20190112_1547'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='codeforcespackage',
-            name='size',
-            field=models.FloatField(null=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='codeforcespackage',
+      name='size',
+      field=models.FloatField(null=True),
+    ),
+  ]

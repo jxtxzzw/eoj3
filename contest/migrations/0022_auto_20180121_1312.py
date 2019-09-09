@@ -6,22 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0021_auto_20180119_1446'),
+  ]
 
-    dependencies = [
-        ('contest', '0021_auto_20180119_1446'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contestuserrating',
-            name='rank',
-            field=models.IntegerField(default=1),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='contestuserrating',
-            name='solved',
-            field=models.IntegerField(default=1),
-            preserve_default=False,
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contestuserrating',
+      name='rank',
+      field=models.IntegerField(default=1),
+      preserve_default=False,
+    ),
+    migrations.AddField(
+      model_name='contestuserrating',
+      name='solved',
+      field=models.IntegerField(default=1),
+      preserve_default=False,
+    ),
+  ]

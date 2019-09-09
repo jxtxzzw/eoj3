@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0016_auto_20180704_0704'),
+  ]
 
-    dependencies = [
-        ('problem', '0016_auto_20180704_0704'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='problem',
-            name='clone_parent',
-            field=models.PositiveIntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='problem',
+      name='clone_parent',
+      field=models.PositiveIntegerField(default=0),
+    ),
+  ]

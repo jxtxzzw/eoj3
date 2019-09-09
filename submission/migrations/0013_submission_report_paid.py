@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0012_submission_cheat_tag'),
+  ]
 
-    dependencies = [
-        ('submission', '0012_submission_cheat_tag'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='submission',
-            name='report_paid',
-            field=models.IntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='submission',
+      name='report_paid',
+      field=models.IntegerField(default=0),
+    ),
+  ]

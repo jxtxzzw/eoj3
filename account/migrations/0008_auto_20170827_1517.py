@@ -6,19 +6,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0007_auto_20170825_2201'),
+  ]
 
-    dependencies = [
-        ('account', '0007_auto_20170825_2201'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='user',
-            options={'ordering': ['-score']},
-        ),
-        migrations.AddField(
-            model_name='user',
-            name='score',
-            field=models.FloatField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='user',
+      options={'ordering': ['-score']},
+    ),
+    migrations.AddField(
+      model_name='user',
+      name='score',
+      field=models.FloatField(default=0),
+    ),
+  ]

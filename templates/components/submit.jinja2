@@ -4,9 +4,9 @@
 
   <form class="ui form" action="{{ submit_action }}" method="post">
 
-  {% if running_complete %}
-    <input type="hidden" name="complete" value="yes">
-  {% endif %}
+    {% if running_complete %}
+      <input type="hidden" name="complete" value="yes">
+    {% endif %}
 
     <div class="ui error message">
       <div class="header">提交失败！</div>
@@ -34,7 +34,7 @@
           <div class="text"></div>
           <div class="menu">
             {% for identifier, display in lang_choices %}
-            <div class="item" data-value="{{ identifier }}">{{ display }}</div>
+              <div class="item" data-value="{{ identifier }}">{{ display }}</div>
             {% endfor %}
             <div class="item" data-value="auto">自动: <span class="detected-lang-name">无</span></div>
           </div>
@@ -42,11 +42,11 @@
         <div style="float:left; margin-top:7px; margin-left:15px; color:#777; cursor:pointer" id="template-button">
           Template
         </div>
-      {% if contest and contest_problem %}
-        <input name="problem" type="hidden" value="{{ contest_problem.identifier }}">
-      {% endif %}
+        {% if contest and contest_problem %}
+          <input name="problem" type="hidden" value="{{ contest_problem.identifier }}">
+        {% endif %}
         <button class="ui right labeled icon green button {% if hide_submit %}disabled{% endif %}" id="problem-submit">
-           <i class="icon send"></i> 提交
+          <i class="icon send"></i> 提交
         </button>
       </div>
     </div>
@@ -56,7 +56,8 @@
   <div id="current-submission"></div>
 
   {% if contest %}
-    <div id="past-submissions" data-url="{{ url('contest:past_submission', contest.id, contest_problem.identifier) }}"></div>
+    <div id="past-submissions"
+         data-url="{{ url('contest:past_submission', contest.id, contest_problem.identifier) }}"></div>
   {% else %}
     <div id="past-submissions" data-url="{{ url('problem:past_submission', problem.id) }}"></div>
   {% endif %}

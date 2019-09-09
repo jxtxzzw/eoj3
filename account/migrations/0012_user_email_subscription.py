@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0011_auto_20170928_1327'),
+  ]
 
-    dependencies = [
-        ('account', '0011_auto_20170928_1327'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='user',
-            name='email_subscription',
-            field=models.BooleanField(default=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='user',
+      name='email_subscription',
+      field=models.BooleanField(default=True),
+    ),
+  ]

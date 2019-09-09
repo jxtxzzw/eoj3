@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0019_auto_20180712_1706'),
+  ]
 
-    dependencies = [
-        ('problem', '0019_auto_20180712_1706'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='userstatus',
-            name='ac_list',
-            field=models.TextField(),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='userstatus',
+      name='ac_list',
+      field=models.TextField(),
+    ),
+  ]

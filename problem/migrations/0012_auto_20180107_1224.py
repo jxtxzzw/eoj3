@@ -8,28 +8,31 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('problem', '0011_auto_20171202_1705'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('problem', '0011_auto_20171202_1705'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='ProblemRewardStatus',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('problem', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='problem.Problem')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.AlterField(
-            model_name='specialprogram',
-            name='lang',
-            field=models.CharField(choices=[('c', 'C'), ('cpp', 'C++11'), ('python', 'Python 3'), ('java', 'Java 8'), ('cc14', 'C++14'), ('cs', 'C#'), ('py2', 'Python 2'), ('php', 'PHP 7'), ('perl', 'Perl'), ('hs', 'Haskell'), ('js', 'Javascript'), ('ocaml', 'OCaml'), ('pypy', 'PyPy'), ('pas', 'Pascal'), ('rs', 'Rust'), ('scala', 'Scala')], default='cpp', max_length=12, verbose_name='language'),
-        ),
-        migrations.AlterUniqueTogether(
-            name='problemrewardstatus',
-            unique_together=set([('user', 'problem')]),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='ProblemRewardStatus',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('problem', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='problem.Problem')),
+        ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+      ],
+    ),
+    migrations.AlterField(
+      model_name='specialprogram',
+      name='lang',
+      field=models.CharField(
+        choices=[('c', 'C'), ('cpp', 'C++11'), ('python', 'Python 3'), ('java', 'Java 8'), ('cc14', 'C++14'),
+                 ('cs', 'C#'), ('py2', 'Python 2'), ('php', 'PHP 7'), ('perl', 'Perl'), ('hs', 'Haskell'),
+                 ('js', 'Javascript'), ('ocaml', 'OCaml'), ('pypy', 'PyPy'), ('pas', 'Pascal'), ('rs', 'Rust'),
+                 ('scala', 'Scala')], default='cpp', max_length=12, verbose_name='language'),
+    ),
+    migrations.AlterUniqueTogether(
+      name='problemrewardstatus',
+      unique_together=set([('user', 'problem')]),
+    ),
+  ]

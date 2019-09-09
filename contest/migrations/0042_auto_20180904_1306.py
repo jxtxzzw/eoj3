@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0041_auto_20180903_1533'),
+  ]
 
-    dependencies = [
-        ('contest', '0041_auto_20180903_1533'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='always_running',
-            field=models.BooleanField(default=False, verbose_name='As gym contest (start time and end time will not work)'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='always_running',
+      field=models.BooleanField(default=False, verbose_name='As gym contest (start time and end time will not work)'),
+    ),
+  ]

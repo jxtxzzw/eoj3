@@ -6,19 +6,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0016_auto_20180107_1224'),
+  ]
 
-    dependencies = [
-        ('submission', '0016_auto_20180107_1224'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='submission',
-            name='rewarded',
-        ),
-        migrations.AddField(
-            model_name='submission',
-            name='judge_server',
-            field=models.IntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='submission',
+      name='rewarded',
+    ),
+    migrations.AddField(
+      model_name='submission',
+      name='judge_server',
+      field=models.IntegerField(default=0),
+    ),
+  ]

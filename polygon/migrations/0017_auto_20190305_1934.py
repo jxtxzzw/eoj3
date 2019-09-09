@@ -5,25 +5,30 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0016_codeforcespackage_size'),
+  ]
 
-    dependencies = [
-        ('polygon', '0016_codeforcespackage_size'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='asset',
-            name='file',
-            field=models.FileField(storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'), upload_to='assets/%Y%m%d/', verbose_name='文件'),
-        ),
-        migrations.AlterField(
-            model_name='case',
-            name='input_file',
-            field=models.FileField(storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'), upload_to='cases/%Y%m%d/', verbose_name='输入文件'),
-        ),
-        migrations.AlterField(
-            model_name='case',
-            name='output_file',
-            field=models.FileField(storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'), upload_to='cases/%Y%m%d/', verbose_name='输出文件'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='asset',
+      name='file',
+      field=models.FileField(
+        storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'),
+        upload_to='assets/%Y%m%d/', verbose_name='文件'),
+    ),
+    migrations.AlterField(
+      model_name='case',
+      name='input_file',
+      field=models.FileField(
+        storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'),
+        upload_to='cases/%Y%m%d/', verbose_name='输入文件'),
+    ),
+    migrations.AlterField(
+      model_name='case',
+      name='output_file',
+      field=models.FileField(
+        storage=django.core.files.storage.FileSystemStorage(location='/Users/ultmaster/Projects/eoj3-master/repo'),
+        upload_to='cases/%Y%m%d/', verbose_name='输出文件'),
+    ),
+  ]

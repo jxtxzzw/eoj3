@@ -6,24 +6,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0003_auto_20170423_2348'),
+  ]
 
-    dependencies = [
-        ('account', '0003_auto_20170423_2348'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='user',
-            name='alien',
-        ),
-        migrations.AddField(
-            model_name='user',
-            name='avatar',
-            field=models.ImageField(default='avatar/default.jpg', upload_to='avatar', verbose_name='avatar'),
-        ),
-        migrations.AlterField(
-            model_name='user',
-            name='preferred_lang',
-            field=models.CharField(choices=[('c', 'C'), ('cpp', 'C++'), ('python', 'Python 3'), ('java', 'Java 8')], default='cpp', max_length=12, verbose_name='preferred language'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='user',
+      name='alien',
+    ),
+    migrations.AddField(
+      model_name='user',
+      name='avatar',
+      field=models.ImageField(default='avatar/default.jpg', upload_to='avatar', verbose_name='avatar'),
+    ),
+    migrations.AlterField(
+      model_name='user',
+      name='preferred_lang',
+      field=models.CharField(choices=[('c', 'C'), ('cpp', 'C++'), ('python', 'Python 3'), ('java', 'Java 8')],
+                             default='cpp', max_length=12, verbose_name='preferred language'),
+    ),
+  ]

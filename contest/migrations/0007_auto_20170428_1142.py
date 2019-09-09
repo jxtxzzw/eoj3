@@ -6,19 +6,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0006_contestparticipant_hidden_comment'),
+  ]
 
-    dependencies = [
-        ('contest', '0006_contestparticipant_hidden_comment'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='contest',
-            name='created_by',
-        ),
-        migrations.AlterField(
-            model_name='contest',
-            name='rule',
-            field=models.CharField(choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('oi2', 'Traditional OI Rule'), ('work', 'School Work')], default='acm', max_length=12, verbose_name='Rule'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='contest',
+      name='created_by',
+    ),
+    migrations.AlterField(
+      model_name='contest',
+      name='rule',
+      field=models.CharField(
+        choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('oi2', 'Traditional OI Rule'), ('work', 'School Work')],
+        default='acm', max_length=12, verbose_name='Rule'),
+    ),
+  ]

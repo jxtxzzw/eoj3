@@ -7,41 +7,45 @@
 {% block content %}
 
   <p>{{ username_display(blog.author) }} edited {{ blog.edit_time | naturaltime }}
-  {% if is_privileged %}<a href="{{ url('blog:update', blog.pk) }}"><i class="ui icon edit"></i></a>{% endif %}</p>
+    {% if is_privileged %}<a href="{{ url('blog:update', blog.pk) }}"><i class="ui icon edit"></i></a>{% endif %}</p>
   {% cache 3600 'blog_view#'+blog.pk.__str__()+'#'+blog.edit_time.__str__() %}
     {{ blog.text | markdown | safer | safe }}
   {% endcache %}
-    <div class="ui segment">
+  <div class="ui segment">
     <div class="ui simple dropdown top right attached label">
       <i class="code icon"></i> {% if submission.lang %}{{ submission.get_lang_display() }}{% endif %}
       <div class="menu">
         <a class="item clipboard" data-clipboard-text="{{ submission.code }}"><i class="copy icon"></i> Copy</a>
-{#      {% if not submission.contest %}#}
-{#        <a class="item" href="{{ url('problem:submit', submission.problem_id) }}?submission={{ submission.pk }}">#}
-{#          <i class="external icon"></i> Open in editor#}
-{#        </a>#}
-{#      {% endif %}#}
+        {#      {% if not submission.contest %}#}
+        {#        <a class="item" href="{{ url('problem:submit', submission.problem_id) }}?submission={{ submission.pk }}">#}
+        {#          <i class="external icon"></i> Open in editor#}
+        {#        </a>#}
+        {#      {% endif %}#}
       </div>
     </div>
     <div>{{ submission.code_as_html | safe }}</div>
   </div>
   <div class="actions">
-    <a class="blog-like-link like-link" data-link="{{ url('blog:like') }}" data-comment="{{ blog.pk }}" data-flag="like">
+    <a class="blog-like-link like-link" data-link="{{ url('blog:like') }}" data-comment="{{ blog.pk }}"
+       data-flag="like">
       <i class="thumbs up {% if blog.likes__flag != 1 %}outline{% endif %} icon"></i>
       <span>{{ blog.likes__count }}</span>
     </a>
-    <a class="blog-like-link like-link" data-link="{{ url('blog:like') }}" data-comment="{{ blog.pk }}" data-flag="dislike">
+    <a class="blog-like-link like-link" data-link="{{ url('blog:like') }}" data-comment="{{ blog.pk }}"
+       data-flag="dislike">
       <i class="thumbs down {% if blog.likes__flag != -1 %}outline{% endif %} icon"></i>
       <span>{{ blog.dislikes__count }}</span>
     </a>
   </div>
 
   {% if blog_revisions %}
-  <h3 class="ui dividing header">Past Versions</h3>
+    <h3 class="ui dividing header">Past Versions</h3>
     <ul class="ui list">
-    {% for revision in blog_revisions %}
-      <li class="item">#{{ revision.pk }} by {{ username_display(revision.author) }} (<a href="{{ url('blog:revision_detail', blog.pk, revision.pk) }}">{{ revision.create_time | date('Y-m-d H:i:s') }}</a>).</li>
-    {% endfor %}
+      {% for revision in blog_revisions %}
+        <li class="item">#{{ revision.pk }} by {{ username_display(revision.author) }} (<a
+                href="{{ url('blog:revision_detail', blog.pk, revision.pk) }}">{{ revision.create_time | date('Y-m-d H:i:s') }}</a>).
+        </li>
+      {% endfor %}
     </ul>
   {% endif %}
 

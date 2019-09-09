@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0007_auto_20170903_1245'),
+  ]
 
-    dependencies = [
-        ('submission', '0007_auto_20170903_1245'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='submission',
-            name='code_length',
-            field=models.PositiveIntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='submission',
+      name='code_length',
+      field=models.PositiveIntegerField(default=0),
+    ),
+  ]

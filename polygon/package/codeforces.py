@@ -39,8 +39,9 @@ def create_task(problem_id: str, created_by: User, init_file=None):
     log_dir = os.path.join(dst_address, "logs")
     os.makedirs(log_dir, exist_ok=True)
     with open(os.path.join(log_dir, "django.log"), "w") as stderr:
-      subp = subprocess.run(["sudo", cf_settings["script"], cf_settings["key"], cf_settings["secret"], problem_id, dst_address],
-                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=stderr)
+      subp = subprocess.run(
+        ["sudo", cf_settings["script"], cf_settings["key"], cf_settings["secret"], problem_id, dst_address],
+        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=stderr)
     if subp.returncode:
       package.status = 1
     else:

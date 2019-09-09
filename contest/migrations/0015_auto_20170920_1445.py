@@ -6,11 +6,10 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0014_auto_20170909_1132'),
+  ]
 
-    dependencies = [
-        ('contest', '0014_auto_20170909_1132'),
-    ]
-
-    operations = [
-        migrations.RenameField('Contest', 'manager', 'managers'),
-    ]
+  operations = [
+    migrations.RenameField('Contest', 'manager', 'managers'),
+  ]

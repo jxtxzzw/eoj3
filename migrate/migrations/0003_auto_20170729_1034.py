@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('migrate', '0002_auto_20170508_2121'),
+  ]
 
-    dependencies = [
-        ('migrate', '0002_auto_20170508_2121'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='oldsubmission',
-            name='lang',
-            field=models.CharField(choices=[('c', 'C'), ('cpp', 'C++'), ('py2', 'Python 2'), ('python', 'Python 3'), ('java', 'Java 8'), ('pas', 'Pascal')], default='cpp', max_length=12),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='oldsubmission',
+      name='lang',
+      field=models.CharField(
+        choices=[('c', 'C'), ('cpp', 'C++'), ('py2', 'Python 2'), ('python', 'Python 3'), ('java', 'Java 8'),
+                 ('pas', 'Pascal')], default='cpp', max_length=12),
+    ),
+  ]

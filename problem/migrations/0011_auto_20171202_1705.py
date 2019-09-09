@@ -7,15 +7,15 @@ import problem.models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0010_auto_20171002_2141'),
+  ]
 
-    dependencies = [
-        ('problem', '0010_auto_20171002_2141'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='problem',
-            name='alias',
-            field=models.CharField(blank=True, max_length=64, validators=[problem.models.AliasValidator()], verbose_name='Alias'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='problem',
+      name='alias',
+      field=models.CharField(blank=True, max_length=64, validators=[problem.models.AliasValidator()],
+                             verbose_name='Alias'),
+    ),
+  ]

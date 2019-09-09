@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0033_contest_volunteers'),
+  ]
 
-    dependencies = [
-        ('contest', '0033_contest_volunteers'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='scoring_method',
-            field=models.CharField(choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('cf', 'School of Data Analysis (SDA) Rule'), ('tcmtime', 'TCM/TIME Rule'), ('subtask', 'Subtask Rule')], default='acm', max_length=10),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='scoring_method',
+      field=models.CharField(
+        choices=[('acm', 'ACM Rule'), ('oi', 'OI Rule'), ('cf', 'School of Data Analysis (SDA) Rule'),
+                 ('tcmtime', 'TCM/TIME Rule'), ('subtask', 'Subtask Rule')], default='acm', max_length=10),
+    ),
+  ]

@@ -7,16 +7,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('contest', '0032_activityparticipant_is_confirmed'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('contest', '0032_activityparticipant_is_confirmed'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contest',
-            name='volunteers',
-            field=models.ManyToManyField(related_name='volunteering_contests', to=settings.AUTH_USER_MODEL),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contest',
+      name='volunteers',
+      field=models.ManyToManyField(related_name='volunteering_contests', to=settings.AUTH_USER_MODEL),
+    ),
+  ]

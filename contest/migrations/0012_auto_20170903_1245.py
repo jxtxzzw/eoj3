@@ -6,15 +6,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0011_auto_20170825_2201'),
+  ]
 
-    dependencies = [
-        ('contest', '0011_auto_20170825_2201'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='run_tests_during_contest',
-            field=models.CharField(choices=[('all', 'All'), ('pretest', 'Pretests'), ('sample', 'Samples'), ('none', 'None')], default='all', max_length=10),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='run_tests_during_contest',
+      field=models.CharField(choices=[('all', 'All'), ('pretest', 'Pretests'), ('sample', 'Samples'), ('none', 'None')],
+                             default='all', max_length=10),
+    ),
+  ]

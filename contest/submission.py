@@ -35,7 +35,7 @@ class ContestSubmit(BaseContestMixin, View):
       if self.participate_contest_status < 0 and not self.privileged:  # pending contest
         raise ValueError("比赛尚未开始。")
       if self.contest.run_tests_during_contest != 'all' and self.participate_contest_status != 0 and \
-          not self.contest.system_tested and not self.privileged:  # pending result
+        not self.contest.system_tested and not self.privileged:  # pending result
         raise ValueError("比赛仍在等待系统测试。")
       lang = request.POST.get('lang', '')
       if lang not in self.contest.supported_language_list:
@@ -84,11 +84,11 @@ class ContestSubmissionClaim(BaseContestMixin, View):
     self.submissions = []
     self.problem_id_list = list(self.contest.contestproblem_set.values_list("problem_id", flat=True))
     for submission in self.contest.submission_set.filter(status=SubmissionStatus.ACCEPTED, author=self.user). \
-        defer("code", "status_detail", "status_message"):
+      defer("code", "status_detail", "status_message"):
       contest_already_accept.add(submission.problem_id)
     aiming_problems = list(filter(lambda x: x not in contest_already_accept, self.problem_id_list))
     for submission in self.user.submission_set.filter(
-        problem_id__in=aiming_problems, status=SubmissionStatus.ACCEPTED).all():
+      problem_id__in=aiming_problems, status=SubmissionStatus.ACCEPTED).all():
       if submission.problem_id not in contest_already_accept and submission.lang in self.contest.allowed_lang:
         self.submissions.append(submission)
         contest_already_accept.add(submission.problem_id)
@@ -114,7 +114,7 @@ def get_contest_submission(submission_id, contest_id, author_id=None):
   else:
     submission = get_object_or_404(Submission, pk=submission_id, author_id=author_id)
   if submission.contest_id != contest_id and \
-      not ContestProblem.objects.filter(contest_id=contest_id, problem_id=submission.problem_id).exists():
+    not ContestProblem.objects.filter(contest_id=contest_id, problem_id=submission.problem_id).exists():
     raise Http404
   return submission
 
@@ -125,7 +125,7 @@ class ContestSubmissionAPI(BaseContestMixin, View):
       raise PermissionDenied
     submission = get_contest_submission(sid, cid, author_id=request.user.pk)
     if self.contest.case_public and submission.is_judged and \
-        is_case_download_available(self.request.user, submission.problem_id, submission.contest_id):
+      is_case_download_available(self.request.user, submission.problem_id, submission.contest_id):
       submission.allow_case_download = True
     return HttpResponse(
       render_submission(submission, permission=get_permission_for_submission(request.user, submission),
@@ -149,7 +149,7 @@ class ContestSubmissionView(BaseContestMixin, TemplateView):
           authorized = True
         if self.request.user.submission_set.filter(problem_id=submission.problem_id,
                                                    status=SubmissionStatus.ACCEPTED).exists() and (
-            self.participate_contest_status > 0 or self.contest.allow_code_share >= 3):
+          self.participate_contest_status > 0 or self.contest.allow_code_share >= 3):
           authorized = True
     if self.participate_contest_status > 0 and self.request.user.is_authenticated and self.request.user.has_coach_access():
       authorized = True
@@ -246,7 +246,7 @@ class ContestMyStatus(ContestStatus):
     if not self.user.is_authenticated:
       raise PermissionDenied
     if self.contest.contest_type != 1 and self.participate_contest_status == 0 and \
-        not is_contest_manager(self.user, self.contest):
+      not is_contest_manager(self.user, self.contest):
       return self.contest.submission_set.filter(author=self.user).all()
     else:
       return self.user.submission_set.filter(

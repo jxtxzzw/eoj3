@@ -6,34 +6,33 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0040_auto_20180903_1441'),
+  ]
 
-    dependencies = [
-        ('contest', '0040_auto_20180903_1441'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='contest',
-            name='open_problems',
-        ),
-        migrations.RemoveField(
-            model_name='contest',
-            name='public',
-        ),
-        migrations.RemoveField(
-            model_name='contest',
-            name='rated',
-        ),
-        migrations.RemoveField(
-            model_name='contest',
-            name='standings_disabled',
-        ),
-        migrations.RemoveField(
-            model_name='contest',
-            name='standings_public',
-        ),
-        migrations.RemoveField(
-            model_name='contest',
-            name='visible',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='contest',
+      name='open_problems',
+    ),
+    migrations.RemoveField(
+      model_name='contest',
+      name='public',
+    ),
+    migrations.RemoveField(
+      model_name='contest',
+      name='rated',
+    ),
+    migrations.RemoveField(
+      model_name='contest',
+      name='standings_disabled',
+    ),
+    migrations.RemoveField(
+      model_name='contest',
+      name='standings_public',
+    ),
+    migrations.RemoveField(
+      model_name='contest',
+      name='visible',
+    ),
+  ]

@@ -12,12 +12,12 @@
         <a class="item" href="{{ url('account:profile') }}">个人设置</a>
         <a class="item" href="{{ url('migrate') }}">迁移</a>
         <a class="item" href="{{ url('feedback') }}">反馈</a>
-      {% if user is admin %}
-        <a class="item" href="{{ url('backstage:index') }}">Backstage</a>
-      {% endif %}
-      {% if user.polygon_enabled %}
-        <a class="item" href="{{ url('polygon:problem_list_2') }}">Polygon</a>
-      {% endif %}
+        {% if user is admin %}
+          <a class="item" href="{{ url('backstage:index') }}">Backstage</a>
+        {% endif %}
+        {% if user.polygon_enabled %}
+          <a class="item" href="{{ url('polygon:problem_list_2') }}">Polygon</a>
+        {% endif %}
         <a class="item" href="{{ url('logout') }}?next={{ request.path }}">登出</a>
       </div>
     </div>

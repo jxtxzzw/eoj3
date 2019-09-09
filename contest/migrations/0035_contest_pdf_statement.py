@@ -6,15 +6,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0034_auto_20180703_1705'),
+  ]
 
-    dependencies = [
-        ('contest', '0034_auto_20180703_1705'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contest',
-            name='pdf_statement',
-            field=models.FileField(blank=True, null=True, upload_to='contest_statements/%Y%m%d/', verbose_name='PDF Statement'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contest',
+      name='pdf_statement',
+      field=models.FileField(blank=True, null=True, upload_to='contest_statements/%Y%m%d/',
+                             verbose_name='PDF Statement'),
+    ),
+  ]

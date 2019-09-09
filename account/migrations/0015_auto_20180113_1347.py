@@ -6,18 +6,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0014_auto_20180107_1224'),
+  ]
 
-    dependencies = [
-        ('account', '0014_auto_20180107_1224'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='user',
-            name='create_time',
-        ),
-        migrations.RemoveField(
-            model_name='user',
-            name='privilege',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='user',
+      name='create_time',
+    ),
+    migrations.RemoveField(
+      model_name='user',
+      name='privilege',
+    ),
+  ]

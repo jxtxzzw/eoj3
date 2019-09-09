@@ -62,7 +62,7 @@ def calculate_problems(contest: Contest, problems: list, snapshot: timedelta = N
         pstat["first_yes_by"] = submission.author_id
     if (submission.author_id in pstat["user_tot"] and pstat["user_tot"][
       submission.author_id] < submission.status_percent) or \
-        submission.author_id not in pstat["user_tot"]:
+      submission.author_id not in pstat["user_tot"]:
       pstat["user_tot"][submission.author_id] = submission.status_percent
     pstat["tot"] += 1
 
@@ -177,7 +177,7 @@ def calculate_participants(contest: Contest, participants: list, snapshot: timed
       continue
 
     if contest.last_counts or not \
-        (d['solved'] or (contest.scoring_method != 'oi' and d['score'] > 0 and d['score'] >= score)):
+      (d['solved'] or (contest.scoring_method != 'oi' and d['score'] > 0 and d['score'] >= score)):
       # every submission has to be calculated in OI
       # We have to tell whether this is the best
 

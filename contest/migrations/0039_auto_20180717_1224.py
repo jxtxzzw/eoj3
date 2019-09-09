@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0038_auto_20180717_0920'),
+  ]
 
-    dependencies = [
-        ('contest', '0038_auto_20180717_0920'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='penalty_counts',
-            field=models.PositiveIntegerField(default=1200, verbose_name='Penalty by seconds'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='penalty_counts',
+      field=models.PositiveIntegerField(default=1200, verbose_name='Penalty by seconds'),
+    ),
+  ]

@@ -44,7 +44,7 @@ def create_submission(problem, author: User, code, lang, contest=None, status=Su
     if re.search(matching_regex, code) is None:
       raise ValueError("Java 语言应匹配正则：" + matching_regex)
   if author.submission_set.exists() and (
-      datetime.now() - author.submission_set.first().create_time).total_seconds() < settings.SUBMISSION_INTERVAL_LIMIT:
+    datetime.now() - author.submission_set.first().create_time).total_seconds() < settings.SUBMISSION_INTERVAL_LIMIT:
     raise ValueError("5 秒内只能提交一次。")
   if contest:
     if contest.submission_set.filter(author=author, problem_id=problem, code__exact=code, lang=lang).exists():
@@ -164,7 +164,7 @@ def judge_submission_on_problem(submission, callback=None, **kwargs):
           for group_id in range(1, group_config["group_count"] + 1):
             get_score = 0
             if accept_case_counter[group_id] == total_case_counter[group_id] and \
-                total_case_counter[group_id] > 0:
+              total_case_counter[group_id] > 0:
               get_score = point_query[group_id - 1]
             score += get_score
             records.append("Subtask #%d: " % group_id +

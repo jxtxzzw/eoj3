@@ -7,23 +7,22 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0035_contest_pdf_statement'),
+  ]
 
-    dependencies = [
-        ('contest', '0035_contest_pdf_statement'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='contestparticipant',
-            options={'ordering': ('-score', 'penalty', 'star')},
-        ),
-        migrations.RenameField(
-            model_name='contestparticipant',
-            old_name='html_cache',
-            new_name='detail_raw',
-        ),
-        migrations.RemoveField(
-            model_name='contestparticipant',
-            name='rank',
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='contestparticipant',
+      options={'ordering': ('-score', 'penalty', 'star')},
+    ),
+    migrations.RenameField(
+      model_name='contestparticipant',
+      old_name='html_cache',
+      new_name='detail_raw',
+    ),
+    migrations.RemoveField(
+      model_name='contestparticipant',
+      name='rank',
+    ),
+  ]

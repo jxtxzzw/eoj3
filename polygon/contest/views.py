@@ -128,6 +128,7 @@ class ContestCreate(PolygonBaseMixin, View):
     contest.managers.add(request.user)
     return redirect(reverse('polygon:contest_meta', kwargs={'pk': str(contest.id)}))
 
+
 class HomeworkClone(PolygonBaseMixin, View):
   def post(self, request, *args, **kwargs):
     try:
@@ -230,8 +231,8 @@ class ContestProblemCreate(PolygonContestMixin, View):
     problems = list(filter(lambda x: x, map(lambda x: x.strip(), request.POST['problems'].split(','))))
     for problem in problems:
       if not Problem.objects.filter(id=problem, visible=True).exists() and \
-          not is_admin_or_root(request.user) and \
-          not request.user.managing_problems.filter(id=problem).exists():
+        not is_admin_or_root(request.user) and \
+        not request.user.managing_problems.filter(id=problem).exists():
         raise PermissionDenied
     for problem in problems:
       if self.contest.contestproblem_set.filter(problem_id=problem).exists():

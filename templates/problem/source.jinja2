@@ -2,14 +2,14 @@
 
 {% block problem_content %}
 
-<table class="ui celled unstackable table">
-  <thead>
+  <table class="ui celled unstackable table">
+    <thead>
     <tr>
       <th>名称</th>
       <th class="center aligned one wide">#</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     {% for source in source_list %}
       <tr>
         <td>
@@ -18,7 +18,7 @@
         <td class="center aligned">{{ source.count }}</td>
       </tr>
     {% endfor %}
-  </tbody>
-</table>
+    </tbody>
+  </table>
 
 {% endblock %}

@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0025_auto_20180913_1635'),
+  ]
 
-    dependencies = [
-        ('submission', '0025_auto_20180913_1635'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='submission',
-            name='status_private',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='submission',
+      name='status_private',
+    ),
+  ]

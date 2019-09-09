@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('blog', '0003_auto_20170928_1448'),
+  ]
 
-    dependencies = [
-        ('blog', '0003_auto_20170928_1448'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='blog',
-            name='recommend',
-            field=models.BooleanField(default=False),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='blog',
+      name='recommend',
+      field=models.BooleanField(default=False),
+    ),
+  ]

@@ -8,6 +8,7 @@
       padding-top: 5em;
       padding-bottom: 15em;
     }
+
     .fixed.launch.button {
       position: fixed;
       top: 2.5em;
@@ -21,7 +22,7 @@
   <div class="ui container">
     <h1 class="ui header">EOJ Pastebin</h1>
     <form class="ui form" method="POST">
-    {% csrf_token %}
+      {% csrf_token %}
       <div class="field">
         <label>Code</label>
         <textarea name="code" rows="12">{% if code %}{{ code }}{% endif %}</textarea>
@@ -38,11 +39,11 @@
     <h3 class="ui dividing header">History</h3>
     <table class="ui center aligned small celled table">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Length</th>
-          <th>TTL</th>
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>Length</th>
+        <th>TTL</th>
+      </tr>
       </thead>
       <tbody>
       {% for record in history %}

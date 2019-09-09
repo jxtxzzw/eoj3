@@ -6,17 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('account', '0017_auto_20180128_1107'),
+  ]
 
-    dependencies = [
-        ('account', '0017_auto_20180128_1107'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='School',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=192, unique=True)),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='School',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('name', models.CharField(max_length=192, unique=True)),
+      ],
+    ),
+  ]

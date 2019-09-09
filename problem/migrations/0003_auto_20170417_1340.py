@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0002_auto_20170414_1511'),
+  ]
 
-    dependencies = [
-        ('problem', '0002_auto_20170414_1511'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='problem',
-            options={'ordering': ['-pk']},
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='problem',
+      options={'ordering': ['-pk']},
+    ),
+  ]

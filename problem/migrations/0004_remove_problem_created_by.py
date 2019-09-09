@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0003_auto_20170417_1340'),
+  ]
 
-    dependencies = [
-        ('problem', '0003_auto_20170417_1340'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='problem',
-            name='created_by',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='problem',
+      name='created_by',
+    ),
+  ]

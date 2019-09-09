@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0003_auto_20170406_1637'),
+  ]
 
-    dependencies = [
-        ('contest', '0003_auto_20170406_1637'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='contest',
-            name='title',
-            field=models.CharField(max_length=192),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='contest',
+      name='title',
+      field=models.CharField(max_length=192),
+    ),
+  ]

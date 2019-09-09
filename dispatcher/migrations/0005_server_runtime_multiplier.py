@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('dispatcher', '0004_server_concurrency'),
+  ]
 
-    dependencies = [
-        ('dispatcher', '0004_server_concurrency'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='server',
-            name='runtime_multiplier',
-            field=models.FloatField(default=1),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='server',
+      name='runtime_multiplier',
+      field=models.FloatField(default=1),
+    ),
+  ]

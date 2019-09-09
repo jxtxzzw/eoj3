@@ -6,25 +6,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0007_task'),
+  ]
 
-    dependencies = [
-        ('polygon', '0007_task'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='case',
-            name='group',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='revision',
-            name='enable_group',
-            field=models.BooleanField(default=False),
-        ),
-        migrations.AddField(
-            model_name='revision',
-            name='group_dependencies',
-            field=models.TextField(blank=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='case',
+      name='group',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='revision',
+      name='enable_group',
+      field=models.BooleanField(default=False),
+    ),
+    migrations.AddField(
+      model_name='revision',
+      name='group_dependencies',
+      field=models.TextField(blank=True),
+    ),
+  ]

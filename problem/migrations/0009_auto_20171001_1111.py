@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0008_auto_20170930_2048'),
+  ]
 
-    dependencies = [
-        ('problem', '0008_auto_20170930_2048'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='problem',
-            name='visible',
-            field=models.BooleanField(db_index=True, default=False),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='problem',
+      name='visible',
+      field=models.BooleanField(db_index=True, default=False),
+    ),
+  ]

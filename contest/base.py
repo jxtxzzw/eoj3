@@ -82,7 +82,7 @@ class BaseContestMixin(ContextMixin, UserPassesTestMixin):
                                 or (self.contest.access_level >= 20 and self.contest.status > 0)):
       self.registered = True
     if self.participant is None and self.user.is_authenticated and self.contest.access_level >= 15 and \
-        self.contest.contest_type == 0 and self.contest.status > 0:
+      self.contest.contest_type == 0 and self.contest.status > 0:
       self.vp_available = True
     return super(BaseContestMixin, self).dispatch(request, *args, **kwargs)
 
@@ -131,7 +131,7 @@ class BaseContestMixin(ContextMixin, UserPassesTestMixin):
       data['vp_start_time'] = datetime(ref_time.year, ref_time.month, ref_time.day, ref_time.hour,
                                        ref_time.minute - ref_time.minute % 5).strftime('%Y-%m-%d %H:%M')
     if self.contest.analysis_blog_id and \
-        Blog.objects.filter(pk=self.contest.analysis_blog_id, visible=True).exists():
+      Blog.objects.filter(pk=self.contest.analysis_blog_id, visible=True).exists():
       data['analysis_available'] = True
     if self.privileged:
       data["judgement_status"] = {

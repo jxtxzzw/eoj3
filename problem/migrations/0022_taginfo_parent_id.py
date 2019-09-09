@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0021_auto_20180713_1421'),
+  ]
 
-    dependencies = [
-        ('problem', '0021_auto_20180713_1421'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='taginfo',
-            name='parent_id',
-            field=models.IntegerField(default=-1),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='taginfo',
+      name='parent_id',
+      field=models.IntegerField(default=-1),
+    ),
+  ]

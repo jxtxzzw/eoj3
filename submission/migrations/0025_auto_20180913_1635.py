@@ -6,20 +6,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0024_auto_20180913_1015'),
+  ]
 
-    dependencies = [
-        ('submission', '0024_auto_20180913_1015'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='submission',
-            name='status',
-            field=models.IntegerField(choices=[(-4, 'Submitted'), (-3, 'In queue'), (-2, 'Running'), (-1, 'Wrong answer'), (0, 'Accepted'), (1, 'Time limit exceeded'), (2, 'Idleness limit exceeded'), (3, 'Memory limit exceeded'), (4, 'Runtime error'), (5, 'Denial of judgement'), (6, 'Compilation error'), (7, 'Partial score'), (11, 'Checker error'), (12, 'Pretest passed')], db_index=True, default=-4),
-        ),
-        migrations.AlterField(
-            model_name='submission',
-            name='status_private',
-            field=models.IntegerField(choices=[(-4, 'Submitted'), (-3, 'In queue'), (-2, 'Running'), (-1, 'Wrong answer'), (0, 'Accepted'), (1, 'Time limit exceeded'), (2, 'Idleness limit exceeded'), (3, 'Memory limit exceeded'), (4, 'Runtime error'), (5, 'Denial of judgement'), (6, 'Compilation error'), (7, 'Partial score'), (11, 'Checker error'), (12, 'Pretest passed')], default=-4),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='submission',
+      name='status',
+      field=models.IntegerField(
+        choices=[(-4, 'Submitted'), (-3, 'In queue'), (-2, 'Running'), (-1, 'Wrong answer'), (0, 'Accepted'),
+                 (1, 'Time limit exceeded'), (2, 'Idleness limit exceeded'), (3, 'Memory limit exceeded'),
+                 (4, 'Runtime error'), (5, 'Denial of judgement'), (6, 'Compilation error'), (7, 'Partial score'),
+                 (11, 'Checker error'), (12, 'Pretest passed')], db_index=True, default=-4),
+    ),
+    migrations.AlterField(
+      model_name='submission',
+      name='status_private',
+      field=models.IntegerField(
+        choices=[(-4, 'Submitted'), (-3, 'In queue'), (-2, 'Running'), (-1, 'Wrong answer'), (0, 'Accepted'),
+                 (1, 'Time limit exceeded'), (2, 'Idleness limit exceeded'), (3, 'Memory limit exceeded'),
+                 (4, 'Runtime error'), (5, 'Denial of judgement'), (6, 'Compilation error'), (7, 'Partial score'),
+                 (11, 'Checker error'), (12, 'Pretest passed')], default=-4),
+    ),
+  ]

@@ -6,19 +6,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0007_auto_20170428_1142'),
+  ]
 
-    dependencies = [
-        ('contest', '0007_auto_20170428_1142'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='contestparticipant',
-            options={'ordering': ['-score', 'penalty']},
-        ),
-        migrations.AlterField(
-            model_name='contestparticipant',
-            name='rank',
-            field=models.IntegerField(blank=True, null=True),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='contestparticipant',
+      options={'ordering': ['-score', 'penalty']},
+    ),
+    migrations.AlterField(
+      model_name='contestparticipant',
+      name='rank',
+      field=models.IntegerField(blank=True, null=True),
+    ),
+  ]

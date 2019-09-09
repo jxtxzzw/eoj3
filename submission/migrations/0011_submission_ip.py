@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0010_auto_20171001_1055'),
+  ]
 
-    dependencies = [
-        ('submission', '0010_auto_20171001_1055'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='submission',
-            name='ip',
-            field=models.GenericIPAddressField(blank=True, null=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='submission',
+      name='ip',
+      field=models.GenericIPAddressField(blank=True, null=True),
+    ),
+  ]

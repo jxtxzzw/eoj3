@@ -5,18 +5,17 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0029_auto_20181109_1604'),
+  ]
 
-    dependencies = [
-        ('submission', '0029_auto_20181109_1604'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='SubmissionReport',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField(blank=True)),
-                ('submission', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='submission.Submission')),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='SubmissionReport',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('content', models.TextField(blank=True)),
+        ('submission', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='submission.Submission')),
+      ],
+    ),
+  ]

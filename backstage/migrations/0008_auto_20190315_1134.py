@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('backstage', '0007_auto_20181106_1212'),
+  ]
 
-    dependencies = [
-        ('backstage', '0007_auto_20181106_1212'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='email',
-            name='content',
-            field=models.TextField(blank=True, verbose_name='内容'),
-        ),
-        migrations.AlterField(
-            model_name='email',
-            name='create_time',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='创建时间'),
-        ),
-        migrations.AlterField(
-            model_name='email',
-            name='title',
-            field=models.CharField(max_length=192, verbose_name='标题'),
-        ),
-        migrations.AlterField(
-            model_name='email',
-            name='update_time',
-            field=models.DateTimeField(auto_now=True, verbose_name='更新时间'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='email',
+      name='content',
+      field=models.TextField(blank=True, verbose_name='内容'),
+    ),
+    migrations.AlterField(
+      model_name='email',
+      name='create_time',
+      field=models.DateTimeField(auto_now_add=True, verbose_name='创建时间'),
+    ),
+    migrations.AlterField(
+      model_name='email',
+      name='title',
+      field=models.CharField(max_length=192, verbose_name='标题'),
+    ),
+    migrations.AlterField(
+      model_name='email',
+      name='update_time',
+      field=models.DateTimeField(auto_now=True, verbose_name='更新时间'),
+    ),
+  ]

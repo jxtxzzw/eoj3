@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0006_submission_rewarded'),
+  ]
 
-    dependencies = [
-        ('submission', '0006_submission_rewarded'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='submission',
-            name='status_percent',
-            field=models.FloatField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='submission',
+      name='status_percent',
+      field=models.FloatField(default=0),
+    ),
+  ]

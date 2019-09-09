@@ -75,8 +75,9 @@ print(a + b)</code></pre>
     {% endcall %}
 
     {% call question(q="Why is my memory status ridiculously high / low?") %}
-      <p>A: Unfortunately there are no known solution to the memory problem. We are able to get a MLE correctly, but not a memory
-      status. When it comes to Java, this problem gets worse. That's why all memory statuses for Java are 0KB.</p>
+      <p>A: Unfortunately there are no known solution to the memory problem. We are able to get a MLE correctly, but not
+        a memory
+        status. When it comes to Java, this problem gets worse. That's why all memory statuses for Java are 0KB.</p>
     {% endcall %}
 
     {% call question(q="What is the length limit of our code?") %}
@@ -85,16 +86,24 @@ print(a + b)</code></pre>
 
     {% call question(q="What is the version of compiler on the server?") %}
       <p>A: We have Ubuntu 14.04 on the server, with Java version 1.7.0_121, g++ 4.8.4 and Python 3.4.3. Python 2 is
-      currently not supported on the server.</p>
+        currently not supported on the server.</p>
     {% endcall %}
 
     {% call question(q="What are the compile commands?") %}
       <p>A: Below are the compile commands for C, C++, Java, Python.</p>
       <div class="ui list">
-        <div class="item">C: <pre>gcc -DONLINE_JUDGE -O2 -w -std=c99 main.c -lm -o main</pre></div>
-        <div class="item">C++: <pre>g++ -DONLINE_JUDGE -O2 -w -fmax-errors=3 -std=c++11 main.cpp -lm -o main</pre></div>
-        <div class="item">Java: <pre>javac Main.java -encoding UTF8</pre></div>
-        <div class="item">Python: <pre>python3 -m py_compile solution.py</pre></div>
+        <div class="item">C:
+          <pre>gcc -DONLINE_JUDGE -O2 -w -std=c99 main.c -lm -o main</pre>
+        </div>
+        <div class="item">C++:
+          <pre>g++ -DONLINE_JUDGE -O2 -w -fmax-errors=3 -std=c++11 main.cpp -lm -o main</pre>
+        </div>
+        <div class="item">Java:
+          <pre>javac Main.java -encoding UTF8</pre>
+        </div>
+        <div class="item">Python:
+          <pre>python3 -m py_compile solution.py</pre>
+        </div>
       </div>
     {% endcall %}
 

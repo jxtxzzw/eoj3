@@ -3,5 +3,5 @@ from account.permissions import is_admin_or_root
 
 
 class UnsafeSessionAuthentication(SessionAuthentication):
-    def enforce_csrf(self, request):
-        return
+  def enforce_csrf(self, request):
+    return

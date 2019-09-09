@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0003_case_points'),
+  ]
 
-    dependencies = [
-        ('polygon', '0003_case_points'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='revision',
-            name='alias',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='revision',
+      name='alias',
+    ),
+  ]

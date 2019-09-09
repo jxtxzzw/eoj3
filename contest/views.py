@@ -269,4 +269,3 @@ class ContestReward(BaseContestMixin, TemplateView):
     data = super(ContestReward, self).get_context_data(**kwargs)
     data['blog_list'] = self.contest.blog_set.with_likes().with_likes_flag(self.request.user)
     return data
-

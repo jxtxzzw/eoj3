@@ -110,14 +110,14 @@ class Submission(models.Model):
 
   def get_time_display(self):
     if self.status_time is not None and self.status >= SubmissionStatus.WRONG_ANSWER and \
-        self.status != SubmissionStatus.COMPILE_ERROR:
+      self.status != SubmissionStatus.COMPILE_ERROR:
       return '%.3f' % self.status_time
     else:
       return 'N/A'
 
   def get_memory_display(self):
     if self.status_memory is not None and self.status >= SubmissionStatus.WRONG_ANSWER and \
-        self.status != SubmissionStatus.COMPILE_ERROR:
+      self.status != SubmissionStatus.COMPILE_ERROR:
       return '%.3f' % self.status_memory
     else:
       return 'N/A'

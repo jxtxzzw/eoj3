@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('dispatcher', '0008_server_version'),
+  ]
 
-    dependencies = [
-        ('dispatcher', '0008_server_version'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='server',
-            name='master',
-            field=models.BooleanField(default=True, verbose_name='主节点'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='server',
+      name='master',
+      field=models.BooleanField(default=True, verbose_name='主节点'),
+    ),
+  ]

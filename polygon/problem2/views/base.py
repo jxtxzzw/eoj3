@@ -75,7 +75,7 @@ class ProblemList(PolygonBaseMixin, ListView):
     if hasattr(self, "id_searching_recommendation"):
       pid = self.id_searching_recommendation
       if Problem.objects.filter(id=pid).exists() and \
-          is_admin_or_root(self.request.user) or self.request.user.managing_problems.filter(id=pid).exists():
+        is_admin_or_root(self.request.user) or self.request.user.managing_problems.filter(id=pid).exists():
         data["suggest_problem"] = Problem.objects.get(id=pid)
         data["suggest_problem"].latest_revision = self.get_problem_latest_revision(data["suggest_problem"])
     return data
@@ -87,7 +87,7 @@ class ProblemCreate(PolygonBaseMixin, View):
     revised_probs = set(Revision.objects.values_list("problem_id", flat=True))
     for problem in Problem.objects.all().order_by("id"):
       if not problem.description and not problem.input and not problem.output and not problem.cases and \
-          problem.id not in revised_probs:
+        problem.id not in revised_probs:
         return problem
     return None
 
@@ -151,6 +151,7 @@ class ProblemClone(PolygonBaseMixin, View):
       return redirect(reverse('polygon:problem_list_2'))
 
     return redirect(reverse('polygon:problem_list_2') + "?exact=%d" % saved_id)
+
 
 class PolygonProblemMixin(ContextMixin, PolygonBaseMixin):
   raise_exception = True

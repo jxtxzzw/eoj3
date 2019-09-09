@@ -6,20 +6,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('contest', '0004_auto_20170414_1511'),
+  ]
 
-    dependencies = [
-        ('contest', '0004_auto_20170414_1511'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='contestinvitation',
-            name='star',
-            field=models.BooleanField(default=False),
-        ),
-        migrations.AddField(
-            model_name='contestparticipant',
-            name='star',
-            field=models.BooleanField(default=False),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='contestinvitation',
+      name='star',
+      field=models.BooleanField(default=False),
+    ),
+    migrations.AddField(
+      model_name='contestparticipant',
+      name='star',
+      field=models.BooleanField(default=False),
+    ),
+  ]

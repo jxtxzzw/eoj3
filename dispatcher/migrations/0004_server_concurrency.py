@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('dispatcher', '0003_auto_20170825_2201'),
+  ]
 
-    dependencies = [
-        ('dispatcher', '0003_auto_20170825_2201'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='server',
-            name='concurrency',
-            field=models.PositiveIntegerField(default=1),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='server',
+      name='concurrency',
+      field=models.PositiveIntegerField(default=1),
+    ),
+  ]

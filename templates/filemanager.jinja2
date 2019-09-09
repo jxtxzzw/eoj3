@@ -9,6 +9,7 @@
       padding-top: 5em;
       padding-bottom: 15em;
     }
+
     .fixed.launch.button {
       position: fixed;
       top: 2.5em;
@@ -66,22 +67,29 @@
       </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="3"><i class="reply icon"></i> <a href="{{ url('filemanager:index') }}?q={{ parent_link }}">(Parent Directory)</a></td>
-        </tr>
+      <tr>
+        <td colspan="3"><i class="reply icon"></i> <a href="{{ url('filemanager:index') }}?q={{ parent_link }}">(Parent
+          Directory)</a></td>
+      </tr>
       {% for file in file_list %}
         <tr>
-          <td>{% if file.is_dir %}<i class="icon folder"></i>{% else %}<i class="file outline icon"></i>{% endif %}<a href="{{ file.link }}">{{ file.name }}</a></td>
+          <td>{% if file.is_dir %}<i class="icon folder"></i>{% else %}<i class="file outline icon"></i>{% endif %}<a
+                  href="{{ file.link }}">{{ file.name }}</a></td>
           <td class="right aligned collapsing">{{ file.modified }}</td>
           <td class="right aligned collapsing">{{ file.size }}</td>
-          <td class="right aligned collapsing"><a class="modal-link" data-name="{{ file.name }}" data-old-name="{{ file.name }}" data-action="{{ url('filemanager:index') }}" data-type="rename" data-q="{{ position }}" data-target="#renameFile">Rename</td>
-          <td class="right aligned collapsing"><a class="delete-link" data-name="{{ file.name }}" data-type="delete">Delete</a></td>
+          <td class="right aligned collapsing"><a class="modal-link" data-name="{{ file.name }}"
+                                                  data-old-name="{{ file.name }}"
+                                                  data-action="{{ url('filemanager:index') }}" data-type="rename"
+                                                  data-q="{{ position }}" data-target="#renameFile">Rename</td>
+          <td class="right aligned collapsing"><a class="delete-link" data-name="{{ file.name }}" data-type="delete">Delete</a>
+          </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
 
-    <a class="ui right floated primary icon labeled primary small button modal-link" data-type="createdir" data-target="#createDir"><i class="add icon"></i> Create Directory</a>
+    <a class="ui right floated primary icon labeled primary small button modal-link" data-type="createdir"
+       data-target="#createDir"><i class="add icon"></i> Create Directory</a>
   </div>
 
   {% call modal(title="Rename a file", id="renameFile", action='#') %}
@@ -108,7 +116,7 @@
 
   <script src="/static/js/tablesort.js"></script>
   <script>
-  $("table").tablesort();
+      $("table").tablesort();
   </script>
 
 {% endblock %}

@@ -6,15 +6,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('backstage', '0003_auto_20180712_1053'),
+  ]
 
-    dependencies = [
-        ('backstage', '0003_auto_20180712_1053'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='updatelog',
-            name='log_type',
-            field=models.CharField(choices=[('fix', 'BUG FIX'), ('add', 'NEW FEATURE'), ('del', 'REMOVE FEATURE'), ('ref', 'REFACTOR'), ('upd', 'UPDATE'), ('enhance', 'ENHANCEMENT')], max_length=10),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='updatelog',
+      name='log_type',
+      field=models.CharField(
+        choices=[('fix', 'BUG FIX'), ('add', 'NEW FEATURE'), ('del', 'REMOVE FEATURE'), ('ref', 'REFACTOR'),
+                 ('upd', 'UPDATE'), ('enhance', 'ENHANCEMENT')], max_length=10),
+    ),
+  ]

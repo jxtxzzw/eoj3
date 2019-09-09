@@ -6,15 +6,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('migrate', '0007_auto_20180716_0920'),
+  ]
 
-    dependencies = [
-        ('migrate', '0007_auto_20180716_0920'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='oldsubmission',
-            name='status',
-            field=models.IntegerField(choices=[(-4, 'Submitted'), (-3, 'Waiting'), (-2, 'Judging'), (-1, 'Wrong Answer'), (0, 'Accepted'), (1, 'Time Limit Exceeded'), (2, 'Idleness Limit Exceeded'), (3, 'Memory Limit Exceeded'), (4, 'Runtime Error'), (5, 'System Error'), (6, 'Compile Error'), (7, 'Scored'), (11, 'Judge Error'), (12, 'Pretest Passed')], default=-3),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='oldsubmission',
+      name='status',
+      field=models.IntegerField(
+        choices=[(-4, 'Submitted'), (-3, 'Waiting'), (-2, 'Judging'), (-1, 'Wrong Answer'), (0, 'Accepted'),
+                 (1, 'Time Limit Exceeded'), (2, 'Idleness Limit Exceeded'), (3, 'Memory Limit Exceeded'),
+                 (4, 'Runtime Error'), (5, 'System Error'), (6, 'Compile Error'), (7, 'Scored'), (11, 'Judge Error'),
+                 (12, 'Pretest Passed')], default=-3),
+    ),
+  ]

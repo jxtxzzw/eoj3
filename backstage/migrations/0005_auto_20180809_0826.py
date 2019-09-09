@@ -8,39 +8,39 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('backstage', '0004_auto_20180712_1527'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('backstage', '0004_auto_20180712_1527'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='EmailRecipient',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.IntegerField(choices=[(-1, 'Pending'), (0, 'OK'), (1, 'Failed')], default=-1)),
-                ('error_message', models.TextField(blank=True)),
-            ],
-        ),
-        migrations.RenameField(
-            model_name='email',
-            old_name='author',
-            new_name='created_by',
-        ),
-        migrations.AddField(
-            model_name='emailrecipient',
-            name='email',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backstage.Email'),
-        ),
-        migrations.AddField(
-            model_name='emailrecipient',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='email',
-            name='recipients',
-            field=models.ManyToManyField(related_name='received_emails', through='backstage.EmailRecipient', to=settings.AUTH_USER_MODEL),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='EmailRecipient',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('status', models.IntegerField(choices=[(-1, 'Pending'), (0, 'OK'), (1, 'Failed')], default=-1)),
+        ('error_message', models.TextField(blank=True)),
+      ],
+    ),
+    migrations.RenameField(
+      model_name='email',
+      old_name='author',
+      new_name='created_by',
+    ),
+    migrations.AddField(
+      model_name='emailrecipient',
+      name='email',
+      field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='backstage.Email'),
+    ),
+    migrations.AddField(
+      model_name='emailrecipient',
+      name='user',
+      field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+    ),
+    migrations.AddField(
+      model_name='email',
+      name='recipients',
+      field=models.ManyToManyField(related_name='received_emails', through='backstage.EmailRecipient',
+                                   to=settings.AUTH_USER_MODEL),
+    ),
+  ]

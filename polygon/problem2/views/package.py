@@ -31,7 +31,7 @@ LANGUAGE_ADAPTER = {
   "pas.fpc": "pas",
   "perl.5": "perl",
   "php.5": "php",
-  "python.2":"py2",
+  "python.2": "py2",
   "python.3": "python",
   "rust": "rs",
   "scala": "scala"
@@ -116,9 +116,9 @@ class CodeforcesPackageAdapter:
     for test_node in testset_node.find('tests').findall('test'):
       test_id += 1
       with open(os.path.join(self.directory, input_pattern % test_id), 'rb') as test_input:
-        input_text = test_input.read().replace(b"\r\n", b"\n") # process CRLF
+        input_text = test_input.read().replace(b"\r\n", b"\n")  # process CRLF
       with open(os.path.join(self.directory, answer_pattern % test_id), 'rb') as test_answer:
-        answer_text = test_answer.read().replace(b"\r\n", b"\n") # replace \r\n
+        answer_text = test_answer.read().replace(b"\r\n", b"\n")  # replace \r\n
       is_sample = 'sample' in test_node.attrib and test_node.attrib["sample"] == "true"
       points = int(float(test_node.attrib.get("points", 1)))
       group_name = test_node.attrib.get("group", "")

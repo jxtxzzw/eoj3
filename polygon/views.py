@@ -51,7 +51,7 @@ class RejudgeSubmission(PolygonBaseMixin, APIView):
 
   def test_func(self):
     if is_problem_manager(self.request.user, self.submission.problem) or \
-        (self.submission.contest and is_contest_manager(self.request.user, self.submission.contest)):
+      (self.submission.contest and is_contest_manager(self.request.user, self.submission.contest)):
       return super(RejudgeSubmission, self).test_func()
     return False
 

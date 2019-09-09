@@ -8,48 +8,48 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ('account', '0018_school'),
+    ('contest', '0023_contest_open_problems'),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('account', '0018_school'),
-        ('contest', '0023_contest_open_problems'),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Activity',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=192, unique=True)),
-                ('description', models.TextField(blank=True)),
-                ('create_time', models.DateTimeField(auto_now_add=True)),
-                ('update_time', models.DateTimeField(auto_now_add=True)),
-                ('register_start_time', models.DateTimeField(blank=True)),
-                ('register_end_time', models.DateTimeField(blank=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='ActivityParticipant',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('real_name', models.CharField(max_length=30)),
-                ('student_id', models.CharField(max_length=30)),
-                ('email', models.CharField(max_length=192)),
-                ('phone', models.CharField(blank=True, max_length=30)),
-                ('is_deleted', models.BooleanField(default=False)),
-                ('activity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contest.Activity')),
-                ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.School')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.AddField(
-            model_name='activity',
-            name='participants',
-            field=models.ManyToManyField(related_name='activities', through='contest.ActivityParticipant', to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AlterUniqueTogether(
-            name='activityparticipant',
-            unique_together=set([('user', 'activity')]),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='Activity',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('title', models.CharField(max_length=192, unique=True)),
+        ('description', models.TextField(blank=True)),
+        ('create_time', models.DateTimeField(auto_now_add=True)),
+        ('update_time', models.DateTimeField(auto_now_add=True)),
+        ('register_start_time', models.DateTimeField(blank=True)),
+        ('register_end_time', models.DateTimeField(blank=True)),
+        ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+      ],
+    ),
+    migrations.CreateModel(
+      name='ActivityParticipant',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('real_name', models.CharField(max_length=30)),
+        ('student_id', models.CharField(max_length=30)),
+        ('email', models.CharField(max_length=192)),
+        ('phone', models.CharField(blank=True, max_length=30)),
+        ('is_deleted', models.BooleanField(default=False)),
+        ('activity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contest.Activity')),
+        ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='account.School')),
+        ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+      ],
+    ),
+    migrations.AddField(
+      model_name='activity',
+      name='participants',
+      field=models.ManyToManyField(related_name='activities', through='contest.ActivityParticipant',
+                                   to=settings.AUTH_USER_MODEL),
+    ),
+    migrations.AlterUniqueTogether(
+      name='activityparticipant',
+      unique_together=set([('user', 'activity')]),
+    ),
+  ]

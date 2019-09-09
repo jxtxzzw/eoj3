@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('problem', '0005_auto_20170825_2201'),
+  ]
 
-    dependencies = [
-        ('problem', '0005_auto_20170825_2201'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='problem',
-            name='time_limit',
-            field=models.IntegerField(default=2000),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='problem',
+      name='time_limit',
+      field=models.IntegerField(default=2000),
+    ),
+  ]

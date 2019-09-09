@@ -6,20 +6,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0008_auto_20180430_1744'),
+  ]
 
-    dependencies = [
-        ('polygon', '0008_auto_20180430_1744'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='revision',
-            name='group_count',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name='revision',
-            name='group_points',
-            field=models.TextField(blank=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='revision',
+      name='group_count',
+      field=models.PositiveIntegerField(default=0),
+    ),
+    migrations.AddField(
+      model_name='revision',
+      name='group_points',
+      field=models.TextField(blank=True),
+    ),
+  ]

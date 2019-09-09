@@ -6,14 +6,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('submission', '0008_submission_code_length'),
+  ]
 
-    dependencies = [
-        ('submission', '0008_submission_code_length'),
-    ]
-
-    operations = [
-        migrations.AlterModelOptions(
-            name='submission',
-            options={'ordering': ['-create_time']},
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='submission',
+      options={'ordering': ['-create_time']},
+    ),
+  ]

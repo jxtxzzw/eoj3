@@ -5,20 +5,19 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ('polygon', '0014_auto_20190112_1545'),
+  ]
 
-    dependencies = [
-        ('polygon', '0014_auto_20190112_1545'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='codeforcespackage',
-            name='create_time',
-        ),
-        migrations.AddField(
-            model_name='package',
-            name='create_time',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
-            preserve_default=False,
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='codeforcespackage',
+      name='create_time',
+    ),
+    migrations.AddField(
+      model_name='package',
+      name='create_time',
+      field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+      preserve_default=False,
+    ),
+  ]

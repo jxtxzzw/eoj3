@@ -59,7 +59,8 @@ def render_submission(submission: Submission, permission=1, hide_problem=False, 
                       'server': judge_server,
                       'rejudge_authorized': permission >= 2 and rejudge_available
                       })
-  return loader.render_to_string('components/single_submission.jinja2', c, GlobalRequestMiddleware.get_current_request())
+  return loader.render_to_string('components/single_submission.jinja2', c,
+                                 GlobalRequestMiddleware.get_current_request())
 
 
 def render_submission_report(pk):

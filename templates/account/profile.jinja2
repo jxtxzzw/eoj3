@@ -23,7 +23,8 @@
         <label>你的新用户名:</label>
         <input type="text" name="username" placeholder="长度不能小于 6 个字符。">
       </div>
-      <p>这是你第 {{ user.username_change_attempt + 1 }} 次修改用户名的尝试，这将会消耗 {{ (user.username_change_attempt ** 2) * 100 }} EMB.</p>
+      <p>这是你第 {{ user.username_change_attempt + 1 }} 次修改用户名的尝试，这将会消耗 {{ (user.username_change_attempt ** 2) * 100 }}
+        EMB.</p>
     </div>
   {% endcall %}
 
